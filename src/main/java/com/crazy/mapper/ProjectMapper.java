@@ -11,12 +11,16 @@ import org.apache.ibatis.annotations.Select;
  */
 @Mapper
 public interface ProjectMapper {
-    @Insert("INSERT INTO PROJECT (cost,delivery_cycle,warranty_cycle,address,description) VALUES (#{cost},#{devlivery_cycle},#{warranty_cycle},#{address},#{description})")
-    public int addProject(@Param("cost") double cost, @Param("devlivery_cycle") Integer devlivery_cycle, @Param("warranty_cycle") Integer warranty_cycle,
-                          @Param("address") String address,@Param("description") String description);
+    @Insert("INSERT INTO PROJECT (cost,delivery_cycle,warranty_cycle,address,description,user_name,project_type) VALUES (#{cost},#{delivery_cycle},#{warranty_cycle},#{address},#{description},#{user_name},#{project_type})")
+    public int addProject(@Param("cost") double cost, @Param("delivery_cycle") Integer devlivery_cycle, @Param("warranty_cycle") Integer warranty_cycle,
+                          @Param("address") String address,@Param("description") String description,@Param("user_name") String user_name,@Param("project_type") String project_type);
 
     @Select("SELECT * FROM PROJECT")
     public Project searchProjectall();
+
+
+
+
 
 
 

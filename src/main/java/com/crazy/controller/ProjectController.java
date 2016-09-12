@@ -23,13 +23,15 @@ public class ProjectController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public int addProject(@RequestBody Project project) {
         return projectMapper.addProject(project.getCost(), project.getDelivery_cycle(), project.getWarranty_cycle(),
-                project.getAddress(),project.getDescription());
+                project.getAddress(), project.getDescription(), project.getUser_name(), project.getProject_type());
     }
 
     @RequestMapping(method = RequestMethod.GET)
     public Project searchproject() {
         return projectMapper.searchProjectall();
     }
+
+    
 
 
 

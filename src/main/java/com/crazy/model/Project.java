@@ -11,25 +11,35 @@ import java.io.File;
 /**
  * Created by SHIKUN on 2016/9/12.
  */
-@Entity
 public class Project {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
-    @Column
+
     private double cost;
-    @Column
+
     private int delivery_cycle;
-    @Column
+
     private int warranty_cycle;
-    @Column
+
     private String address;
-    @Column
+
     private String description;
-    @Column
-    private String username;
-    @Column
+
+    private String user_name;
+
     private File file;
+
+    private String project_type;
+
+    private String dev_user_name;
+
+    public String getDev_user_name() {
+        return dev_user_name;
+    }
+
+    public void setDev_user_name(String dev_user_name) {
+        this.dev_user_name = dev_user_name;
+    }
 
     public Long getId() {
         return id;
@@ -79,14 +89,19 @@ public class Project {
         this.description = description;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUser_name() {
+        return user_name;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUser_name(String user_name) {
+        this.user_name = user_name;
     }
 
+    public String getProject_type() {
+        return project_type;
+    }
 
-
+    public void setProject_type(String project_type) {
+        this.project_type = project_type;
+    }
 }
