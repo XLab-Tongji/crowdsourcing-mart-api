@@ -10,22 +10,21 @@ import javax.persistence.GenerationType;
 /**
  * Created by SHIKUN on 2016/9/12.
  */
-@Entity
+
 public class Users {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private long id;
-    @Column
+
     private String user_name;
-    @Column
+
     private String phone;
-    @Column
+
     private String email;
-    @Column
+
     private String password;
-    @Column
+
     private String address;
-    @Column
+
     private String qq;
 
     public long getId() {

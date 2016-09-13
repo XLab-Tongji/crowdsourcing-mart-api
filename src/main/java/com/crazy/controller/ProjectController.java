@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * Created by SHIKUN on 2016/9/12.
  */
@@ -27,11 +29,12 @@ public class ProjectController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public Project searchproject() {
+    public List<Project> searchproject() {
         return projectMapper.searchProjectall();
     }
 
-    
+
+
 
 
 

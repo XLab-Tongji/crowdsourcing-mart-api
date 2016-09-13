@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+
 /**
  * Created by SHIKUN on 2016/9/12.
  */
@@ -16,7 +18,7 @@ public interface ProjectMapper {
                           @Param("address") String address,@Param("description") String description,@Param("user_name") String user_name,@Param("project_type") String project_type);
 
     @Select("SELECT * FROM PROJECT")
-    public Project searchProjectall();
+    public List<Project> searchProjectall();
 
 
 
