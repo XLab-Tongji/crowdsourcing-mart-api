@@ -1,10 +1,7 @@
 package com.crazy.mapper;
 
 import com.crazy.model.Project;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -20,11 +17,8 @@ public interface ProjectMapper {
     @Select("SELECT * FROM PROJECT")
     public List<Project> searchProjectall();
 
-
-
-
-
-
+    @Update("UPDATE PROJECT SET dev_user_name=#{dev_user_name} WHERE id=#{id}")
+    public int claimProject(@Param("dev_user_name") String user_name, @Param("id") Long id);
 
 
 }
