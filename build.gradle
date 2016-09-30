@@ -29,6 +29,11 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.mybatis.spring.boot:mybatis-spring-boot-starter:1.1.1")
     compile("mysql:mysql-connector-java:5.1.21")
+    compile ("c3p0:c3p0:0.9.1.2")
+    compile ("org.apache.commons:commons-pool2:2.0")
+    compile ("org.apache.commons:commons-lang3:3.4")
+    compile ("org.springframework.boot:spring-boot-starter-security")
+
 
     runtime("org.hsqldb:hsqldb")
     testCompile("org.springframework.boot:spring-boot-starter-test")

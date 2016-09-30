@@ -1,0 +1,30 @@
+package com.crazy.mapper;
+
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Created by SHIKUN on 2016/9/30.
+ */
+@Mapper
+public interface AccountMapper {
+    @Insert("INSERT INTO ACCOUNT (username,name,icon,password,mobile,create_time,update_time,email,ext_params) VALUES" +
+            " (#{username},#{name},#{icon},#{password},#{mobile},#{create_time},#{update_time},#{email},#{ext_params})")
+    public int addAcount(@Param("username") String username, @Param("name") String name, @Param("icon") String icon,@Param("password") String password,
+                         @Param("mobile") String mobile, @Param("create_time") Date create_time, @Param("update_time") Date update_time,
+                         @Param("email") String email, @Param("ext_params") String ext_params);
+
+    @Select("SELECT username FROM ACCOUNT")
+    public List<String> getAllUsername();
+
+
+
+
+
+}
