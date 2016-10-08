@@ -23,6 +23,17 @@ public interface AccountMapper {
     @Select("SELECT username FROM ACCOUNT")
     public List<String> getAllUsername();
 
+    @Select("SELECT username,password FROM ACCOUNT")
+    public List<String> getNameAndPassword();
+
+    @Select("SELECT username,password FROM ACCOUNT WHERE username=#{username}")
+    public Map<String,String> getCheckInfo(@Param("username") String username);
+
+
+
+
+
+
 
 
 

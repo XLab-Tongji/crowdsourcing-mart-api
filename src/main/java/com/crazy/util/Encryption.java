@@ -1,5 +1,6 @@
 package com.crazy.util;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -8,10 +9,16 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class Encryption {
+
+    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
     public String doEncryption(String password){
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String hasedpassword = passwordEncoder.encode(password);
-        return hasedpassword;
+        String encryptPassword = passwordEncoder.encode(password);
+        return encryptPassword;
+    }
+
+    public boolean checkPassword(String password,String encryptPassword) {
+        return passwordEncoder.matches(password,encryptPassword);
     }
 
 }

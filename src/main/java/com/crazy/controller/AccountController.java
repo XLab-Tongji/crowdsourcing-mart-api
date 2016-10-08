@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -44,5 +45,22 @@ public class AccountController {
     public List<String> getAllUsername() {
         return accountMapper.getAllUsername();
     }
+
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public String checkAccount(@RequestBody Account account) {
+        String result = null;
+        Map<String, String> selectResult = accountMapper.getCheckInfo(account.getUsername());
+        if (selectResult.isEmpty()) {
+            result="没有此用户";
+        } else if (!encryption.checkPassword(account.getPassword(),selectResult.get("password"))) {
+            result = "密码错误";
+        } else {
+            result = "ok";
+        }
+        return result;
+    }
+
+    
+
 
 }
