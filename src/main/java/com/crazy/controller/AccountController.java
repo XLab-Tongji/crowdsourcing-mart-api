@@ -50,7 +50,8 @@ public class AccountController {
     public String checkAccount(@RequestBody Account account) {
         String result = null;
         Map<String, String> selectResult = accountMapper.getCheckInfo(account.getUsername());
-        if (selectResult.isEmpty()) {
+
+        if (selectResult==null) {
             result="没有此用户";
         } else if (!encryption.checkPassword(account.getPassword(),selectResult.get("password"))) {
             result = "密码错误";
@@ -60,7 +61,7 @@ public class AccountController {
         return result;
     }
 
-    
+
 
 
 }
