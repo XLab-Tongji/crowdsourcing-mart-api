@@ -73,11 +73,10 @@ public class AccountController {
     }
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public int test(@RequestParam(value = "token") String token) {
+    public String test(@RequestParam(value = "token") String token) {
 
-        int result = 1;
+        String result = null;
         AccountLogin tokenInfo = accountMapper.getTokenInfo(token);
-
 
         Date expire_time = tokenInfo.getExpire_time();
         Long account_id = tokenInfo.getAccount_id();
@@ -85,15 +84,13 @@ public class AccountController {
         boolean checkstatus = dateUtil.check(expire_time, 30);
 
         if (checkstatus == true) {
-            result = 1;
+            result = "token有效";
         } else {
             token = encryption.createToken();
-            accountMapper.updateToken(token, dateUtil.Str2Date(dateUtil.setExpire(30)), account_id);
-            result = 0;
-            System.out.print(token);
-
+            accountMapper.updateToken(token, dateUtil.Str2Date(dateUtil.getNowTime()),
+                    dateUtil.Str2Date(dateUtil.setExpire(30)));
+            result = token;
         }
-
 
         return result;
     }

@@ -41,9 +41,8 @@ public interface AccountMapper {
     @Select("SELECT expire_time,account_id FROM ACCOUNT_LOGIN_LOG WHERE token=#{token}")
     public AccountLogin getTokenInfo(@Param("token") String token);
 
-    @Update("UPDATE ACCOUNT_LOGIN_LOG SET token=#{token}, expire_time=#{expire_time} WHERE account_id=#{account_id}")
-    public int updateToken(@Param("token") String token, @Param("expire_time") Date expire_time,
-                           @Param("account_id") Long account_id);
+    @Update("UPDATE ACCOUNT_LOGIN_LOG SET token=#{token}, create_time=#{create_time},expire_time=#{expire_time} WHERE token=#{token}")
+    public int updateToken(@Param("token") String token,@Param("create_time")Date create_time, @Param("expire_time") Date expire_time);
 
 
 
