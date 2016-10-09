@@ -3,13 +3,13 @@ package com.crazy.controller;
 import com.crazy.mapper.AccountMapper;
 import com.crazy.model.Account;
 import com.crazy.util.ConvertJson;
+import com.crazy.util.DateUtil;
 import com.crazy.util.Encryption;
+import com.crazy.util.LogUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +30,12 @@ public class AccountController {
     @Autowired
     private Encryption encryption;
 
+    @Autowired
+    private DateUtil dateUtil;
+
+    @Autowired
+    private LogUtil log;
+
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public int addAccount(@RequestBody Account account){
 
@@ -47,21 +53,28 @@ public class AccountController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String checkAccount(@RequestBody Account account) {
+    public String checkAccount(@RequestBody Account account, @RequestHeader(value = "User-Agent") String useragent,
+                               HttpServletRequest request) {
+
         String result = null;
+        String token = null;
         Map<String, String> selectResult = accountMapper.getCheckInfo(account.getUsername());
 
-        if (selectResult==null) {
-            result="没有此用户";
-        } else if (!encryption.checkPassword(account.getPassword(),selectResult.get("password"))) {
+
+        if (selectResult == null) {
+            result = "没有此用户";
+        } else if (!encryption.checkPassword(account.getPassword(), selectResult.get("password"))) {
             result = "密码错误";
         } else {
-            result = "ok";
+
+            token=log.createToken();
+            accountMapper.addLoginLog(request.getRemoteAddr(), token, dateUtil.Str2Date(dateUtil.getNowTime()),
+                    dateUtil.Str2Date(dateUtil.setExpire(30)), accountMapper.getUserId(account.getUsername()),
+                    useragent);
+            result = token;
+
         }
         return result;
     }
-
-
-
 
 }
