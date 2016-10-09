@@ -2,6 +2,7 @@ package com.crazy.controller;
 
 import com.crazy.mapper.AccountMapper;
 import com.crazy.model.Account;
+import com.crazy.model.AccountLogin;
 import com.crazy.util.ConvertJson;
 import com.crazy.util.DateUtil;
 import com.crazy.util.Encryption;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +35,7 @@ public class AccountController {
     private DateUtil dateUtil;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public int addAccount(@RequestBody Account account){
+    public int addAccount(@RequestBody Account account) {
 
         System.out.println(account.getExt_params());
 
@@ -61,15 +63,40 @@ public class AccountController {
         } else if (!encryption.checkPassword(account.getPassword(), selectResult.get("password"))) {
             result = "密码错误";
         } else {
-            token=encryption.createToken();
+            token = encryption.createToken();
             accountMapper.addLoginLog(request.getRemoteAddr(), token, dateUtil.Str2Date(dateUtil.getNowTime()),
                     dateUtil.Str2Date(dateUtil.setExpire(30)), accountMapper.getUserId(account.getUsername()),
-                    useragent,account.getUsername());
+                    useragent, account.getUsername());
             result = token;
         }
         return result;
     }
 
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public int test(@RequestParam(value = "token") String token) {
 
+        int result = 1;
+        AccountLogin tokenInfo = accountMapper.getTokenInfo(token);
+
+
+        Date expire_time = tokenInfo.getExpire_time();
+        Long account_id = tokenInfo.getAccount_id();
+
+        boolean checkstatus = dateUtil.check(expire_time, 30);
+
+        if (checkstatus == true) {
+            result = 1;
+        } else {
+            token = encryption.createToken();
+            accountMapper.updateToken(token, dateUtil.Str2Date(dateUtil.setExpire(30)), account_id);
+            result = 0;
+            System.out.print(token);
+
+        }
+
+
+        return result;
+    }
 
 }
+

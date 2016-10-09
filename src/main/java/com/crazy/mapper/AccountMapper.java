@@ -1,9 +1,7 @@
 package com.crazy.mapper;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import com.crazy.model.AccountLogin;
+import org.apache.ibatis.annotations.*;
 
 import java.util.Date;
 import java.util.List;
@@ -16,8 +14,9 @@ import java.util.Map;
 public interface AccountMapper {
     @Insert("INSERT INTO ACCOUNT (username,name,icon,password,mobile,create_time,update_time,email,ext_params) VALUES" +
             " (#{username},#{name},#{icon},#{password},#{mobile},#{create_time},#{update_time},#{email},#{ext_params})")
-    public int addAcount(@Param("username") String username, @Param("name") String name, @Param("icon") String icon,@Param("password") String password,
-                         @Param("mobile") String mobile, @Param("create_time") Date create_time, @Param("update_time") Date update_time,
+    public int addAcount(@Param("username") String username, @Param("name") String name, @Param("icon") String icon,
+                         @Param("password") String password, @Param("mobile") String mobile,
+                         @Param("create_time") Date create_time, @Param("update_time") Date update_time,
                          @Param("email") String email, @Param("ext_params") String ext_params);
 
     @Select("SELECT username FROM ACCOUNT")
@@ -38,6 +37,13 @@ public interface AccountMapper {
     public int addLoginLog(@Param("ip") String ip, @Param("token") String token, @Param("create_time") Date create_time,
                            @Param("expire_time") Date expire_time, @Param("account_id") Long account_id,
                            @Param("plat") String plat, @Param("username") String username);
+
+    @Select("SELECT expire_time,account_id FROM ACCOUNT_LOGIN_LOG WHERE token=#{token}")
+    public AccountLogin getTokenInfo(@Param("token") String token);
+
+    @Update("UPDATE ACCOUNT_LOGIN_LOG SET token=#{token}, expire_time=#{expire_time} WHERE account_id=#{account_id}")
+    public int updateToken(@Param("token") String token, @Param("expire_time") Date expire_time,
+                           @Param("account_id") Long account_id);
 
 
 

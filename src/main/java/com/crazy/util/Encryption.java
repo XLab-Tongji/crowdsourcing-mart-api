@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -23,9 +24,13 @@ public class Encryption {
         return passwordEncoder.matches(password,encryptPassword);
     }
 
-    //产生token,设置时间
+    /*
+    产生token,设置时间
+     */
     public String createToken() {
 
         return UUID.randomUUID().toString().replace("-", "");
     }
+
+
 }

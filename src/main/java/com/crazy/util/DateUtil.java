@@ -50,4 +50,16 @@ public class DateUtil {
         return result;
     }
 
+    /*
+    比较时间大小
+     */
+    public boolean check(Date date,int minute) {
+        boolean status = false;
+        Long setTime = date.getTime();
+        Long nowTime = System.currentTimeMillis();
+        if ((minute * 60 * 1000) >= (nowTime - setTime)) {
+            status = true;
+        }
+        return status;
+    }
 }
