@@ -23,4 +23,9 @@ public class Encryption {
         return passwordEncoder.matches(password,encryptPassword);
     }
 
+    //产生token,设置时间
+    public String createToken() {
+
+        return UUID.randomUUID().toString().replace("-", "");
+    }
 }

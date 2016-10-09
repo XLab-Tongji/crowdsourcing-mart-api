@@ -4,7 +4,6 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
-import org.springframework.security.access.method.P;
 
 import java.util.Date;
 import java.util.List;
@@ -39,7 +38,9 @@ public interface AccountMapper {
     public int addLoginLog(@Param("ip") String ip, @Param("token") String token, @Param("create_time") Date create_time,
                            @Param("expire_time") Date expire_time, @Param("account_id") Long account_id,
                            @Param("plat") String plat, @Param("username") String username);
-    
+
+
+
 
 
 

@@ -5,7 +5,6 @@ import com.crazy.model.Account;
 import com.crazy.util.ConvertJson;
 import com.crazy.util.DateUtil;
 import com.crazy.util.Encryption;
-import com.crazy.util.LogUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,9 +31,6 @@ public class AccountController {
 
     @Autowired
     private DateUtil dateUtil;
-
-    @Autowired
-    private LogUtil log;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public int addAccount(@RequestBody Account account){
@@ -65,15 +61,15 @@ public class AccountController {
         } else if (!encryption.checkPassword(account.getPassword(), selectResult.get("password"))) {
             result = "密码错误";
         } else {
-
-            token=log.createToken();
+            token=encryption.createToken();
             accountMapper.addLoginLog(request.getRemoteAddr(), token, dateUtil.Str2Date(dateUtil.getNowTime()),
                     dateUtil.Str2Date(dateUtil.setExpire(30)), accountMapper.getUserId(account.getUsername()),
                     useragent,account.getUsername());
             result = token;
-
         }
         return result;
     }
+
+
 
 }

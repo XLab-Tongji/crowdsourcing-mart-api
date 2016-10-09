@@ -16,13 +16,17 @@ import java.util.Date;
 public class DateUtil {
     public SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    //获取系统当前时间
+    /*
+    获取系统当前时间
+     */
     public String getNowTime() {
 
         return df.format(new Date());
     }
 
-    //设置过期时间,当前时间加分钟数
+    /*
+    设置过期时间,当前时间加分钟数
+     */
     public String setExpire(int minute) {
 
         Long total = System.currentTimeMillis();
@@ -31,7 +35,9 @@ public class DateUtil {
 
     }
 
-    //字符转日期格式至timestamp
+    /*
+    字符转日期格式至timestamp
+     */
     public Date Str2Date(String date) {
         Timestamp result = null;
         try {
