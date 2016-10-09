@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 
-/**
+/**Account Controller
  * Created by SHIKUN on 2016/9/30.
  */
 
@@ -74,25 +74,7 @@ public class AccountController {
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public String test(@RequestParam(value = "token") String token) {
-
-        String result = null;
-        AccountLogin tokenInfo = accountMapper.getTokenInfo(token);
-
-        Date expire_time = tokenInfo.getExpire_time();
-        Long account_id = tokenInfo.getAccount_id();
-
-        boolean checkstatus = dateUtil.check(expire_time, 30);
-
-        if (checkstatus == true) {
-            result = "token有效";
-        } else {
-            token = encryption.createToken();
-            accountMapper.updateToken(token, dateUtil.Str2Date(dateUtil.getNowTime()),
-                    dateUtil.Str2Date(dateUtil.setExpire(30)));
-            result = token;
-        }
-
-        return result;
+        return encryption.tokenValidate(token);
     }
 
 }

@@ -38,11 +38,11 @@ public interface AccountMapper {
                            @Param("expire_time") Date expire_time, @Param("account_id") Long account_id,
                            @Param("plat") String plat, @Param("username") String username);
 
-    @Select("SELECT expire_time,account_id FROM ACCOUNT_LOGIN_LOG WHERE token=#{token}")
+    @Select("SELECT id,expire_time,account_id FROM ACCOUNT_LOGIN_LOG WHERE token=#{token}")
     public AccountLogin getTokenInfo(@Param("token") String token);
 
-    @Update("UPDATE ACCOUNT_LOGIN_LOG SET token=#{token}, create_time=#{create_time},expire_time=#{expire_time} WHERE token=#{token}")
-    public int updateToken(@Param("token") String token,@Param("create_time")Date create_time, @Param("expire_time") Date expire_time);
+    @Update("UPDATE ACCOUNT_LOGIN_LOG SET token=#{token}, create_time=#{create_time},expire_time=#{expire_time} WHERE id=#{id}")
+    public int updateToken(@Param("token") String token, @Param("create_time") Date create_time, @Param("expire_time") Date expire_time, @Param("id") Long id);
 
 
 

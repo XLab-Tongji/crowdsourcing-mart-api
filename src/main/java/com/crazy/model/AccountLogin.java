@@ -13,6 +13,15 @@ public class AccountLogin {
     private Date expire_time;
     private Long account_id;
     private String plat;
+    private Long id;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getIp() {
         return ip;
