@@ -34,10 +34,18 @@ public interface AccountMapper {
     @Select("SELECT username,password FROM ACCOUNT WHERE username=#{username}")
     public Map<String,String> getCheckInfo(@Param("username") String username);
 
-    @Insert("INSERT INTO ACCOUNT_LOGIN_LOG (ip,token,create_time,expire_time,account_id,plat) VALUES " +
-            "(#{ip},#{token},#{create_time},#{expire_time},#{account_id},#{plat})")
+    @Insert("INSERT INTO ACCOUNT_LOGIN_LOG (ip,token,create_time,expire_time,account_id,plat,username) VALUES " +
+            "(#{ip},#{token},#{create_time},#{expire_time},#{account_id},#{plat},#{username})")
     public int addLoginLog(@Param("ip") String ip, @Param("token") String token, @Param("create_time") Date create_time,
-                           @Param("expire_time") Date expire_time, @Param("account_id") Long account_id, @Param("plat") String plat);
+                           @Param("expire_time") Date expire_time, @Param("account_id") Long account_id,
+                           @Param("plat") String plat, @Param("username") String username);
+    
+
+
+
+
+
+
 
 
 

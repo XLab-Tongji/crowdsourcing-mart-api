@@ -60,7 +60,6 @@ public class AccountController {
         String token = null;
         Map<String, String> selectResult = accountMapper.getCheckInfo(account.getUsername());
 
-
         if (selectResult == null) {
             result = "没有此用户";
         } else if (!encryption.checkPassword(account.getPassword(), selectResult.get("password"))) {
@@ -70,7 +69,7 @@ public class AccountController {
             token=log.createToken();
             accountMapper.addLoginLog(request.getRemoteAddr(), token, dateUtil.Str2Date(dateUtil.getNowTime()),
                     dateUtil.Str2Date(dateUtil.setExpire(30)), accountMapper.getUserId(account.getUsername()),
-                    useragent);
+                    useragent,account.getUsername());
             result = token;
 
         }
