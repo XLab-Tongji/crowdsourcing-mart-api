@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.File;
+import java.util.Date;
 
 /**
  * Created by SHIKUN on 2016/9/12.
@@ -21,24 +22,26 @@ public class Project {
 
     private int warranty_cycle;
 
+    private Date create_date;
+
     private String address;
 
     private String description;
 
-    private String user_name;
+    private String project_user_name;
 
     private File file;
 
     private String project_type;
 
-    private String dev_user_name;
+    private String username;
 
-    public String getDev_user_name() {
-        return dev_user_name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setDev_user_name(String dev_user_name) {
-        this.dev_user_name = dev_user_name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Long getId() {
@@ -89,12 +92,28 @@ public class Project {
         this.description = description;
     }
 
-    public String getUser_name() {
-        return user_name;
+    public Date getCreate_date() {
+        return create_date;
     }
 
-    public void setUser_name(String user_name) {
-        this.user_name = user_name;
+    public void setCreate_date(Date create_date) {
+        this.create_date = create_date;
+    }
+
+    public String getProject_user_name() {
+        return project_user_name;
+    }
+
+    public void setProject_user_name(String project_user_name) {
+        this.project_user_name = project_user_name;
+    }
+
+    public File getFile() {
+        return file;
+    }
+
+    public void setFile(File file) {
+        this.file = file;
     }
 
     public String getProject_type() {

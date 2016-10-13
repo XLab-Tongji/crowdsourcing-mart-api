@@ -62,6 +62,7 @@ public class Encryption {
                     dateUtil.Str2Date(dateUtil.setExpire(30)), id);
             result = token;
         }
+
         return result;
     }
 
