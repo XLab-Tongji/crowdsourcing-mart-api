@@ -12,27 +12,27 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Created by SHIKUN on 2016/9/9.
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
-@Transactional
-public class ApplicationTest {
-    @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
-    private AccountMapper accountMapper;
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@SpringApplicationConfiguration(classes = Application.class)
+//@Transactional
+//public class ApplicationTest {
+//    @Autowired
+//    private UserMapper userMapper;
+//
+//    @Autowired
+//    private AccountMapper accountMapper;
+////
+////    @Test
+////    @Rollback
+////    public void findByName() throws Exception {
+////        userMapper.insert("AAA", 20);
+////        User u = userMapper.findByName("AAA");
+////        Assert.assertEquals(20, u.getAge().intValue());
+////    }
 //
 //    @Test
-//    @Rollback
-//    public void findByName() throws Exception {
-//        userMapper.insert("AAA", 20);
-//        User u = userMapper.findByName("AAA");
-//        Assert.assertEquals(20, u.getAge().intValue());
+//    public void finduser() throws Exception {
+//        System.out.println(accountMapper.getNameAndPassword());
 //    }
-
-    @Test
-    public void finduser() throws Exception {
-        System.out.println(accountMapper.getNameAndPassword());
-    }
-
-}
+//
+//}
