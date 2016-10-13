@@ -1,0 +1,164 @@
+#%RAML 0.8
+---
+title: crowdsourcing-mart-api
+baseUri: http://localhost:8000/
+
+/account:
+        /register:
+                post:
+                    description: |
+                            创建用户
+                    body:
+                        application/json:
+                            schema: |
+                                {
+                                    "type":"object",
+                                    "required": true,
+                                    "properties":{
+                                        "username":{
+                                                "type":"string",
+                                                "required": true
+                                        },
+
+                                        "name":{
+                                                "type":"string",
+                                                "required":true
+                                        },
+                                        "password":{
+                                                "type":"string",
+                                                "required":true
+                                        },
+                                        "mobile":{
+                                                "type":"string",
+                                                "required":true
+                                        },
+                                        "create_time":{
+                                                "type":"timestamp",
+                                                "required":true
+                                        },
+                                        "update_time":{
+                                                "type":"timestamp",
+                                                "required":true
+                                        },
+                                        "email":{
+                                                "type":"string",
+                                                "required":true
+                                        },
+                                        "ext_params":{
+                                                "type":"json",
+                                                "required":false
+                                        }
+
+                                    }
+                                }
+
+                            example: |
+                                {
+                                          "username":"shikun666",
+                                          "name":"shikun",
+                                          "password": "1992114sk",
+                                          "mobile":"18817369206",
+                                          "create_time":"",
+                                          "update_time":"",
+                                          "email":"18817369206@163.com",
+                                          "ext_params":{
+                                                            "test":"111",
+                                          				    "fav":"sdfsd"
+                                                        }
+                                }
+        /login:
+             post:
+                description: |
+                    用户登录
+                body:
+                    application/json:
+                        schema: |
+                                            {
+                                                "type":"object",
+                                                "required": true,
+                                                "properties":{
+                                                    "username":{
+                                                            "type":"string",
+                                                            "required": true
+                                                    },
+                                                    "password":{
+                                                            "type":"string",
+                                                            "required":true
+                                                    }
+
+                                                }
+                                            }
+
+                        example: |
+                                            {
+                                                      "username":"shikun666",
+                                                      "password": "1992114sk"
+
+                                            }
+
+/projetc:
+        /add:
+            post:
+                    description: |
+                            创建众包项目
+                    body:
+                        application/json:
+                            schema: |
+                                {
+                                    "type":"object",
+                                    "required": true,
+                                    "properties":{
+                                        "cost":{
+                                                "type":"string",
+                                                "required": true
+                                        },
+
+                                        "delivery_cycle":{
+                                                "type":"int",
+                                                "required":true
+                                        },
+                                        "warranty_cycle":{
+                                                "type":"int",
+                                                "required":true
+                                        },
+                                        "address":{
+                                                "type":"string",
+                                                "required":true
+                                        },
+                                        "description":{
+                                                "type":"string",
+                                                "required":true
+                                        },
+                                        "project_type":{
+                                                "type":"string",
+                                                "required":true
+                                        },
+                                        "project_user_name":{
+                                                "type":"string",
+                                                "required":true
+                                        },
+                                        "create_date":{
+                                                "type":"string",
+                                                "required":true
+                                        }
+                                    }
+                                }
+
+                            example: |
+                                {
+                                       "cost":"1000",
+                                       "delivery_cycle": "20",
+                                       "warranty_cycle":"10",
+                                       "address":"shanghai",
+                                       "description":"a test project",
+                                       "project_type":"IOS",
+                                       "project_user_name":"shikun",
+                                       "create_date":"2016-10-13 07:45:57"
+
+                                }
+
+
+
+
+
+
