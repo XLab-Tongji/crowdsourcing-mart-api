@@ -104,8 +104,16 @@ baseUri: http://localhost:8000/
                                             {
                                                       "username":"shikun666",
                                                       "password": "1992114sk"
+                responses:
+                        200:
+                            body:
+                                application/json:
+                                          example: |
 
-                                            }
+                                               {
+                                                 "status": "200",
+                                                 "result": "7224074aa44245d09cf2a346c00ef4a7"
+                                               }
 
 /projetc:
         /add:
@@ -167,6 +175,86 @@ baseUri: http://localhost:8000/
                                        "create_date":"2016-10-13 07:45:57"
 
                                 }
+                    responses:
+                             200:
+                                body:
+                                   application/json:
+                                            example: |
+
+                                                    {
+                                                      "status": "200",
+                                                      "result": 1
+                                                    }
+        /list:
+            get:
+                    description: |
+                            众包项目列表接口
+                    responses:
+                             200:
+                                body:
+                                   application/json:
+                                            example: |
+
+                                                    {
+                                                      "status": "200",
+                                                      "result": [
+                                                        {
+                                                          "id": 1,
+                                                          "cost": 1000,
+                                                          "delivery_cycle": 30,
+                                                          "warranty_cycle": 30,
+                                                          "create_date": null,
+                                                          "address": "shanghai",
+                                                          "description": "first project",
+                                                          "project_user_name": "shikun",
+                                                          "file": null,
+                                                          "project_type": null,
+                                                          "username": null
+                                                        },
+                                                        {
+                                                          "id": 2,
+                                                          "cost": 1000,
+                                                          "delivery_cycle": 30,
+                                                          "warranty_cycle": 30,
+                                                          "create_date": null,
+                                                          "address": "shanghai",
+                                                          "description": "second project",
+                                                          "project_user_name": "shikun",
+                                                          "file": null,
+                                                          "project_type": null,
+                                                          "username": "yinkanglin"
+                                                        },
+                                                        {
+                                                          "id": 3,
+                                                          "cost": 10000,
+                                                          "delivery_cycle": 30,
+                                                          "warranty_cycle": 30,
+                                                          "create_date": null,
+                                                          "address": "shanghai",
+                                                          "description": "third project",
+                                                          "project_user_name": "shikun",
+                                                          "file": null,
+                                                          "project_type": "Andriod",
+                                                          "username": null
+                                                        },
+                                                        {
+                                                          "id": 4,
+                                                          "cost": 100000,
+                                                          "delivery_cycle": 120,
+                                                          "warranty_cycle": 120,
+                                                          "create_date": null,
+                                                          "address": "shanghai",
+                                                          "description": "crowd sourcing",
+                                                          "project_user_name": "qiujuan",
+                                                          "file": null,
+                                                          "project_type": "Web",
+                                                          "username": null
+                                                        },
+
+                                                      }
+
+
+
 
 
 
