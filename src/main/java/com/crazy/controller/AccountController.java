@@ -80,5 +80,11 @@ public class AccountController {
         return encryption.tokenValidate(token);
     }
 
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> 428123d3f2ca3eaae6499182ac3277b269195442
 }
 
