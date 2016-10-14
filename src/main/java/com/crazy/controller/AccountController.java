@@ -3,13 +3,13 @@ package com.crazy.controller;
 import com.crazy.mapper.AccountMapper;
 import com.crazy.model.Account;
 import com.crazy.model.AccountLogin;
-import com.crazy.util.ConvertJson;
-import com.crazy.util.DateUtil;
-import com.crazy.util.Encryption;
+import com.crazy.util.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -35,23 +35,26 @@ public class AccountController {
     private DateUtil dateUtil;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public int addAccount(@RequestBody Account account) {
+    public @ResponseBody ResJsonTemplate addAccount(@RequestBody Account account) {
 
         System.out.println(account.getExt_params());
 
-        return accountMapper.addAcount(account.getUsername(), account.getName(), account.getIcon(),
+        return new ResJsonTemplate("200",accountMapper.addAcount(account.getUsername(),
+                account.getName(), account.getIcon(),
                 encryption.doEncryption(account.getPassword()),
-                account.getMobile(), account.getCreate_time(), account.getUpdate_time(), account.getEmail(),
-                convertJson.Map2Json(account.getExt_params()));
+                account.getMobile(), account.getCreate_time(),
+                account.getUpdate_time(), account.getEmail(),
+                convertJson.Map2Json(account.getExt_params())));
     }
 
     @RequestMapping(value = "/list/username", method = RequestMethod.GET)
-    public List<String> getAllUsername() {
-        return accountMapper.getAllUsername();
+    public @ResponseBody ResJsonTemplate getAllUsername() throws Exception {
+        ResJsonTemplate resJsonTemplate = new ResJsonTemplate("200", accountMapper.getAllUsername());
+        return resJsonTemplate;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String checkAccount(@RequestBody Account account, @RequestHeader(value = "User-Agent") String useragent,
+    public @ResponseBody ResJsonTemplate checkAccount(@RequestBody Account account, @RequestHeader(value = "User-Agent") String useragent,
                                HttpServletRequest request) {
 
         String result = null;
@@ -69,14 +72,13 @@ public class AccountController {
                     useragent, account.getUsername());
             result = token;
         }
-        return result;
+        return new ResJsonTemplate("200",token);
     }
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public String test(@RequestParam(value = "token") String token) {
         return encryption.tokenValidate(token);
     }
-
 
 }
 
