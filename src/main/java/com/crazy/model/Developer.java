@@ -1,5 +1,8 @@
 package com.crazy.model;
 
+import java.util.List;
+import java.util.Map;
+
 /**developer domain
  * Created by SHIKUN on 2016/10/15.
  */
@@ -9,7 +12,7 @@ public class Developer {
     private Long account_id;
     private String dev_domain;
     private String dev_project;
-    private String project_enroll;
+    private List project_enroll;
 
     public String getUsername() {
         return username;
@@ -43,11 +46,11 @@ public class Developer {
         this.dev_project = dev_project;
     }
 
-    public String getProject_enroll() {
+    public List getProject_enroll() {
         return project_enroll;
     }
 
-    public void setProject_enroll(String project_enroll) {
+    public void setProject_enroll(List project_enroll) {
         this.project_enroll = project_enroll;
     }
 

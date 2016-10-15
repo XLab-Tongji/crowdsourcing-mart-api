@@ -17,6 +17,15 @@ public class Account {
     private Date update_time;
     private Map<String,String> ext_params;
     private String mobile;
+    private Long dev_id;
+
+    public Long getDev_id() {
+        return dev_id;
+    }
+
+    public void setDev_id(Long dev_id) {
+        this.dev_id = dev_id;
+    }
 
     public String getMobile() {
         return mobile;
@@ -97,4 +106,5 @@ public class Account {
     public void setUpdate_time(Date update_time) {
         this.update_time = update_time;
     }
+
 }

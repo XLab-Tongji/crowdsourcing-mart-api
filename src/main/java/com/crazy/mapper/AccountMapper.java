@@ -45,10 +45,9 @@ public interface AccountMapper {
     public int updateToken(@Param("token") String token, @Param("create_time") Date create_time, @Param("expire_time") Date expire_time,
                            @Param("id") Long id);
 
-    @Insert("INSERT DEVELOPER (username,account_id,dev_domain,dev_project,project_enroll) VALUES (" +
-            "#{username},#{account_id},#{dev_domain},#{dev_project},#{project_enroll})")
-    public int addDevInfo(@Param("username") String username, @Param("account_id") Long account_id, @Param("dev_domain") String dev_domain,
-                          @Param("dev_project") String dev_project, @Param("project_enroll") String project_enroll);
+    @Insert("INSERT DEVELOPER (username,account_id,dev_domain) VALUES (" +
+            "#{username},#{account_id},#{dev_domain})")
+    public int addDevInfo(@Param("username") String username, @Param("account_id") Long account_id, @Param("dev_domain") String dev_domain);
 
     @Update("UPDATE DEVELOPER SET dev_domain=#{dev_domain} WHERE id=#{id}")
     public int updateDevInfo(@Param("dev_domain") String dev_domain);
@@ -56,8 +55,16 @@ public interface AccountMapper {
     @Update("UPDATE DEVELOPER SET dev_project=#{dev_project} WHERE id=#{id}")
     public int updateDevproject(@Param("dev_project") String dev_project);
 
-    @Update("UPDATE DEVELOPER SET project_enroll=#{project_enroll}")
-    public int updateProjectEnroll(@Param("project_enroll") String project_enroll);
+    @Update("UPDATE DEVELOPER SET project_enroll=#{project_enroll} WHERE username=#{username}")
+    public int updateProjectEnroll(@Param("project_enroll") String project_enroll, @Param("username") String username);
+
+    @Update("UPDATE ACCOUNT SET dev_id=#{dev_id} WHERE username=#{username}")
+    public int changeDevStatus(@Param("dev_id") Long dev_id, @Param("username") String username);
+
+    @Select("SELECT id FROM DEVELOPER WHERE username=#{username}")
+    public Long getDevloperId(@Param("username") String username);
+
+
 
 
 

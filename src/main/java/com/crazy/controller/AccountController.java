@@ -83,12 +83,19 @@ public class AccountController {
     @RequestMapping(value = "developer/add", method = RequestMethod.POST)
     public @ResponseBody ResJsonTemplate devInfoadd(@RequestBody Developer developer) {
 
+        //accountMapper.changeDevStatus(accountMapper.getDevloperId(developer.getUsername()), developer.getUsername());
+
         return new ResJsonTemplate("200", accountMapper.addDevInfo(developer.getUsername(),
-                accountMapper.getUserId(developer.getUsername()), developer.getDev_domain(),
-                developer.getDev_project(), developer.getProject_enroll()));
+                accountMapper.getUserId(developer.getUsername()), developer.getDev_domain()));
+    }
+
+    @RequestMapping(value = "developer/enroll", method = RequestMethod.POST)
+    public @ResponseBody ResJsonTemplate developerEnroll(@RequestBody Developer developer) {
+        return new ResJsonTemplate("200", accountMapper.updateProjectEnroll(developer.getProject_enroll().toString(),
+                developer.getUsername()));
 
     }
-    
+
 
 
 }
