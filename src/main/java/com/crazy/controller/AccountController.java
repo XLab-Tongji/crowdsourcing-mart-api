@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 
@@ -79,23 +80,5 @@ public class AccountController {
     public String test(@RequestParam(value = "token") String token) {
         return encryption.tokenValidate(token);
     }
-
-    @RequestMapping(value = "developer/add", method = RequestMethod.POST)
-    public @ResponseBody ResJsonTemplate devInfoadd(@RequestBody Developer developer) {
-
-        //accountMapper.changeDevStatus(accountMapper.getDevloperId(developer.getUsername()), developer.getUsername());
-
-        return new ResJsonTemplate("200", accountMapper.addDevInfo(developer.getUsername(),
-                accountMapper.getUserId(developer.getUsername()), developer.getDev_domain()));
-    }
-
-    @RequestMapping(value = "developer/enroll", method = RequestMethod.POST)
-    public @ResponseBody ResJsonTemplate developerEnroll(@RequestBody Developer developer) {
-        return new ResJsonTemplate("200", accountMapper.updateProjectEnroll(developer.getProject_enroll().toString(),
-                developer.getUsername()));
-
-    }
-
-
 
 }

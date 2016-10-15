@@ -52,8 +52,8 @@ public interface AccountMapper {
     @Update("UPDATE DEVELOPER SET dev_domain=#{dev_domain} WHERE id=#{id}")
     public int updateDevInfo(@Param("dev_domain") String dev_domain);
 
-    @Update("UPDATE DEVELOPER SET dev_project=#{dev_project} WHERE id=#{id}")
-    public int updateDevproject(@Param("dev_project") String dev_project);
+    @Update("UPDATE DEVELOPER SET dev_project=#{dev_project} WHERE username=#{username}")
+    public int updateDevproject(@Param("dev_project") String dev_project, @Param("username") String username);
 
     @Update("UPDATE DEVELOPER SET project_enroll=#{project_enroll} WHERE username=#{username}")
     public int updateProjectEnroll(@Param("project_enroll") String project_enroll, @Param("username") String username);
@@ -63,6 +63,9 @@ public interface AccountMapper {
 
     @Select("SELECT id FROM DEVELOPER WHERE username=#{username}")
     public Long getDevloperId(@Param("username") String username);
+
+    @Select("SELECT project_enroll FROM DEVELOPER WHERE username=#{username}")
+    public String getEnrollProject(@Param("username") String username);
 
 
 

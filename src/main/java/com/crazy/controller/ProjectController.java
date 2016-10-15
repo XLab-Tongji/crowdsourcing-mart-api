@@ -1,8 +1,11 @@
 package com.crazy.controller;
 
+import com.crazy.mapper.AccountMapper;
 import com.crazy.mapper.ProjectMapper;
+import com.crazy.model.Developer;
 import com.crazy.model.Project;
 import com.crazy.model.Users;
+import com.crazy.util.ConvertJson;
 import com.crazy.util.ResJsonTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +25,12 @@ public class ProjectController {
     @Autowired
     private ProjectMapper projectMapper;
 
+    @Autowired
+    private AccountMapper accountMapper;
+
+    @Autowired
+    private ConvertJson convertJson;
+
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public @ResponseBody ResJsonTemplate  addProject(@RequestBody Project project) {
         return new ResJsonTemplate("200",projectMapper.addProject(project.getCost(), project.getDelivery_cycle(), project.getWarranty_cycle(),
@@ -39,6 +48,26 @@ public class ProjectController {
 
     }
 
+    @RequestMapping(value = "developer/enroll", method = RequestMethod.POST)
+    public @ResponseBody ResJsonTemplate addDevenrollInfo(@RequestBody Developer developer) {
+
+        String projectEnrolled = accountMapper.getEnrollProject(developer.getUsername());
+        List projectEnrolledList = convertJson.Json2List(projectEnrolled);
+        projectEnrolledList.add(developer.getProject_enroll());
+
+        System.out.println(projectEnrolledList);
+
+        return new ResJsonTemplate("200", accountMapper.updateProjectEnroll(convertJson.List2Json(projectEnrolledList),
+                developer.getUsername()));
+
+    }
+
+    @RequestMapping(value = "developer/confirm", method = RequestMethod.POST)
+    public @ResponseBody ResJsonTemplate confrimProject(@RequestBody Developer developer) {
+
+        return new ResJsonTemplate("200", accountMapper.updateDevproject(developer.getDev_project(), developer.getUsername()));
+
+    }
 }
 
 
