@@ -6,6 +6,7 @@ import java.util.Date;
  * Created by SHIKUN on 2016/10/9.
  */
 public class AccountLogin {
+
     private String ip;
     private String device;
     private String token;

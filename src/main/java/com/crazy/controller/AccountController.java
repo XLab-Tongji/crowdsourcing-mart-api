@@ -3,6 +3,7 @@ package com.crazy.controller;
 import com.crazy.mapper.AccountMapper;
 import com.crazy.model.Account;
 
+import com.crazy.model.Developer;
 import com.crazy.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,17 +48,13 @@ public class AccountController {
     }
 
     @RequestMapping(value = "/list/username", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    ResJsonTemplate getAllUsername() throws Exception {
+    public @ResponseBody ResJsonTemplate getAllUsername() throws Exception {
         ResJsonTemplate resJsonTemplate = new ResJsonTemplate("200", accountMapper.getAllUsername());
         return resJsonTemplate;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public
-    @ResponseBody
-    ResJsonTemplate checkAccount(@RequestBody Account account, @RequestHeader(value = "User-Agent") String useragent,
+    public @ResponseBody ResJsonTemplate checkAccount(@RequestBody Account account, @RequestHeader(value = "User-Agent") String useragent,
                                  HttpServletRequest request) {
 
         String result = null;
@@ -82,6 +79,16 @@ public class AccountController {
     public String test(@RequestParam(value = "token") String token) {
         return encryption.tokenValidate(token);
     }
+
+    @RequestMapping(value = "developer/add", method = RequestMethod.POST)
+    public @ResponseBody ResJsonTemplate devInfoadd(@RequestBody Developer developer) {
+
+        return new ResJsonTemplate("200", accountMapper.addDevInfo(developer.getUsername(),
+                accountMapper.getUserId(developer.getUsername()), developer.getDev_domain(),
+                developer.getDev_project(), developer.getProject_enroll()));
+
+    }
+    
 
 
 }
