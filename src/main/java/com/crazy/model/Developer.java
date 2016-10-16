@@ -13,6 +13,15 @@ public class Developer {
     private String dev_domain;
     private String dev_project;
     private List project_enroll;
+    private Long dev_project_id;
+
+    public Long getDev_project_id() {
+        return dev_project_id;
+    }
+
+    public void setDev_project_id(Long dev_project_id) {
+        this.dev_project_id = dev_project_id;
+    }
 
     public String getUsername() {
         return username;
