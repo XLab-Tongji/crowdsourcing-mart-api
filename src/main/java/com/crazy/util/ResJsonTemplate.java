@@ -9,11 +9,13 @@ public class ResJsonTemplate<T> {
 
     private T result;
 
+
+
     public ResJsonTemplate(String status, T result) {
         this.status = status;
         this.result = result;
-
     }
+
 
     public String getStatus() {
         return status;

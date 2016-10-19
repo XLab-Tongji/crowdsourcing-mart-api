@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -73,9 +74,16 @@ public class AccountController {
                     useragent, account.getUsername());
             result = token;
         }
-        List tokenresult = new LinkedList();
-        tokenresult.add(token);
-        tokenresult.add(account.getUsername());
+        //List tokenresult = new LinkedList();
+        
+        Map tokencons = new HashMap();
+        tokencons.put("tokens", token);
+        tokencons.put("username", account.getUsername());
+
+        List<Map> tokenresult = new LinkedList<>();
+
+        tokenresult.add(tokencons);
+
         return new ResJsonTemplate("200", tokenresult);
     }
 
