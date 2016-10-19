@@ -38,7 +38,7 @@ public class ProjectController {
     public @ResponseBody ResJsonTemplate  addProject(@RequestBody Project project) {
         return new ResJsonTemplate("200",projectMapper.addProject(project.getCost(), project.getDelivery_cycle(),
                 project.getWarranty_cycle(), project.getAddress(), project.getDescription(), project.getProject_user_name(),
-                project.getProject_type(),project.getCreate_date(),project.getProject_name()));
+                project.getProject_type(), project.getProject_name()));
 
     }
 
@@ -88,7 +88,7 @@ public class ProjectController {
         return new ResJsonTemplate("200", accountMapper.updateDevproject(developer.getDev_project(), developer.getUsername(),
                 developer.getDev_project_id()));
     }
-    
+
 
 }
 

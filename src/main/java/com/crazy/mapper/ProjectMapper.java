@@ -11,11 +11,11 @@ import java.util.List;
  */
 @Mapper
 public interface ProjectMapper {
-    @Insert("INSERT INTO PROJECT (cost,delivery_cycle,warranty_cycle,address,description,project_user_name,project_type,project_name) " +
-            "VALUES (#{cost},#{delivery_cycle},#{warranty_cycle},#{address},#{description},#{project_user_name},#{project_type},#{create_date},#{project_name})")
+    @Insert("INSERT INTO PROJECT (cost,delivery_cycle,warranty_cycle,address,description,project_user_name,project_type,create_date,project_name) " +
+            "VALUES (#{cost},#{delivery_cycle},#{warranty_cycle},#{address},#{description},#{project_user_name},#{project_type},NOW(),#{project_name})")
     public int addProject(@Param("cost") double cost, @Param("delivery_cycle") Integer devlivery_cycle, @Param("warranty_cycle") Integer warranty_cycle,
                           @Param("address") String address, @Param("description") String description, @Param("project_user_name") String user_name,
-                          @Param("project_type") String project_type, @Param("create_date") Date create_time, @Param("project_name") String project_name);
+                          @Param("project_type") String project_type, @Param("project_name") String project_name);
 
     @Select("SELECT * FROM PROJECT")
     public List<Project> searchProjectall();

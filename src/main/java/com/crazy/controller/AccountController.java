@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -43,8 +44,7 @@ public class AccountController {
         return new ResJsonTemplate("200", accountMapper.addAcount(account.getUsername(),
                 account.getName(), account.getIcon(),
                 encryption.doEncryption(account.getPassword()),
-                account.getMobile(), account.getCreate_time(),
-                account.getUpdate_time(), account.getEmail(),
+                account.getMobile(),account.getEmail(),
                 convertJson.Map2Json(account.getExt_params())));
     }
 
@@ -73,7 +73,10 @@ public class AccountController {
                     useragent, account.getUsername());
             result = token;
         }
-        return new ResJsonTemplate("200", token);
+        List tokenresult = new LinkedList();
+        tokenresult.add(token);
+        tokenresult.add(account.getUsername());
+        return new ResJsonTemplate("200", tokenresult);
     }
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)

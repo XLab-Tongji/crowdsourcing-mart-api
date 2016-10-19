@@ -13,10 +13,9 @@ import java.util.Map;
 @Mapper
 public interface AccountMapper {
     @Insert("INSERT INTO ACCOUNT (username,name,icon,password,mobile,create_time,update_time,email,ext_params) VALUES" +
-            " (#{username},#{name},#{icon},#{password},#{mobile},#{create_time},#{update_time},#{email},#{ext_params})")
+            " (#{username},#{name},#{icon},#{password},#{mobile},NOW(),NOW(),#{email},#{ext_params})")
     public int addAcount(@Param("username") String username, @Param("name") String name, @Param("icon") String icon,
                          @Param("password") String password, @Param("mobile") String mobile,
-                         @Param("create_time") Date create_time, @Param("update_time") Date update_time,
                          @Param("email") String email, @Param("ext_params") String ext_params);
 
     @Select("SELECT username FROM ACCOUNT")
