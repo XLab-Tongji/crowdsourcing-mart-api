@@ -21,7 +21,7 @@ import java.util.Map;
  * Created by SHIKUN on 2016/9/12.
  */
 @RestController
-@RequestMapping(value = "/project")
+@RequestMapping(value = "api/project")
 @Transactional
 public class ProjectController {
 

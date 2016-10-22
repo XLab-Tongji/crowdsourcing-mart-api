@@ -1,9 +1,9 @@
 #%RAML 0.8
 ---
 title: crowdsourcing-mart-api
-baseUri: http://localhost:8000/
+baseUri: http://localhost:8000
 
-/account:
+/api/account:
         /register:
                 post:
                     description: |
@@ -115,7 +115,7 @@ baseUri: http://localhost:8000/
                                                  "result": "7224074aa44245d09cf2a346c00ef4a7"
                                                }
 
-/projetc:
+/api/project:
         /add:
             post:
                     description: |

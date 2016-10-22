@@ -21,7 +21,7 @@ import java.util.Map;
  */
 
 @RestController
-@RequestMapping(value = "/account")
+@RequestMapping(value = "/api/account")
 public class AccountController {
     @Autowired
     private AccountMapper accountMapper;
@@ -74,8 +74,7 @@ public class AccountController {
                     useragent, account.getUsername());
             result = token;
         }
-        //List tokenresult = new LinkedList();
-        
+
         Map tokencons = new HashMap();
         tokencons.put("tokens", token);
         tokencons.put("username", account.getUsername());
