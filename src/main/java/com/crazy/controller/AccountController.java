@@ -75,7 +75,9 @@ public class AccountController {
             result = token;
         }
 
+        if(token!=null){
         Map tokencons = new HashMap();
+
         tokencons.put("tokens", token);
         tokencons.put("username", account.getUsername());
 
@@ -84,6 +86,10 @@ public class AccountController {
         tokenresult.add(tokencons);
 
         return new ResJsonTemplate("200", tokenresult);
+        }else{
+            return new ResJsonTemplate("200", result);
+        }
+
     }
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)

@@ -89,6 +89,16 @@ public class ProjectController {
                 developer.getDev_project_id()));
     }
 
+    @RequestMapping(value ="/list/user/{user}",method = RequestMethod.GET)
+    public @ResponseBody ResJsonTemplate getProjectListper(@PathVariable String user){
+        return new ResJsonTemplate("200", projectMapper.searchProjectbycreatUser(user));
+    }
+
+
+
+
+
+
 
 }
 

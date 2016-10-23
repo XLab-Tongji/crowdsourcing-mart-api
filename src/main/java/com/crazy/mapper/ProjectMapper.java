@@ -29,6 +29,9 @@ public interface ProjectMapper {
     @Insert("INSERT DEV_PRO_INFO (dev_username,enroll_project_id,enroll_date) VALUES (#{dev_username},#{enroll_project_id},NOW())")
     public int insertDevProInfo(@Param("dev_username") String dev_username, @Param("enroll_project_id") Long enroll_project_id);
 
+    @Select("SELECT * FROM PROJECT WHERE project_user_name=#{project_user_name}")
+    public List<Project> searchProjectbycreatUser(@Param("project_user_name") String project_user_name);
+
 
 
 }
