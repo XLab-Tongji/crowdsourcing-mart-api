@@ -8,6 +8,7 @@ import com.crazy.model.Project;
 import com.crazy.model.Users;
 import com.crazy.util.ConvertJson;
 import com.crazy.util.ResJsonTemplate;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -92,6 +93,11 @@ public class ProjectController {
     @RequestMapping(value ="/list/{user}",method = RequestMethod.GET)
     public @ResponseBody ResJsonTemplate getProjectListper(@PathVariable String user){
         return new ResJsonTemplate("200", projectMapper.searchProjectbycreatUser(user));
+    }
+
+    @RequestMapping(value="/list/{user}/{id}",method = RequestMethod.GET)
+    public @ResponseBody  ResJsonTemplate getProjectListbyId(@PathVariable String user,@PathVariable Long id){
+        return new ResJsonTemplate("200", projectMapper.searchProjectbyId(id, user));
     }
 
 

@@ -32,6 +32,9 @@ public interface ProjectMapper {
     @Select("SELECT * FROM PROJECT WHERE project_user_name=#{project_user_name}")
     public List<Project> searchProjectbycreatUser(@Param("project_user_name") String project_user_name);
 
+    @Select("SELECT * FROM PROJECT WHERE id=#{id} AND project_user_name=#{project_user_name}")
+    public List<Project> searchProjectbyId(@Param("id") Long id, @Param("project_user_name") String project_user_name);
+
 
 
 }
