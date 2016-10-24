@@ -101,6 +101,10 @@ public class ProjectController {
     }
 
 
+    @RequestMapping(value = "/list/id/{id}",method = RequestMethod.GET)
+    public @ResponseBody ResJsonTemplate getProjectListOnlyId(@PathVariable Long id) {
+        return new ResJsonTemplate("200", projectMapper.searchProjectonlyId(id));
+    }
 
 
 
