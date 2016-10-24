@@ -1,7 +1,7 @@
 package com.crazy;
 
 import com.crazy.mapper.AccountMapper;
-import com.crazy.mapper.UserMapper;
+//import com.crazy.mapper.UserMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
