@@ -54,6 +54,11 @@ public interface ProjectMapper {
     @Insert("INSERT DEVELOPING_INFO (username,project_id,create_date) VALUES (#{username},#{project_id},NOW())")
     public int insertDevelopingInfo(@Param("username") String username, @Param("project_id") Long project_id);
 
+    @Select("SELECT COUNT(project_id) AS countlist FROM DEVELOPING_INFO WHERE project_id=#{project_id}")
+    public int getDevelopProjectCount(@Param("project_id") Long project_id);
+
+
+
 
 
 

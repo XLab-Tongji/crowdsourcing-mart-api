@@ -147,7 +147,7 @@ public class ProjectController {
         return new ResJsonTemplate("200", projectMapper.searchProjectonlyId(id));
     }
 
-    @RequestMapping(value = "develope/confirm", method = RequestMethod.POST)
+    @RequestMapping(value = "develop/confirm", method = RequestMethod.POST)
     public @ResponseBody ResJsonTemplate confirmProject(@RequestBody DevProInfo devProInfo) {
         try {
             return new ResJsonTemplate("200", projectMapper.insertDevelopingInfo(devProInfo.getDev_username(),
@@ -159,6 +159,16 @@ public class ProjectController {
         }
 
 
+    }
+
+    @RequestMapping(value = "develop/project/{id}",method = RequestMethod.GET)
+    public @ResponseBody ResJsonTemplate getDevelopmember(@PathVariable Long id){
+        try {
+            return new ResJsonTemplate("200", projectMapper.getDevelopProjectCount(id));
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResJsonTemplate("500", "查询失败");
+        }
     }
 
 
