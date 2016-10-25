@@ -21,7 +21,7 @@ public interface AccountMapper {
     @Select("SELECT username FROM ACCOUNT")
     public List<String> getAllUsername();
 
-    @Select("SELECT id FROM ACCOUNT WHERE username=#{username}")
+    @Select("SELECT account_id FROM ACCOUNT WHERE username=#{username}")
     public Long getUserId(@Param("username") String username);
 
 
@@ -66,6 +66,8 @@ public interface AccountMapper {
 
     @Select("SELECT project_enroll FROM DEVELOPER WHERE username=#{username}")
     public String getEnrollProject(@Param("username") String username);
+
+
 
 
 

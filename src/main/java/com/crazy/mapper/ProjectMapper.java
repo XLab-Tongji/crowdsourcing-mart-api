@@ -2,6 +2,7 @@ package com.crazy.mapper;
 
 import com.crazy.model.Project;
 import org.apache.ibatis.annotations.*;
+import org.springframework.security.access.method.P;
 
 import java.util.Date;
 import java.util.List;
@@ -43,6 +44,13 @@ public interface ProjectMapper {
 
     @Select("SELECT COUNT(enroll_project_id) AS count FROM DEV_PRO_INFO WHERE enroll_project_id=#{enroll_project_id}")
     public int getProjectCount(@Param("enroll_project_id") Long enroll_project_id);
+
+    @Select("SELECT enroll_project_id FROM DEV_PRO_INFO WHERE dev_username=#{username}")
+    public List<Integer> searchProjectIdbyUsername(@Param("username") String username);
+
+    @Select("SELECT * FROM DEV_PRO_INFO a LEFT JOIN PROJECT b ON a.enroll_project_id=b.id WHERE a.dev_username=#{username}")
+    public List<Project> searchProjectInfobyUsername(@Param("username") String username);
+
 
 
 

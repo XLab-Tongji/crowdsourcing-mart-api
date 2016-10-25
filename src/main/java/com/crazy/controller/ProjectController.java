@@ -111,6 +111,17 @@ public class ProjectController {
         }
     }
 
+    @RequestMapping(value = "developer/enroll/list/{username}",method = RequestMethod.GET)
+    public @ResponseBody ResJsonTemplate getEnrolledProjectbyUsername(@PathVariable String username){
+        try {
+            return new ResJsonTemplate("200", projectMapper.searchProjectInfobyUsername(username));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return new ResJsonTemplate("500", "未查询到项目");
+        }
+
+    }
+
     @RequestMapping(value = "developer/confirm", method = RequestMethod.POST)
     public @ResponseBody ResJsonTemplate confrimProject(@RequestBody Developer developer) {
 
