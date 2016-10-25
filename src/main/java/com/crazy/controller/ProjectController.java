@@ -122,12 +122,14 @@ public class ProjectController {
 
     }
 
-    @RequestMapping(value = "developer/confirm", method = RequestMethod.POST)
-    public @ResponseBody ResJsonTemplate confrimProject(@RequestBody Developer developer) {
+//    @RequestMapping(value = "developer/confirm", method = RequestMethod.POST)
+//    public @ResponseBody ResJsonTemplate confrimProject(@RequestBody Developer developer) {
+//
+//        return new ResJsonTemplate("200", accountMapper.updateDevproject(developer.getDev_project(), developer.getUsername(),
+//                developer.getDev_project_id()));
+//    }
 
-        return new ResJsonTemplate("200", accountMapper.updateDevproject(developer.getDev_project(), developer.getUsername(),
-                developer.getDev_project_id()));
-    }
+
 
     @RequestMapping(value ="/list/{user}",method = RequestMethod.GET)
     public @ResponseBody ResJsonTemplate getProjectListper(@PathVariable String user){
@@ -145,7 +147,19 @@ public class ProjectController {
         return new ResJsonTemplate("200", projectMapper.searchProjectonlyId(id));
     }
 
+    @RequestMapping(value = "develope/confirm", method = RequestMethod.POST)
+    public @ResponseBody ResJsonTemplate confirmProject(@RequestBody DevProInfo devProInfo) {
+        try {
+            return new ResJsonTemplate("200", projectMapper.insertDevelopingInfo(devProInfo.getDev_username(),
+                    devProInfo.getEnroll_project_id()));
+        } catch (Exception e) {
 
+            System.out.println(e);
+            return new ResJsonTemplate("500", e);
+        }
+
+
+    }
 
 
 

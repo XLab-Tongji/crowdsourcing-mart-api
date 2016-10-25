@@ -51,6 +51,9 @@ public interface ProjectMapper {
     @Select("SELECT * FROM DEV_PRO_INFO a LEFT JOIN PROJECT b ON a.enroll_project_id=b.id WHERE a.dev_username=#{username}")
     public List<Project> searchProjectInfobyUsername(@Param("username") String username);
 
+    @Insert("INSERT DEVELOPING_INFO (username,project_id,create_date) VALUES (#{username},#{project_id},NOW())")
+    public int insertDevelopingInfo(@Param("username") String username, @Param("project_id") Long project_id);
+
 
 
 
