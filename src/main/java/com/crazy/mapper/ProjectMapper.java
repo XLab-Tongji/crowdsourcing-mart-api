@@ -57,6 +57,11 @@ public interface ProjectMapper {
     @Select("SELECT COUNT(project_id) AS countlist FROM DEVELOPING_INFO WHERE project_id=#{project_id}")
     public int getDevelopProjectCount(@Param("project_id") Long project_id);
 
+    @Select("SELECT * FROM DEVELOPING_INFO a LEFT JOIN PROJECT b ON a.project_id=b.id WHERE a.username=#{username}")
+    public List<Project> searchDevelopingProjectbyUsername(@Param("username") String username);
+
+
+
 
 
 

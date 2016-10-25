@@ -174,7 +174,7 @@ public class ProjectController {
     }
 
 
-    @RequestMapping(value = "develop/confirm/array", method = RequestMethod.POST)
+    @RequestMapping(value = "develop/confirm/member", method = RequestMethod.POST)
     public @ResponseBody ResJsonTemplate confirmProject(@RequestBody List<DevProInfo> devProInfo) {
 
         try {
@@ -186,11 +186,16 @@ public class ProjectController {
         } catch (Exception ex) {
             return new ResJsonTemplate("500","插入失败");
         }
-
-
     }
 
-
+    @RequestMapping(value = "develop/list/{username}",method = RequestMethod.GET)
+    public @ResponseBody ResJsonTemplate getDevelopingProjectInfo(@PathVariable String username){
+        try {
+            return new ResJsonTemplate("200", projectMapper.searchDevelopingProjectbyUsername(username));
+        } catch (Exception ex) {
+            return new ResJsonTemplate("500", "查询失败");
+        }
+    }
 
 
 
