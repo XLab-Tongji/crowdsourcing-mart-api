@@ -77,10 +77,28 @@ public class ProjectController {
 //
 //        }
 
-        return new ResJsonTemplate("200", projectMapper.insertDevProInfo(devProInfo.getDev_username(),
-                devProInfo.getEnroll_project_id()));
+
+        try {
+
+            return new ResJsonTemplate("200", projectMapper.insertDevProInfo(
+                    devProInfo.getDev_username(), devProInfo.getEnroll_project_id()));
+        } catch (Exception ex) {
+            return new ResJsonTemplate("500", ex);
+        }
 
 
+
+
+    }
+
+    @RequestMapping(value = "developer/enroll/cancel", method = RequestMethod.DELETE)
+    public @ResponseBody ResJsonTemplate deleteEnrollInfo(@RequestParam(value = "dev_username") String dev_username,
+                                     @RequestParam(value = "enroll_project_id") Long enroll_project_id) {
+        try {
+            return new ResJsonTemplate("200", projectMapper.deleteEnrollInfo(enroll_project_id, dev_username));
+        } catch (Exception ex) {
+            return new ResJsonTemplate("500", ex);
+        }
     }
 
     @RequestMapping(value = "developer/confirm", method = RequestMethod.POST)
