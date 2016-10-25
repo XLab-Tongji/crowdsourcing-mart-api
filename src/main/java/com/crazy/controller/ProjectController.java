@@ -131,6 +131,7 @@ public class ProjectController {
 
 
 
+
     @RequestMapping(value ="/list/{user}",method = RequestMethod.GET)
     public @ResponseBody ResJsonTemplate getProjectListper(@PathVariable String user){
         return new ResJsonTemplate("200", projectMapper.searchProjectbycreatUser(user));
@@ -161,6 +162,7 @@ public class ProjectController {
 
     }
 
+
     @RequestMapping(value = "develop/project/{id}",method = RequestMethod.GET)
     public @ResponseBody ResJsonTemplate getDevelopmember(@PathVariable Long id){
         try {
@@ -171,6 +173,22 @@ public class ProjectController {
         }
     }
 
+
+    @RequestMapping(value = "develop/confirm/array", method = RequestMethod.POST)
+    public @ResponseBody ResJsonTemplate confirmProject(@RequestBody List<DevProInfo> devProInfo) {
+
+        try {
+            for (int i = 0; i < devProInfo.size(); i++) {
+                projectMapper.insertDevelopingInfo(devProInfo.get(i).getDev_username(), devProInfo.get(i).getEnroll_project_id());
+
+            }
+            return new  ResJsonTemplate("200", "ok");
+        } catch (Exception ex) {
+            return new ResJsonTemplate("500","插入失败");
+        }
+
+
+    }
 
 
 
