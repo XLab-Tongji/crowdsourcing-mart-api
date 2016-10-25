@@ -101,6 +101,16 @@ public class ProjectController {
         }
     }
 
+    @RequestMapping(value = "developer/enroll/count/{id}",method = RequestMethod.GET)
+    public @ResponseBody ResJsonTemplate getProjectEnrollcount(@PathVariable Long id){
+        try {
+            return new ResJsonTemplate("200", projectMapper.getProjectCount(id));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return new ResJsonTemplate("500","未查询到项目报名");
+        }
+    }
+
     @RequestMapping(value = "developer/confirm", method = RequestMethod.POST)
     public @ResponseBody ResJsonTemplate confrimProject(@RequestBody Developer developer) {
 

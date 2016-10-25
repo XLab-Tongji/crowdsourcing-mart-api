@@ -41,6 +41,10 @@ public interface ProjectMapper {
     @Delete("DELETE FROM DEV_PRO_INFO WHERE enroll_project_id=#{enroll_project_id} AND dev_username=#{dev_username}")
     public int deleteEnrollInfo(@Param("enroll_project_id") Long enroll_project_id, @Param("dev_username") String dev_username);
 
+    @Select("SELECT COUNT(enroll_project_id) AS count FROM DEV_PRO_INFO WHERE enroll_project_id=#{enroll_project_id}")
+    public int getProjectCount(@Param("enroll_project_id") Long enroll_project_id);
+
+
 
 
 }
