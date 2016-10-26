@@ -34,7 +34,7 @@ public class ProjectController {
     public @ResponseBody ResJsonTemplate  addProject(@RequestBody Project project) {
         return new ResJsonTemplate("200", projectMapper.addProject(project.getCost(), project.getDelivery_cycle(),
                 project.getWarranty_cycle(), project.getAddress(), project.getDescription(), project.getUsername(),
-                project.getProject_type(), project.getProject_name(), project.getEnroll_stop_time()));
+                project.getProject_type(), project.getProject_name()));
 
     }
 
@@ -151,6 +151,15 @@ public class ProjectController {
         try {
             return new ResJsonTemplate("200", projectMapper.searchDevelopingProjectbyUsername(username));
         } catch (Exception ex) {
+            return new ResJsonTemplate("500", "查询失败");
+        }
+    }
+
+    @RequestMapping(value = "develop/enroll/member/{project_id}",method = RequestMethod.GET)
+    public @ResponseBody ResJsonTemplate getEnrollMemeberbyProjectId(@PathVariable Long project_id){
+        try {
+            return new ResJsonTemplate("200", projectMapper.searchEnrollmemberbyProjectId(project_id));
+        } catch (Exception e) {
             return new ResJsonTemplate("500", "查询失败");
         }
     }

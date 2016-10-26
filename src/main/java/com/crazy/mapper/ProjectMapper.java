@@ -13,10 +13,10 @@ import java.util.List;
 @Mapper
 public interface ProjectMapper {
     @Insert("INSERT INTO PROJECT (cost,delivery_cycle,warranty_cycle,address,description,username,project_type,create_date,project_name,enroll_stop_time,update_date) " +
-            "VALUES (#{cost},#{delivery_cycle},#{warranty_cycle},#{address},#{description},#{username},#{project_type},NOW(),#{project_name},#{enroll_stop_time},NOW())")
+            "VALUES (#{cost},#{delivery_cycle},#{warranty_cycle},#{address},#{description},#{username},#{project_type},NOW(),#{project_name},NOW(),NOW())")
     public int addProject(@Param("cost") double cost, @Param("delivery_cycle") Integer devlivery_cycle, @Param("warranty_cycle") Integer warranty_cycle,
                           @Param("address") String address, @Param("description") String description, @Param("username") String username,
-                          @Param("project_type") String project_type, @Param("project_name") String project_name,@Param("enroll_stop_time") Date enroll_stop_time);
+                          @Param("project_type") String project_type, @Param("project_name") String project_name);
 
     @Select("SELECT * FROM PROJECT")
     public List<Project> searchProjectall();
@@ -55,6 +55,8 @@ public interface ProjectMapper {
     @Select("SELECT * FROM DEVELOPING_INFO a LEFT JOIN PROJECT b ON a.project_id=b.project_id WHERE a.username=#{username}")
     public List<Project> searchDevelopingProjectbyUsername(@Param("username") String username);
 
+    @Select("SELECT username FROM DEV_ENROLL_INFO WHERE project_id=#{project_id}")
+    public List<String> searchEnrollmemberbyProjectId(@Param("project_id") Long project_id);
 
 
 
