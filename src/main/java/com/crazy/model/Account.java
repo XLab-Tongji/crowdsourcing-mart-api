@@ -7,16 +7,27 @@ import java.util.Map;
  * Created by SHIKUN on 2016/9/29.
  */
 public class Account {
+
     private int id;
+
     private String username;
+
     private String name;
+
     private String icon;
+
     private String password;
+
     private String email;
+
     private Date create_time;
+
     private Date update_time;
+
     private Map<String,String> ext_params;
+
     private String mobile;
+
     private Long dev_id;
 
     public Long getDev_id() {

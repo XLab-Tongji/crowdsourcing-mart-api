@@ -14,7 +14,7 @@ import java.util.Date;
  */
 public class Project {
 
-    private Long id;
+    private Long project_id;
 
     private double cost;
 
@@ -28,19 +28,42 @@ public class Project {
 
     private String description;
 
-    private String project_user_name;
-
     private File file;
 
     private String project_type;
 
     private String username;
 
-    private String enroll_dev_list;
-
-    private String dev_username;
-
     private String project_name;
+
+    private Date enroll_stop_time;
+
+    private Date update_date;
+
+
+    public Long getProject_id() {
+        return project_id;
+    }
+
+    public void setProject_id(Long project_id) {
+        this.project_id = project_id;
+    }
+
+    public Date getEnroll_stop_time() {
+        return enroll_stop_time;
+    }
+
+    public void setEnroll_stop_time(Date enroll_stop_time) {
+        this.enroll_stop_time = enroll_stop_time;
+    }
+
+    public Date getUpdate_date() {
+        return update_date;
+    }
+
+    public void setUpdate_date(Date update_date) {
+        this.update_date = update_date;
+    }
 
     public String getProject_name() {
         return project_name;
@@ -50,21 +73,7 @@ public class Project {
         this.project_name = project_name;
     }
 
-    public String getEnroll_dev_list() {
-        return enroll_dev_list;
-    }
 
-    public void setEnroll_dev_list(String enroll_dev_list) {
-        this.enroll_dev_list = enroll_dev_list;
-    }
-
-    public String getDev_username() {
-        return dev_username;
-    }
-
-    public void setDev_username(String dev_username) {
-        this.dev_username = dev_username;
-    }
 
     public String getUsername() {
         return username;
@@ -74,13 +83,7 @@ public class Project {
         this.username = username;
     }
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public double getCost() {
         return cost;
@@ -130,13 +133,6 @@ public class Project {
         this.create_date = create_date;
     }
 
-    public String getProject_user_name() {
-        return project_user_name;
-    }
-
-    public void setProject_user_name(String project_user_name) {
-        this.project_user_name = project_user_name;
-    }
 
     public File getFile() {
         return file;
@@ -157,19 +153,19 @@ public class Project {
     @Override
     public String toString() {
         return "Project{" +
-                "id=" + id +
+                "project_id=" + project_id +
                 ", cost=" + cost +
                 ", delivery_cycle=" + delivery_cycle +
                 ", warranty_cycle=" + warranty_cycle +
                 ", create_date=" + create_date +
                 ", address='" + address + '\'' +
                 ", description='" + description + '\'' +
-                ", project_user_name='" + project_user_name + '\'' +
                 ", file=" + file +
                 ", project_type='" + project_type + '\'' +
                 ", username='" + username + '\'' +
-                ", enroll_dev_list='" + enroll_dev_list + '\'' +
-                ", dev_username='" + dev_username + '\'' +
+                ", project_name='" + project_name + '\'' +
+                ", enroll_stop_time=" + enroll_stop_time +
+                ", update_date=" + update_date +
                 '}';
     }
 }

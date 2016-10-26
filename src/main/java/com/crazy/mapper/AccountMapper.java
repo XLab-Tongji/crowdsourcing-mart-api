@@ -12,11 +12,13 @@ import java.util.Map;
  */
 @Mapper
 public interface AccountMapper {
+
     @Insert("INSERT INTO ACCOUNT (username,name,icon,password,mobile,create_time,update_time,email,ext_params) VALUES" +
             " (#{username},#{name},#{icon},#{password},#{mobile},NOW(),NOW(),#{email},#{ext_params})")
     public int addAcount(@Param("username") String username, @Param("name") String name, @Param("icon") String icon,
                          @Param("password") String password, @Param("mobile") String mobile,
                          @Param("email") String email, @Param("ext_params") String ext_params);
+
 
     @Select("SELECT username FROM ACCOUNT")
     public List<String> getAllUsername();
@@ -48,23 +50,20 @@ public interface AccountMapper {
             "#{username},#{account_id},#{dev_domain})")
     public int addDevInfo(@Param("username") String username, @Param("account_id") Long account_id, @Param("dev_domain") String dev_domain);
 
-    @Update("UPDATE DEVELOPER SET dev_domain=#{dev_domain} WHERE id=#{id}")
-    public int updateDevInfo(@Param("dev_domain") String dev_domain);
+    @Update("UPDATE DEVELOPER SET dev_domain=#{dev_domain} WHERE username=#{username}")
+    public int updateDevInfo(@Param("dev_domain") String dev_domain,@Param("username")String username);
 
-    @Update("UPDATE DEVELOPER SET dev_project=#{dev_project},dev_project_id=#{dev_project_id} WHERE username=#{username}")
-    public int updateDevproject(@Param("dev_project") String dev_project, @Param("username") String username,
-                                @Param("dev_project_id") Long dev_project_id);
+    @Update("UPDATE DEVELOPER SET dev_intro=#{dev_intro} WHERE username=#{username}")
+    public int updateDevproject(@Param("dev_intro") String dev_intro, @Param("username") String username);
 
-    @Update("UPDATE DEVELOPER SET project_enroll=#{project_enroll} WHERE username=#{username}")
-    public int updateProjectEnroll(@Param("project_enroll") String project_enroll, @Param("username") String username);
 
     @Update("UPDATE ACCOUNT SET dev_id=#{dev_id} WHERE username=#{username}")
     public int changeDevStatus(@Param("dev_id") Long dev_id, @Param("username") String username);
 
-    @Select("SELECT id FROM DEVELOPER WHERE username=#{username}")
+    @Select("SELECT dev_id FROM DEVELOPER WHERE username=#{username}")
     public Long getDevloperId(@Param("username") String username);
 
-    @Select("SELECT project_enroll FROM DEVELOPER WHERE username=#{username}")
+    @Select("SELECT dev_intro FROM DEVELOPER WHERE username=#{username}")
     public String getEnrollProject(@Param("username") String username);
 
 

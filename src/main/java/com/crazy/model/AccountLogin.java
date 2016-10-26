@@ -8,13 +8,30 @@ import java.util.Date;
 public class AccountLogin {
 
     private String ip;
+
     private String device;
+
     private String token;
+
     private Date create_time;
+
     private Date expire_time;
+
     private Long account_id;
+
     private String plat;
+
     private Long id;
+
+    private String username;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public Long getId() {
         return id;
@@ -90,6 +107,8 @@ public class AccountLogin {
                 ", expire_time=" + expire_time +
                 ", account_id=" + account_id +
                 ", plat='" + plat + '\'' +
+                ", id=" + id +
+                ", username='" + username + '\'' +
                 '}';
     }
 }

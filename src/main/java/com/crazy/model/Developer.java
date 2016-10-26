@@ -11,16 +11,24 @@ public class Developer {
     private String username;
     private Long account_id;
     private String dev_domain;
-    private String dev_project;
-    private List project_enroll;
-    private Long dev_project_id;
+    private String dev_intro;
+    private String ext_param;
 
-    public Long getDev_project_id() {
-        return dev_project_id;
+
+    public String getDev_intro() {
+        return dev_intro;
     }
 
-    public void setDev_project_id(Long dev_project_id) {
-        this.dev_project_id = dev_project_id;
+    public void setDev_intro(String dev_intro) {
+        this.dev_intro = dev_intro;
+    }
+
+    public String getExt_param() {
+        return ext_param;
+    }
+
+    public void setExt_param(String ext_param) {
+        this.ext_param = ext_param;
     }
 
     public String getUsername() {
@@ -48,20 +56,13 @@ public class Developer {
     }
 
     public String getDev_project() {
-        return dev_project;
+        return dev_intro;
     }
 
     public void setDev_project(String dev_project) {
-        this.dev_project = dev_project;
+        this.dev_intro = dev_project;
     }
 
-    public List getProject_enroll() {
-        return project_enroll;
-    }
-
-    public void setProject_enroll(List project_enroll) {
-        this.project_enroll = project_enroll;
-    }
 
     @Override
     public String toString() {
@@ -69,8 +70,8 @@ public class Developer {
                 "username='" + username + '\'' +
                 ", account_id=" + account_id +
                 ", dev_domain='" + dev_domain + '\'' +
-                ", dev_project='" + dev_project + '\'' +
-                ", project_enroll='" + project_enroll + '\'' +
+                ", dev_intro='" + dev_intro + '\'' +
+                ", ext_param='" + ext_param + '\'' +
                 '}';
     }
 }

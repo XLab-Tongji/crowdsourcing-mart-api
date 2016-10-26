@@ -12,52 +12,47 @@ import java.util.List;
  */
 @Mapper
 public interface ProjectMapper {
-    @Insert("INSERT INTO PROJECT (cost,delivery_cycle,warranty_cycle,address,description,project_user_name,project_type,create_date,project_name) " +
-            "VALUES (#{cost},#{delivery_cycle},#{warranty_cycle},#{address},#{description},#{project_user_name},#{project_type},NOW(),#{project_name})")
+    @Insert("INSERT INTO PROJECT (cost,delivery_cycle,warranty_cycle,address,description,username,project_type,create_date,project_name,enroll_stop_time,update_date) " +
+            "VALUES (#{cost},#{delivery_cycle},#{warranty_cycle},#{address},#{description},#{username},#{project_type},NOW(),#{project_name},#{enroll_stop_time},NOW())")
     public int addProject(@Param("cost") double cost, @Param("delivery_cycle") Integer devlivery_cycle, @Param("warranty_cycle") Integer warranty_cycle,
-                          @Param("address") String address, @Param("description") String description, @Param("project_user_name") String user_name,
-                          @Param("project_type") String project_type, @Param("project_name") String project_name);
+                          @Param("address") String address, @Param("description") String description, @Param("username") String username,
+                          @Param("project_type") String project_type, @Param("project_name") String project_name,@Param("enroll_stop_time") Date enroll_stop_time);
 
     @Select("SELECT * FROM PROJECT")
     public List<Project> searchProjectall();
 
-    @Update("UPDATE PROJECT SET enroll_dev_list=#{enroll_dev_list) WHERE id=#{id}")
-    public int updateEnrollList(@Param("enroll_dev_list") String enroll_dev_list, @Param("id") Long id);
 
-    @Update("UPDATE PROJECT SET dev_username=#{dev_username} WHERE id=#{id}")
-    public int updateDevusername(@Param("dev_username") String username, @Param("id") Long id);
+    @Insert("INSERT DEV_ENROLL_INFO (username,project_id,enroll_date) VALUES (#{username},#{project_id},NOW())")
+    public int insertDevProInfo(@Param("username") String username, @Param("project_id") Long project_id);
 
-    @Insert("INSERT DEV_PRO_INFO (dev_username,enroll_project_id,enroll_date) VALUES (#{dev_username},#{enroll_project_id},NOW())")
-    public int insertDevProInfo(@Param("dev_username") String dev_username, @Param("enroll_project_id") Long enroll_project_id);
+    @Select("SELECT * FROM PROJECT WHERE username=#{username}")
+    public List<Project> searchProjectbycreatUser(@Param("username") String username);
 
-    @Select("SELECT * FROM PROJECT WHERE project_user_name=#{project_user_name}")
-    public List<Project> searchProjectbycreatUser(@Param("project_user_name") String project_user_name);
+    @Select("SELECT * FROM PROJECT WHERE project_id=#{project_id} AND username=#{username}")
+    public List<Project> searchProjectbyId(@Param("project_id") Long project_id, @Param("username") String username);
 
-    @Select("SELECT * FROM PROJECT WHERE id=#{id} AND project_user_name=#{project_user_name}")
-    public List<Project> searchProjectbyId(@Param("id") Long id, @Param("project_user_name") String project_user_name);
+    @Select("SELECT * FROM PROJECT WHERE project_id=#{project_id}")
+    public List<Project> searchProjectonlyId(@Param("project_id") Long project_id);
 
-    @Select("SELECT * FROM PROJECT WHERE id=#{id}")
-    public List<Project> searchProjectonlyId(@Param("id") Long id);
+    @Delete("DELETE FROM DEV_ENROLL_INFO WHERE project_id=#{project_id} AND username=#{username}")
+    public int deleteEnrollInfo(@Param("project_id") Long project_id, @Param("username") String username);
 
-    @Delete("DELETE FROM DEV_PRO_INFO WHERE enroll_project_id=#{enroll_project_id} AND dev_username=#{dev_username}")
-    public int deleteEnrollInfo(@Param("enroll_project_id") Long enroll_project_id, @Param("dev_username") String dev_username);
+    @Select("SELECT COUNT(project_id) AS count FROM DEV_ENROLL_INFO WHERE project_id=#{project_id}")
+    public int getProjectCount(@Param("project_id") Long project_id);
 
-    @Select("SELECT COUNT(enroll_project_id) AS count FROM DEV_PRO_INFO WHERE enroll_project_id=#{enroll_project_id}")
-    public int getProjectCount(@Param("enroll_project_id") Long enroll_project_id);
-
-    @Select("SELECT enroll_project_id FROM DEV_PRO_INFO WHERE dev_username=#{username}")
+    @Select("SELECT project_id FROM DEV_ENROLL_INFO WHERE username=#{username}")
     public List<Integer> searchProjectIdbyUsername(@Param("username") String username);
 
-    @Select("SELECT * FROM DEV_PRO_INFO a LEFT JOIN PROJECT b ON a.enroll_project_id=b.id WHERE a.dev_username=#{username}")
+    @Select("SELECT * FROM DEV_ENROLL_INFO a LEFT JOIN PROJECT b ON a.project_id=b.project_id WHERE a.username=#{username}")
     public List<Project> searchProjectInfobyUsername(@Param("username") String username);
 
-    @Insert("INSERT DEVELOPING_INFO (username,project_id,create_date) VALUES (#{username},#{project_id},NOW())")
+    @Insert("INSERT DEVELOPING_INFO (username,project_id,confirm_date) VALUES (#{username},#{project_id},NOW())")
     public int insertDevelopingInfo(@Param("username") String username, @Param("project_id") Long project_id);
 
     @Select("SELECT COUNT(project_id) AS countlist FROM DEVELOPING_INFO WHERE project_id=#{project_id}")
     public int getDevelopProjectCount(@Param("project_id") Long project_id);
 
-    @Select("SELECT * FROM DEVELOPING_INFO a LEFT JOIN PROJECT b ON a.project_id=b.id WHERE a.username=#{username}")
+    @Select("SELECT * FROM DEVELOPING_INFO a LEFT JOIN PROJECT b ON a.project_id=b.project_id WHERE a.username=#{username}")
     public List<Project> searchDevelopingProjectbyUsername(@Param("username") String username);
 
 
