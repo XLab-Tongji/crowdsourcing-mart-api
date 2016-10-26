@@ -1,5 +1,6 @@
 package com.crazy.mapper;
 
+import com.crazy.model.Developer;
 import com.crazy.model.Project;
 import org.apache.ibatis.annotations.*;
 import org.springframework.security.access.method.P;
@@ -57,6 +58,9 @@ public interface ProjectMapper {
 
     @Select("SELECT username FROM DEV_ENROLL_INFO WHERE project_id=#{project_id}")
     public List<String> searchEnrollmemberbyProjectId(@Param("project_id") Long project_id);
+
+    @Select("SELECT * FROM DEV_ENROLL_INFO a LEFT JOIN DEVELOPER b ON a.username=b.username WHERE project_id=#{project_id}")
+    public List<Developer> searchDeveloperEnrollInfo(@Param("project_id") Long project_id);
 
 
 

@@ -164,6 +164,15 @@ public class ProjectController {
         }
     }
 
+    @RequestMapping(value = "develop/enroll/member/detail/{project_id}",method = RequestMethod.GET)
+    public @ResponseBody ResJsonTemplate getEnrollMemberDetailbyProjectID(@PathVariable Long project_id){
+        try {
+            return new ResJsonTemplate("200", projectMapper.searchDeveloperEnrollInfo(project_id));
+        } catch (Exception ex) {
+            return new ResJsonTemplate("500", "查询失败");
+        }
+    }
+
 
 
 
