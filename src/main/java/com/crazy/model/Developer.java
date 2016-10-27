@@ -1,5 +1,6 @@
 package com.crazy.model;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +14,15 @@ public class Developer {
     private String dev_domain;
     private String dev_intro;
     private String ext_param;
+    private Date Enroll_date;
 
+    public Date getEnroll_date() {
+        return Enroll_date;
+    }
+
+    public void setEnroll_date(Date enroll_date) {
+        Enroll_date = enroll_date;
+    }
 
     public String getDev_intro() {
         return dev_intro;
@@ -63,7 +72,6 @@ public class Developer {
         this.dev_intro = dev_project;
     }
 
-
     @Override
     public String toString() {
         return "Developer{" +
@@ -72,6 +80,7 @@ public class Developer {
                 ", dev_domain='" + dev_domain + '\'' +
                 ", dev_intro='" + dev_intro + '\'' +
                 ", ext_param='" + ext_param + '\'' +
+                ", Enroll_date=" + Enroll_date +
                 '}';
     }
 }

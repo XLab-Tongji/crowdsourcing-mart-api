@@ -1,5 +1,6 @@
 package com.crazy.mapper;
 
+import com.crazy.model.DevEnrollInfo;
 import com.crazy.model.Developer;
 import com.crazy.model.Project;
 import org.apache.ibatis.annotations.*;
@@ -44,7 +45,7 @@ public interface ProjectMapper {
     @Select("SELECT project_id FROM DEV_ENROLL_INFO WHERE username=#{username}")
     public List<Integer> searchProjectIdbyUsername(@Param("username") String username);
 
-    @Select("SELECT * FROM DEV_ENROLL_INFO a LEFT JOIN PROJECT b ON a.project_id=b.project_id WHERE a.username=#{username}")
+    @Select("SELECT * FROM PROJECT a LEFT JOIN DEV_ENROLL_INFO b ON a.project_id=b.project_id WHERE b.username=#{username}")
     public List<Project> searchProjectInfobyUsername(@Param("username") String username);
 
     @Insert("INSERT DEVELOPING_INFO (username,project_id,confirm_date) VALUES (#{username},#{project_id},NOW())")
@@ -61,7 +62,6 @@ public interface ProjectMapper {
 
     @Select("SELECT * FROM DEV_ENROLL_INFO a LEFT JOIN DEVELOPER b ON a.username=b.username WHERE project_id=#{project_id}")
     public List<Developer> searchDeveloperEnrollInfo(@Param("project_id") Long project_id);
-
 
 
 
