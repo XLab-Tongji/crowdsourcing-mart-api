@@ -1,6 +1,6 @@
 package com.crazy.mapper;
 
-import com.crazy.model.AccountLogin;
+import com.crazy.entity.AccountLogin;
 import org.apache.ibatis.annotations.*;
 
 import java.util.Date;

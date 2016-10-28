@@ -2,9 +2,9 @@ package com.crazy.controller;
 
 import com.crazy.mapper.AccountMapper;
 import com.crazy.mapper.ProjectMapper;
-import com.crazy.model.DevEnrollInfo;
-import com.crazy.model.DevInfo;
-import com.crazy.model.Project;
+import com.crazy.entity.DevEnrollInfo;
+import com.crazy.entity.DevInfo;
+import com.crazy.entity.Project;
 import com.crazy.util.ConvertJson;
 import com.crazy.util.ResJsonTemplate;
 import org.springframework.beans.factory.annotation.Autowired;

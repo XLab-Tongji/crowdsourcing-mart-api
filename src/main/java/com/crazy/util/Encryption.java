@@ -1,7 +1,7 @@
 package com.crazy.util;
 
 import com.crazy.mapper.AccountMapper;
-import com.crazy.model.AccountLogin;
+import com.crazy.entity.AccountLogin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

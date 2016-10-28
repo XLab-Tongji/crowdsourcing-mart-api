@@ -1,9 +1,8 @@
 package com.crazy.controller;
 
 import com.crazy.mapper.AccountMapper;
-import com.crazy.model.Account;
+import com.crazy.entity.Account;
 
-import com.crazy.model.Developer;
 import com.crazy.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +35,7 @@ public class AccountController {
     private DateUtil dateUtil;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public
-    @ResponseBody
-    ResJsonTemplate addAccount(@RequestBody Account account) {
+    public @ResponseBody ResJsonTemplate addAccount(@RequestBody Account account) {
 
         System.out.println(account.getExt_params());
 

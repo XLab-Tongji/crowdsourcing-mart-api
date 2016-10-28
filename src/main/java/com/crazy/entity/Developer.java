@@ -1,8 +1,6 @@
-package com.crazy.model;
+package com.crazy.entity;
 
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 /**developer domain
  * Created by SHIKUN on 2016/10/15.

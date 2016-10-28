@@ -1,11 +1,5 @@
-package com.crazy.model;
+package com.crazy.entity;
 
-import org.hibernate.annotations.Entity;
-
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.io.File;
 import java.util.Date;
 

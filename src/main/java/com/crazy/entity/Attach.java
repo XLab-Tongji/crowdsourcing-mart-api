@@ -1,4 +1,4 @@
-package com.crazy.model;
+package com.crazy.entity;
 
 /**附件功能
  * Created by SHIKUN on 2016/9/29.

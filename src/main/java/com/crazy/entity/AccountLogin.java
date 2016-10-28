@@ -1,4 +1,4 @@
-package com.crazy.model;
+package com.crazy.entity;
 
 import java.util.Date;
 
