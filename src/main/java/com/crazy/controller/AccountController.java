@@ -3,6 +3,7 @@ package com.crazy.controller;
 import com.crazy.mapper.AccountMapper;
 import com.crazy.entity.Account;
 
+import com.crazy.service.AccountService;
 import com.crazy.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,71 +23,30 @@ import java.util.Map;
 @RestController
 @RequestMapping(value = "/api/account")
 public class AccountController {
-    @Autowired
-    private AccountMapper accountMapper;
 
     @Autowired
-    private ConvertJson convertJson;
+    private AccountService accountService;
+
 
     @Autowired
     private Encryption encryption;
 
-    @Autowired
-    private DateUtil dateUtil;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public @ResponseBody ResJsonTemplate addAccount(@RequestBody Account account) {
+    @ResponseBody
+    public ResJsonTemplate addAccount(@RequestBody Account account) {
 
         System.out.println(account.getExt_params());
-
-        return new ResJsonTemplate("200", accountMapper.addAcount(account.getUsername(),
-                account.getName(), account.getIcon(),
-                encryption.doEncryption(account.getPassword()),
-                account.getMobile(),account.getEmail(),
-                convertJson.Map2Json(account.getExt_params())));
+        return accountService.addAccount(account);
     }
 
-    @RequestMapping(value = "/list/username", method = RequestMethod.GET)
-    public @ResponseBody ResJsonTemplate getAllUsername() throws Exception {
-        ResJsonTemplate resJsonTemplate = new ResJsonTemplate("200", accountMapper.getAllUsername());
-        return resJsonTemplate;
-    }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public @ResponseBody ResJsonTemplate checkAccount(@RequestBody Account account, @RequestHeader(value = "User-Agent") String useragent,
+    @ResponseBody
+    public  ResJsonTemplate checkAccount(@RequestBody Account account, @RequestHeader(value = "User-Agent") String useragent,
                                  HttpServletRequest request) {
 
-        String result = null;
-        String token = null;
-        Map<String, String> selectResult = accountMapper.getCheckInfo(account.getUsername());
-
-        if (selectResult == null) {
-            result = "没有此用户";
-        } else if (!encryption.checkPassword(account.getPassword(), selectResult.get("password"))) {
-            result = "密码错误";
-        } else {
-            token = encryption.createToken();
-            accountMapper.addLoginLog(request.getRemoteAddr(), token, dateUtil.Str2Date(dateUtil.getNowTime()),
-                    dateUtil.Str2Date(dateUtil.setExpire(30)), accountMapper.getUserId(account.getUsername()),
-                    useragent, account.getUsername());
-            result = token;
-        }
-
-        if(token!=null){
-        Map tokencons = new HashMap();
-
-        tokencons.put("tokens", token);
-        tokencons.put("username", account.getUsername());
-
-        List<Map> tokenresult = new LinkedList<>();
-
-        tokenresult.add(tokencons);
-
-        return new ResJsonTemplate("200", tokenresult);
-        }else{
-            return new ResJsonTemplate("200", result);
-        }
-
+        return accountService.checkAccount(account, useragent, request);
     }
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)

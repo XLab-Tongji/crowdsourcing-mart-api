@@ -1,11 +1,11 @@
 package com.crazy.controller;
 
-import com.crazy.mapper.AccountMapper;
+
 import com.crazy.mapper.ProjectMapper;
 import com.crazy.entity.DevEnrollInfo;
 import com.crazy.entity.DevInfo;
 import com.crazy.entity.Project;
-import com.crazy.util.ConvertJson;
+import com.crazy.service.ProjectService;
 import com.crazy.util.ResJsonTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,162 +22,125 @@ import java.util.List;
 public class ProjectController {
 
     @Autowired
-    private ProjectMapper projectMapper;
+    private ProjectService projectService;
 
-    @Autowired
-    private AccountMapper accountMapper;
-
-    @Autowired
-    private ConvertJson convertJson;
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public @ResponseBody ResJsonTemplate  addProject(@RequestBody Project project) {
-        return new ResJsonTemplate("200", projectMapper.addProject(project.getCost(), project.getDelivery_cycle(),
-                project.getWarranty_cycle(), project.getAddress(), project.getDescription(), project.getUsername(),
-                project.getProject_type(), project.getProject_name()));
+    @ResponseBody
+    public ResJsonTemplate addProject(@RequestBody Project project) {
+
+        return projectService.addProject(project);
 
     }
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public @ResponseBody ResJsonTemplate  searchproject() {
-        return new ResJsonTemplate("200",projectMapper.searchProjectall());
+    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    @ResponseBody
+    public ResJsonTemplate searchproject() {
+
+        return projectService.getAllproject();
     }
 
 
     @RequestMapping(value = "develop/enroll", method = RequestMethod.POST)
-    public @ResponseBody ResJsonTemplate addDevenrollInfo(@RequestBody DevEnrollInfo devEnrollInfo) {
+    @ResponseBody
+    public ResJsonTemplate addDevenrollInfo(@RequestBody DevEnrollInfo devEnrollInfo) {
 
-        try {
-
-            return new ResJsonTemplate("200", projectMapper.insertDevProInfo(
-                    devEnrollInfo.getUsername(), devEnrollInfo.getProject_id()));
-        } catch (Exception ex) {
-            System.out.println(ex);
-            return new ResJsonTemplate("500", ex);
-        }
-
-
+        return projectService.addEnrollInfo(devEnrollInfo);
     }
 
     @RequestMapping(value = "develop/enroll/cancel", method = RequestMethod.DELETE)
-    public @ResponseBody ResJsonTemplate deleteEnrollInfo(@RequestParam(value = "dev_username") String dev_username,
+    @ResponseBody
+    public ResJsonTemplate deleteEnrollInfo(@RequestParam(value = "dev_username") String dev_username,
                                      @RequestParam(value = "enroll_project_id") Long enroll_project_id) {
-        try {
-            return new ResJsonTemplate("200", projectMapper.deleteEnrollInfo(enroll_project_id, dev_username));
-        } catch (Exception ex) {
-            return new ResJsonTemplate("500", ex);
-        }
-    }
-
-    @RequestMapping(value = "develop/enroll/count/{id}",method = RequestMethod.GET)
-    public @ResponseBody ResJsonTemplate getProjectEnrollcount(@PathVariable Long id){
-        try {
-            return new ResJsonTemplate("200", projectMapper.getProjectCount(id));
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return new ResJsonTemplate("500","未查询到项目报名");
-        }
-    }
-
-    @RequestMapping(value = "develop/enroll/list/{username}",method = RequestMethod.GET)
-    public @ResponseBody ResJsonTemplate getEnrolledProjectbyUsername(@PathVariable String username){
-        try {
-            return new ResJsonTemplate("200", projectMapper.searchProjectInfobyUsername(username));
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return new ResJsonTemplate("500", "未查询到项目");
-        }
+        return projectService.deleteEnrollInfo(dev_username, enroll_project_id);
 
     }
 
+    @RequestMapping(value = "develop/enroll/count/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResJsonTemplate getProjectEnrollcount(@PathVariable Long id) {
+        return projectService.getEnrollCountByProjectId(id);
 
-
-    @RequestMapping(value ="/list/{user}",method = RequestMethod.GET)
-    public @ResponseBody ResJsonTemplate getProjectListper(@PathVariable String user){
-        return new ResJsonTemplate("200", projectMapper.searchProjectbycreatUser(user));
     }
 
-    @RequestMapping(value="/list/{user}/{id}",method = RequestMethod.GET)
-    public @ResponseBody  ResJsonTemplate getProjectListbyId(@PathVariable String user,@PathVariable Long id){
-        return new ResJsonTemplate("200", projectMapper.searchProjectbyId(id, user));
+    @RequestMapping(value = "develop/enroll/list/{username}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResJsonTemplate getEnrolledProjectbyUsername(@PathVariable String username) {
+
+        return projectService.getEnrollListByDevUsername(username);
     }
 
 
-    @RequestMapping(value = "/list/id/{id}",method = RequestMethod.GET)
-    public @ResponseBody ResJsonTemplate getProjectListOnlyId(@PathVariable Long id) {
-        return new ResJsonTemplate("200", projectMapper.searchProjectonlyId(id));
+    @RequestMapping(value = "/all/{username}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResJsonTemplate getProjectListper(@PathVariable String username) {
+
+        return projectService.getProjectListbyusername(username);
+
     }
+
+    @RequestMapping(value = "/list/{user}/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResJsonTemplate getProjectListbyId(@PathVariable String user, @PathVariable Long id) {
+        return projectService.getProjectDetailbyUsernameId(user, id);
+    }
+
+
+    @RequestMapping(value = "/list/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResJsonTemplate getProjectListOnlyId(@PathVariable Long id) {
+        return projectService.getProjectDetailByProjectId(id);
+
+    }
+
 
     @RequestMapping(value = "develop/confirm", method = RequestMethod.POST)
-    public @ResponseBody ResJsonTemplate confirmProject(@RequestBody DevInfo devInfo) {
-        try {
-            return new ResJsonTemplate("200", projectMapper.insertDevelopingInfo(devInfo.getUsername(),
-                    devInfo.getProject_id()));
-        } catch (Exception e) {
+    @ResponseBody
+    public ResJsonTemplate confirmProject(@RequestBody DevInfo devInfo) {
 
-            System.out.println(e);
-            return new ResJsonTemplate("500", e);
-        }
+        return projectService.confirmDevelop(devInfo);
+
     }
 
 
-    @RequestMapping(value = "develop/project/{id}",method = RequestMethod.GET)
-    public @ResponseBody ResJsonTemplate getDevelopmember(@PathVariable Long id){
-        try {
-            return new ResJsonTemplate("200", projectMapper.getDevelopProjectCount(id));
-        } catch (Exception e) {
-            System.out.println(e);
-            return new ResJsonTemplate("500", "查询失败");
-        }
+    @RequestMapping(value = "develop/project/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResJsonTemplate getDevelopmember(@PathVariable Long id) {
+
+        return projectService.getDeveloperCountbyProjectId(id);
+
     }
 
 
     @RequestMapping(value = "develop/confirm/member", method = RequestMethod.POST)
-    public @ResponseBody ResJsonTemplate confirmProjectmember(@RequestBody List<DevInfo> devInfos) {
+    @ResponseBody
+    public ResJsonTemplate confirmProjectmember(@RequestBody List<DevInfo> devInfos) {
 
-        try {
-            for (int i = 0; i < devInfos.size(); i++) {
-                projectMapper.insertDevelopingInfo(devInfos.get(i).getUsername(), devInfos.get(i).getProject_id());
+        return projectService.confirmDevelopMember(devInfos);
 
-            }
-            return new  ResJsonTemplate("200", "ok");
-        } catch (Exception ex) {
-            return new ResJsonTemplate("500","插入失败");
-        }
-    }
-
-    @RequestMapping(value = "develop/list/{username}",method = RequestMethod.GET)
-    public @ResponseBody ResJsonTemplate getDevelopingProjectInfo(@PathVariable String username){
-        try {
-            return new ResJsonTemplate("200", projectMapper.searchDevelopingProjectbyUsername(username));
-        } catch (Exception ex) {
-            return new ResJsonTemplate("500", "查询失败");
-        }
-    }
-
-    @RequestMapping(value = "develop/enroll/member/{project_id}",method = RequestMethod.GET)
-    public @ResponseBody ResJsonTemplate getEnrollMemeberbyProjectId(@PathVariable Long project_id){
-        try {
-            return new ResJsonTemplate("200", projectMapper.searchEnrollmemberbyProjectId(project_id));
-        } catch (Exception e) {
-            return new ResJsonTemplate("500", "查询失败");
-        }
-    }
-
-    @RequestMapping(value = "develop/enroll/member/detail/{project_id}",method = RequestMethod.GET)
-    public @ResponseBody ResJsonTemplate getEnrollMemberDetailbyProjectID(@PathVariable Long project_id){
-
-
-        try {
-
-
-            return new ResJsonTemplate("200", projectMapper.searchDeveloperEnrollInfo(project_id));
-        } catch (Exception ex) {
-            return new ResJsonTemplate("500", "查询失败");
-        }
     }
 
 
+    @RequestMapping(value = "develop/list/{username}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResJsonTemplate getDevelopingProjectInfo(@PathVariable String username) {
+
+        return projectService.getDevProjectListbyDevelopUsername(username);
+
+    }
+
+    @RequestMapping(value = "develop/enroll/member/{project_id}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResJsonTemplate getEnrollMemeberbyProjectId(@PathVariable Long project_id) {
+        return projectService.getDevelopUsernameListByProjectId(project_id);
+
+    }
+
+    @RequestMapping(value = "develop/enroll/member/detail/{project_id}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResJsonTemplate getEnrollMemberDetailbyProjectID(@PathVariable Long project_id) {
+        return projectService.getDevelopDetailByProjectId(project_id);
+    }
 
 
 }
