@@ -57,5 +57,8 @@ public interface ProjectService {
     //根据项目id获取报名者详情接口
     public ResJsonTemplate getDevelopDetailByProjectId(Long id);
 
+    //根据页码来获取项目列表
+    public ResJsonTemplate getProjectListbyPageNumber(int pageNumber,int displayNumber);
+
 
 }

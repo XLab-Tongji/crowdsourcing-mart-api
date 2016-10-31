@@ -177,4 +177,27 @@ public class ProjectServiceImpl implements ProjectService {
             return new ResJsonTemplate("500", "查询失败");
         }
     }
+
+    @Override
+    public ResJsonTemplate getProjectListbyPageNumber(int pageNumber, int displayNumber) {
+
+
+        try {
+            //获取项目总数
+            Long dataAllcount = Long.valueOf(projectMapper.searchProjectall().size());
+            System.out.println(dataAllcount);
+
+
+
+
+
+
+
+            return new ResJsonTemplate("200", projectMapper.getAllProjectByPage(pageNumber, displayNumber));
+        } catch (Exception ex) {
+            System.out.println(ex);
+            return new ResJsonTemplate("500", "获取失败");
+
+        }
+    }
 }

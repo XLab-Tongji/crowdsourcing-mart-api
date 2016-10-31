@@ -60,4 +60,13 @@ public interface ProjectMapper {
     @Select("SELECT * FROM DEV_ENROLL_INFO a LEFT JOIN DEVELOPER b ON a.username=b.username WHERE project_id=#{project_id}")
     public List<Developer> searchDeveloperEnrollInfo(@Param("project_id") Long project_id);
 
+    //分页实现
+    @Select("SELECT * FROM PROJECT LIMIT #{start},#{size}")
+    public List<Project> getAllProjectByPage(@Param("start") int start, @Param("size") int size);
+
+
+
+
+
+
 }
