@@ -1,21 +1,19 @@
 package com.crazy.util;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * Created by SHIKUN on 2016/10/31.
  */
-@Service
+
 public class Paging {
 
-    private int pagesize=10;
+    private int pagesize;
 
 
+
+    public Paging( int pagesize) {
+        this.pagesize = pagesize;
+    }
 
     public int getTotalPage(int count) {
 
