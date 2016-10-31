@@ -27,6 +27,9 @@ public class ProjectServiceImpl implements ProjectService {
     @Autowired
     private ProjectMapper projectMapper;
 
+    @Autowired
+    private Paging paging;
+
 
     @Override
     public ResJsonTemplate getAllproject() {
@@ -192,7 +195,6 @@ public class ProjectServiceImpl implements ProjectService {
 
         Map<String, Integer> pageinfo = new HashMap<>();
 
-        Paging paging = new Paging(size);
 
         int totalPage=paging.getTotalPage(projectMapper.getProjectCountPage());
         int startPage = paging.convertStartPage(start);

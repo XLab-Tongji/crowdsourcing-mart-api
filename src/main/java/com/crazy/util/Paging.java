@@ -1,17 +1,22 @@
 package com.crazy.util;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
 /**
  * Created by SHIKUN on 2016/10/31.
  */
-
+@Service
 public class Paging {
 
     private int pagesize;
 
 
 
-    public Paging( int pagesize) {
+    @Autowired
+    public Paging( @Value("#{new Integer(10)}") int pagesize) {
         this.pagesize = pagesize;
     }
 
