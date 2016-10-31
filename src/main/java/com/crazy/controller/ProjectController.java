@@ -41,14 +41,14 @@ public class ProjectController {
     }
 
 
-    @RequestMapping(value = "develop/enroll", method = RequestMethod.POST)
+    @RequestMapping(value = "/develop/enroll", method = RequestMethod.POST)
     @ResponseBody
     public ResJsonTemplate addDevenrollInfo(@RequestBody DevEnrollInfo devEnrollInfo) {
 
         return projectService.addEnrollInfo(devEnrollInfo);
     }
 
-    @RequestMapping(value = "develop/enroll/cancel", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/develop/enroll/cancel", method = RequestMethod.DELETE)
     @ResponseBody
     public ResJsonTemplate deleteEnrollInfo(@RequestParam(value = "dev_username") String dev_username,
                                      @RequestParam(value = "enroll_project_id") Long enroll_project_id) {
@@ -56,14 +56,14 @@ public class ProjectController {
 
     }
 
-    @RequestMapping(value = "develop/enroll/count/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/develop/enroll/count/{id}", method = RequestMethod.GET)
     @ResponseBody
     public ResJsonTemplate getProjectEnrollcount(@PathVariable Long id) {
         return projectService.getEnrollCountByProjectId(id);
 
     }
 
-    @RequestMapping(value = "develop/enroll/list/{username}", method = RequestMethod.GET)
+    @RequestMapping(value = "/develop/enroll/list/{username}", method = RequestMethod.GET)
     @ResponseBody
     public ResJsonTemplate getEnrolledProjectbyUsername(@PathVariable String username) {
 
@@ -94,7 +94,7 @@ public class ProjectController {
     }
 
 
-    @RequestMapping(value = "develop/confirm", method = RequestMethod.POST)
+    @RequestMapping(value = "/develop/confirm", method = RequestMethod.POST)
     @ResponseBody
     public ResJsonTemplate confirmProject(@RequestBody DevInfo devInfo) {
 
@@ -103,7 +103,7 @@ public class ProjectController {
     }
 
 
-    @RequestMapping(value = "develop/project/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/develop/project/{id}", method = RequestMethod.GET)
     @ResponseBody
     public ResJsonTemplate getDevelopmember(@PathVariable Long id) {
 
@@ -112,7 +112,7 @@ public class ProjectController {
     }
 
 
-    @RequestMapping(value = "develop/confirm/member", method = RequestMethod.POST)
+    @RequestMapping(value = "/develop/confirm/member", method = RequestMethod.POST)
     @ResponseBody
     public ResJsonTemplate confirmProjectmember(@RequestBody List<DevInfo> devInfos) {
 
@@ -121,7 +121,7 @@ public class ProjectController {
     }
 
 
-    @RequestMapping(value = "develop/list/{username}", method = RequestMethod.GET)
+    @RequestMapping(value = "/develop/list/{username}", method = RequestMethod.GET)
     @ResponseBody
     public ResJsonTemplate getDevelopingProjectInfo(@PathVariable String username) {
 
@@ -129,14 +129,14 @@ public class ProjectController {
 
     }
 
-    @RequestMapping(value = "develop/enroll/member/{project_id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/develop/enroll/member/{project_id}", method = RequestMethod.GET)
     @ResponseBody
     public ResJsonTemplate getEnrollMemeberbyProjectId(@PathVariable Long project_id) {
         return projectService.getDevelopUsernameListByProjectId(project_id);
 
     }
 
-    @RequestMapping(value = "develop/enroll/member/detail/{project_id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/develop/enroll/member/detail/{project_id}", method = RequestMethod.GET)
     @ResponseBody
     public ResJsonTemplate getEnrollMemberDetailbyProjectID(@PathVariable Long project_id) {
         return projectService.getDevelopDetailByProjectId(project_id);
