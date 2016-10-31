@@ -64,9 +64,8 @@ public interface ProjectMapper {
     @Select("SELECT * FROM PROJECT LIMIT #{start},#{size}")
     public List<Project> getAllProjectByPage(@Param("start") int start, @Param("size") int size);
 
-
-
-
+    @Select("SELECT COUNT(*) FROM PROJECT")
+    public int getProjectCountPage();
 
 
 }

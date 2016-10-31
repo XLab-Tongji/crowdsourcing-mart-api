@@ -145,8 +145,12 @@ public class ProjectController {
 
     @RequestMapping(value = "/page/{pageNumber}", method = RequestMethod.GET)
     public ResJsonTemplate getAllProjectByPageNumber(@PathVariable int pageNumber) {
-        return projectService.getProjectListbyPageNumber(pageNumber, 5);
+
+        return projectService.getProjectListbyPageNumber(pageNumber, 10);
+
     }
+
+
 
 
 

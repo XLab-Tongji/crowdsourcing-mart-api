@@ -4,6 +4,7 @@ import com.crazy.entity.DevEnrollInfo;
 import com.crazy.entity.DevInfo;
 import com.crazy.entity.Project;
 import com.crazy.util.ResJsonTemplate;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -58,7 +59,8 @@ public interface ProjectService {
     public ResJsonTemplate getDevelopDetailByProjectId(Long id);
 
     //根据页码来获取项目列表
-    public ResJsonTemplate getProjectListbyPageNumber(int pageNumber,int displayNumber);
+    public ResJsonTemplate getProjectListbyPageNumber(int start, int size);
+
 
 
 }

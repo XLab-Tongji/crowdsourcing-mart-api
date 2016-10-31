@@ -5,11 +5,18 @@ import com.crazy.entity.DevInfo;
 import com.crazy.entity.Project;
 import com.crazy.mapper.ProjectMapper;
 import com.crazy.service.ProjectService;
+import com.crazy.util.Paging;
 import com.crazy.util.ResJsonTemplate;
+import org.omg.CORBA.PRIVATE_MEMBER;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**项目相关接口实现
  * Created by SHIKUN on 2016/10/29.
@@ -20,11 +27,15 @@ public class ProjectServiceImpl implements ProjectService {
     @Autowired
     private ProjectMapper projectMapper;
 
+    @Autowired
+    private Paging paging;
+
 
 
 
     @Override
     public ResJsonTemplate getAllproject() {
+
         try {
             return new ResJsonTemplate("200", projectMapper.searchProjectall());
         } catch (Exception ex) {
@@ -179,25 +190,27 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ResJsonTemplate getProjectListbyPageNumber(int pageNumber, int displayNumber) {
+    public ResJsonTemplate getProjectListbyPageNumber(int start, int size) {
 
 
-        try {
-            //获取项目总数
-            Long dataAllcount = Long.valueOf(projectMapper.searchProjectall().size());
-            System.out.println(dataAllcount);
+        List result = new LinkedList();
 
+        Map<String, Integer> pageinfo = new HashMap<>();
 
+//        Paging paging = new Paging(size);
 
+        int totalPage=paging.getTotalPage(projectMapper.getProjectCountPage());
+        int startPage = paging.convertStartPage(start);
 
+        pageinfo.put("totalPage", totalPage);
+        pageinfo.put("currentPage", start);
 
+        result.add(pageinfo);
+        result.add(projectMapper.getAllProjectByPage(startPage, size));
 
-
-            return new ResJsonTemplate("200", projectMapper.getAllProjectByPage(pageNumber, displayNumber));
-        } catch (Exception ex) {
-            System.out.println(ex);
-            return new ResJsonTemplate("500", "获取失败");
-
-        }
+        return new ResJsonTemplate("200", result);
     }
+
+
+
 }

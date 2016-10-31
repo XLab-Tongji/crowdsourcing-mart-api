@@ -43,6 +43,10 @@ dependencies {
     compile ("org.apache.commons:commons-lang3:3.4")
     compile ("org.springframework.boot:spring-boot-starter-security")
 
+//    compile("com.github.pagehelper:pagehelper:4.1.6")
+//    compile("com.github.jsqlparser:jsqlparser:0.9.6")
+
+
     runtime("org.hsqldb:hsqldb")
     testCompile("org.springframework.boot:spring-boot-starter-test")
 }
