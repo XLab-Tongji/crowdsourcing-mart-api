@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-/**
+/**页码类
  * Created by SHIKUN on 2016/10/31.
  */
 @Service
@@ -39,6 +39,8 @@ public class Paging {
 
      */
 
+
+
     public int getPagesize() {
 
         return pagesize;
@@ -53,8 +55,6 @@ public class Paging {
         }else{
             return StartPage =(page-1)* pagesize + 1;
         }
-
-
 
     }
 
