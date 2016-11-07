@@ -46,6 +46,7 @@ public class AccountServiceImpl implements AccountService {
                     convertJson.Map2Json(account.getExt_params())));
 
         } catch (Exception ex) {
+            System.out.println(ex);
 
             return new ResJsonTemplate("500", "创建用户失败");
 
