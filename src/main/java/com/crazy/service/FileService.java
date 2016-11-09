@@ -10,7 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
 public interface FileService {
 
     //文件上传
-    public ResJsonTemplate insertFile(MultipartFile file, String path, Long account_id);
-
+    ResJsonTemplate insertFile(MultipartFile file, String path, Long account_id);
 
 }

@@ -2,7 +2,9 @@ package com.crazy.service.impl;
 
 import com.crazy.entity.Account;
 import com.crazy.mapper.AccountMapper;
+import com.crazy.mapper.MartGitConnectionMapper;
 import com.crazy.service.AccountService;
+import com.crazy.service.GitlabAccountService;
 import com.crazy.util.ConvertJson;
 import com.crazy.util.DateUtil;
 import com.crazy.util.Encryption;
@@ -16,7 +18,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-/**用户服务实现类
+/**
+ * 用户服务实现类
  * Created by SHIKUN on 2016/10/29.
  */
 @Service
@@ -35,15 +38,37 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     private DateUtil dateUtil;
 
+    @Autowired
+    private GitlabAccountService gitlabAccountService;
+
+    @Autowired
+    private MartGitConnectionMapper martGitConnectionMapper;
 
     @Override
     public ResJsonTemplate addAccount(Account account) {
         try {
 
-            return new ResJsonTemplate("200", accountMapper.addAcount(account.getUsername(), account.getName(), account.getIcon(),
+
+            return new ResJsonTemplate("200",accountMapper.addAcount(account.getUsername(), account.getName(), account.getIcon(),
                     encryption.doEncryption(account.getPassword()),
                     account.getMobile(), account.getEmail(),
-                    convertJson.Map2Json(account.getExt_params())));
+                    convertJson.Map2Json(account.getExt_params())
+            ));
+
+            /*if (!gitlabAccountService.GitlabAddAccount(account)) {
+                return new ResJsonTemplate("500", "创建gitlab用户失败");
+            }
+
+            int ret = accountMapper.addAcount(account.getUsername(), account.getName(), account.getIcon(),
+                    encryption.doEncryption(account.getPassword()),
+                    account.getMobile(), account.getEmail(),
+                    convertJson.Map2Json(account.getExt_params()));
+            System.out.println(ret);
+            System.out.println(gitlabAccountService.getGitlabId());
+
+            martGitConnectionMapper.addConnection(ret, gitlabAccountService.getGitlabId());
+
+            return new ResJsonTemplate("200", ret);*/
 
         } catch (Exception ex) {
             System.out.println(ex);
@@ -73,7 +98,7 @@ public class AccountServiceImpl implements AccountService {
             result = token;
         }
 
-        if(token!=null){
+        if (token != null) {
             Map tokencons = new HashMap();
 
             tokencons.put("tokens", token);
@@ -84,7 +109,7 @@ public class AccountServiceImpl implements AccountService {
             tokenresult.add(tokencons);
 
             return new ResJsonTemplate("200", tokenresult);
-        }else{
+        } else {
             return new ResJsonTemplate("200", result);
         }
 

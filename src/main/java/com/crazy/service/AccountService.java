@@ -11,14 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 public interface AccountService {
 
     //注册用户
-    public ResJsonTemplate addAccount(Account account);
+    ResJsonTemplate addAccount(Account account);
 
     //用户登录
-    public ResJsonTemplate checkAccount(Account account, String useragent, HttpServletRequest request);
-
-
-
-
+    ResJsonTemplate checkAccount(Account account, String useragent, HttpServletRequest request);
 
 
 }
