@@ -196,8 +196,8 @@ public class ProjectServiceImpl implements ProjectService {
         Map<String, Integer> pageinfo = new HashMap<>();
 
 
-        int totalPage=paging.getTotalPage(projectMapper.getProjectCountPage());
-        int startPage = paging.convertStartPage(start);
+        int totalPage=paging.getTotalPage(projectMapper.getProjectCountPage(),size);
+        int startPage = paging.convertStartPage(start,size);
 
         pageinfo.put("totalPage", totalPage);
         pageinfo.put("currentPage", start);
