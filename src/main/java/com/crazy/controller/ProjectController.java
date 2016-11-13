@@ -51,7 +51,7 @@ public class ProjectController {
     @RequestMapping(value = "/develop/enroll/cancel", method = RequestMethod.DELETE)
     @ResponseBody
     public ResJsonTemplate deleteEnrollInfo(@RequestParam(value = "dev_username") String dev_username,
-                                     @RequestParam(value = "enroll_project_id") Long enroll_project_id) {
+                                            @RequestParam(value = "enroll_project_id") Long enroll_project_id) {
         return projectService.deleteEnrollInfo(dev_username, enroll_project_id);
 
     }
@@ -151,11 +151,13 @@ public class ProjectController {
     }
 
 
-
-
-
+    @RequestMapping(value = "/page/{pageSize}/{pageNumber}", method = RequestMethod.GET)
+    public ResJsonTemplate getAllProjectByPageSizeAndPageNumber(@PathVariable int pageSize, @PathVariable int pageNumber) {
+        return projectService.getProjectListbyPageNumber(pageNumber, pageSize);
+    }
 
 
 }
+
 
 
