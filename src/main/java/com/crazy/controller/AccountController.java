@@ -35,8 +35,6 @@ public class AccountController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
     public ResJsonTemplate addAccount(@RequestBody Account account) {
-
-        System.out.println(account.getExt_params());
         return accountService.addAccount(account);
     }
 

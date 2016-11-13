@@ -11,22 +11,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class Paging {
 
-//    private int pagesize;
-//
-//
-//
-//    @Autowired
-//    public Paging( @Value("#{new Integer(10)}") int pagesize) {
-//        this.pagesize = pagesize;
-//    }
+    private int pagesize;
 
 
-    /*
-    得到总页数
-    count是查询的总数量
-    pagenumber返回的总页码数
-     */
-    public int getTotalPage(int count,int pagesize) {
+
+    @Autowired
+    public Paging( @Value("#{new Integer(10)}") int pagesize) {
+        this.pagesize = pagesize;
+    }
+
+    public int getTotalPage(int count) {
 
         int pagenumber;
 
@@ -46,16 +40,20 @@ public class Paging {
      */
 
 
-    public int convertStartPage(int page,int pagesize) {
+
+    public int getPagesize() {
+
+        return pagesize;
+    }
+
+    public int convertStartPage(int page) {
 
         int StartPage=0;
 
         if (page == 1) {
             return StartPage;
-        } else {
-
-            StartPage = (page - 1) * pagesize ;
-            return StartPage;
+        }else{
+            return StartPage =(page-1)* pagesize + 1;
         }
 
     }

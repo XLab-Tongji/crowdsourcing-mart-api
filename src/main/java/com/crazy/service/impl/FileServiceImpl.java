@@ -40,6 +40,7 @@ public class FileServiceImpl implements FileService {
                     convertJson.Map2Json(attach.getMeta_data()), account_id, attach.getIs_del()));
 
         } catch (Exception ex) {
+
             System.out.println(ex);
             return new ResJsonTemplate("500", "插入错误");
         }
@@ -48,3 +49,5 @@ public class FileServiceImpl implements FileService {
     }
 
 }
+
+
