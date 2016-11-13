@@ -35,7 +35,8 @@ public class FileServiceImpl implements FileService {
         attach.setAccount_id(account_id);
 
         try {
-            return new ResJsonTemplate("200", attachMapper.insertFile(attach.getAttach_url(), attach.getAttach_name(), attach.getSize(),attach.getAttach_type(),
+            return new ResJsonTemplate("200", attachMapper.insertFile(attach.getAttach_url(), attach.getAttach_name(),
+                    attach.getSize(),attach.getAttach_type(),
                     convertJson.Map2Json(attach.getMeta_data()), account_id, attach.getIs_del()));
 
         } catch (Exception ex) {
