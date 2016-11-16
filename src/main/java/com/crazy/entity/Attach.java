@@ -25,7 +25,7 @@ public class Attach {
 
     private Map<String, String> meta_data = new HashMap<>();
 
-    private Long account_id;
+    private String username;
 
     private Boolean is_del;
 
@@ -93,12 +93,12 @@ public class Attach {
         this.meta_data = meta_data;
     }
 
-    public Long getAccount_id() {
-        return account_id;
+    public String getUsername() {
+        return username;
     }
 
-    public void setAccount_id(Long account_id) {
-        this.account_id = account_id;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Boolean getIs_del() {
@@ -120,7 +120,7 @@ public class Attach {
                 ", create_time=" + create_time +
                 ", update_time=" + update_time +
                 ", meta_data='" + meta_data + '\'' +
-                ", account_id=" + account_id +
+                ", username=" + username +
                 ", is_del=" + is_del +
                 '}';
     }

@@ -23,7 +23,6 @@ public class Application {
 
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
-
     }
 
 

@@ -20,8 +20,8 @@ public class FileUploadController {
 
     @RequestMapping(value = "/icon", method = RequestMethod.POST)
     @ResponseBody
-    public ResJsonTemplate updateHeadIcon(@RequestParam(value = "file") MultipartFile file, @RequestParam(value = "account_id") Long account_id) {
-        return fileService.insertFile(file, "src/main/webapp", account_id);
+    public ResJsonTemplate updateHeadIcon(@RequestParam(value = "file") MultipartFile file, @RequestParam(value = "username") String username) {
+        return fileService.insertFile(file, "src/main/webapp", username);
 
     }
 

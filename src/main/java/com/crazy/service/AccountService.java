@@ -20,5 +20,7 @@ public interface AccountService {
     public ResJsonTemplate checkAccount(Account account, String useragent, HttpServletRequest request);
 
 
+
+
 }
 

@@ -27,17 +27,17 @@ public class FileServiceImpl implements FileService {
 
 
     @Override
-    public ResJsonTemplate insertFile(MultipartFile file, String path, Long account_id) {
+    public ResJsonTemplate insertFile(MultipartFile file, String path, String username) {
 
         Attach attach = new Attach();
 
         attach = FileFunc.fileSave(file, path);
-        attach.setAccount_id(account_id);
+        attach.setUsername(username);
 
         try {
             return new ResJsonTemplate("200", attachMapper.insertFile(attach.getAttach_url(), attach.getAttach_name(),
                     attach.getSize(),attach.getAttach_type(),
-                    convertJson.Map2Json(attach.getMeta_data()), account_id, attach.getIs_del()));
+                    convertJson.Map2Json(attach.getMeta_data()), username, attach.getIs_del()));
 
         } catch (Exception ex) {
 

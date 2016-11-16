@@ -4,6 +4,7 @@ import com.crazy.entity.DevEnrollInfo;
 import com.crazy.entity.DevInfo;
 import com.crazy.entity.Project;
 import com.crazy.mapper.ProjectMapper;
+import com.crazy.service.FileService;
 import com.crazy.service.ProjectService;
 import com.crazy.util.Paging;
 import com.crazy.util.ResJsonTemplate;
@@ -12,11 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**项目相关接口实现
  * Created by SHIKUN on 2016/10/29.
@@ -30,6 +29,10 @@ public class ProjectServiceImpl implements ProjectService {
     @Autowired
     private Paging paging;
 
+    @Autowired
+    private FileService fileService;
+
+
 
     @Override
     public ResJsonTemplate getAllproject() {
@@ -42,13 +45,18 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ResJsonTemplate addProject(Project project) {
-        try {
-            return new ResJsonTemplate("200", projectMapper.addProject(project.getCost(), project.getDelivery_cycle(),
-                    project.getWarranty_cycle(), project.getAddress(), project.getDescription(), project.getUsername(),
-                    project.getProject_type(), project.getProject_name()));
-        } catch (Exception ex) {
-            return new ResJsonTemplate("500", "项目创建失败");
+    public ResJsonTemplate addProject(double cost, int delivery_day, int warrenty_cycle, String address, String description,
+                                      String username, String project_type, String project_name, MultipartFile file) {
+
+
+        ResJsonTemplate response1=fileService.insertFile(file, "src/main/webapp", username);
+
+        int result=projectMapper.addProject(cost, delivery_day, warrenty_cycle, address, description, username, project_type, project_name);
+
+        if((response1.getStatus()=="200")&&(result==1)){
+            return new ResJsonTemplate("200", "创建成功");
+        }else {
+            return new ResJsonTemplate("500", "创建失败");
         }
     }
 

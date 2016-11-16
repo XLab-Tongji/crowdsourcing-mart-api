@@ -5,6 +5,7 @@ import com.crazy.entity.DevInfo;
 import com.crazy.entity.Project;
 import com.crazy.util.ResJsonTemplate;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -17,7 +18,8 @@ public interface ProjectService {
     ResJsonTemplate getAllproject();
 
     //用户创建需求
-    ResJsonTemplate addProject(Project project);
+    ResJsonTemplate addProject(double cost, int delivery_day, int warrenty_cycle, String address, String description,
+                               String username, String project_type, String project_name, MultipartFile file);
 
     //用户报名接口
     ResJsonTemplate addEnrollInfo(DevEnrollInfo devEnrollInfo);

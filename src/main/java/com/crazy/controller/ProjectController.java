@@ -5,12 +5,15 @@ import com.crazy.mapper.ProjectMapper;
 import com.crazy.entity.DevEnrollInfo;
 import com.crazy.entity.DevInfo;
 import com.crazy.entity.Project;
+import com.crazy.service.FileService;
 import com.crazy.service.ProjectService;
 import com.crazy.util.ResJsonTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,12 +27,21 @@ public class ProjectController {
     @Autowired
     private ProjectService projectService;
 
+    @Autowired
+    private FileService fileService;
+
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
-    public ResJsonTemplate addProject(@RequestBody Project project) {
+    public ResJsonTemplate addProject(@RequestParam(value = "file") MultipartFile file,@RequestParam(value = "project_type")String project_type,
+                                      @RequestParam(value = "cost")double cost,@RequestParam(value = "delivery_cycle") int delivery_cycle,
+                                      @RequestParam(value = "warranty_cycle")int warranty_cycle,
+                                      @RequestParam(value = "address")String address,@RequestParam(value = "description")String description,
+                                      @RequestParam(value = "project_name")String project_name,@RequestParam(value = "username")String username) {
 
-        return projectService.addProject(project);
+        return projectService.addProject(cost, delivery_cycle, warranty_cycle, address, description, username, project_type, project_name, file);
+
+
 
     }
 
