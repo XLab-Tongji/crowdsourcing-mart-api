@@ -19,7 +19,7 @@ public interface ProjectService {
 
     //用户创建需求
     ResJsonTemplate addProject(double cost, int delivery_day, int warrenty_cycle, String address, String description,
-                               String username, String project_type, String project_name, MultipartFile file);
+                               String username, String project_type, String project_name);
 
     //用户报名接口
     ResJsonTemplate addEnrollInfo(DevEnrollInfo devEnrollInfo);

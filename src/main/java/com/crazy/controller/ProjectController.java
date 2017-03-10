@@ -33,13 +33,13 @@ public class ProjectController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
-    public ResJsonTemplate addProject(@RequestParam(value = "file") MultipartFile file,@RequestParam(value = "project_type")String project_type,
+    public ResJsonTemplate addProject(@RequestParam(value = "project_type")String project_type,
                                       @RequestParam(value = "cost")double cost,@RequestParam(value = "delivery_cycle") int delivery_cycle,
                                       @RequestParam(value = "warranty_cycle")int warranty_cycle,
                                       @RequestParam(value = "address")String address,@RequestParam(value = "description")String description,
                                       @RequestParam(value = "project_name")String project_name,@RequestParam(value = "username")String username) {
 
-        return projectService.addProject(cost, delivery_cycle, warranty_cycle, address, description, username, project_type, project_name, file);
+        return projectService.addProject(cost, delivery_cycle, warranty_cycle, address, description, username, project_type, project_name);
 
 
 

@@ -46,18 +46,18 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ResJsonTemplate addProject(double cost, int delivery_day, int warrenty_cycle, String address, String description,
-                                      String username, String project_type, String project_name, MultipartFile file) {
+                                      String username, String project_type, String project_name) {
 
 
-        ResJsonTemplate response1=fileService.insertFile(file, "src/main/webapp", username);
+//        ResJsonTemplate response1=fileService.insertFile(file, "src/main/webapp", username);
 
         int result=projectMapper.addProject(cost, delivery_day, warrenty_cycle, address, description, username, project_type, project_name);
 
-        if((response1.getStatus()=="200")&&(result==1)){
+//        if((response1.getStatus()=="200")&&(result==1)){
             return new ResJsonTemplate("200", "创建成功");
-        }else {
-            return new ResJsonTemplate("500", "创建失败");
-        }
+//        }else {
+//            return new ResJsonTemplate("500", "创建失败");
+//        }
     }
 
     @Override
