@@ -1,7 +1,7 @@
 package com.crazy.util;
 
 import com.crazy.entity.Attach;
-import org.springframework.expression.ExpressionException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,7 +19,8 @@ import java.util.UUID;
 
 @Service
 public class FileFunc {
-
+    @Autowired
+    private static  ConvertJson convertJson;
     public static Attach fileSave(MultipartFile file, String path) {
 
         Attach attach = new Attach();
@@ -54,8 +55,11 @@ public class FileFunc {
             attach.setAttach_url(finalPath);
             attach.setSize(((Long) file.getSize()).intValue());
             attach.setIs_del(false);
-            attach.getMeta_data().put("ContentType", file.getContentType());
-            Map<String, String> result = attach.getMeta_data();
+           Map<String,String> meta_data = convertJson.Json2Map(attach.getMeta_data());
+            meta_data.put("ContentType", file.getContentType());
+            attach.setMeta_data(convertJson.Map2Json(meta_data));
+         //   attach.getMeta_data().put("ContentType", file.getContentType());
+            Map<String, String> result = convertJson.Json2Map(attach.getMeta_data());
             //attach.setAttach_name("服务器文件");
 
 

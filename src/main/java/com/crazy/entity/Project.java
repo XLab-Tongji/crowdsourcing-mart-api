@@ -1,14 +1,19 @@
 package com.crazy.entity;
 
+import javax.persistence.*;
 import java.io.File;
 import java.util.Date;
 
 /**
  * Created by SHIKUN on 2016/9/12.
  */
+@Entity
+@Table(name="PROJECT")
 public class Project {
-
-    private Long project_id;
+    @Id
+    @GeneratedValue
+    @Column(name = "project_id")
+    private Long projectId;
 
     private double cost;
 
@@ -33,14 +38,27 @@ public class Project {
     private Date enroll_stop_time;
 
     private Date update_date;
-
-
-    public Long getProject_id() {
-        return project_id;
+    public  Project()
+    {}
+    public  Project( double cost,  Integer devlivery_cycle,  Integer warranty_cycle,
+                     String address, String description,  String username,
+                     String project_type,  String project_name)
+    {
+        this.cost = cost;
+        this.delivery_cycle = devlivery_cycle;
+        this.warranty_cycle = warranty_cycle;
+        this.address = address;
+        this.description = description;
+        this.username = username;
+        this.project_type = project_type;
+        this.project_name = project_name;
+    }
+    public Long getprojectId() {
+        return projectId;
     }
 
     public void setProject_id(Long project_id) {
-        this.project_id = project_id;
+        this.projectId = project_id;
     }
 
     public Date getEnroll_stop_time() {
@@ -147,7 +165,7 @@ public class Project {
     @Override
     public String toString() {
         return "Project{" +
-                "project_id=" + project_id +
+                "project_id=" + projectId +
                 ", cost=" + cost +
                 ", delivery_cycle=" + delivery_cycle +
                 ", warranty_cycle=" + warranty_cycle +

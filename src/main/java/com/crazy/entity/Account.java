@@ -1,22 +1,33 @@
 package com.crazy.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
-import java.util.Map;
-
 /**
  * Created by SHIKUN on 2016/9/29.
  */
+
+/**
+ * Account 与 数据库ACCOUT映射
+ */
+@Entity
+@Table(name="ACCOUNT")
 public class Account {
 
-    private int id;
-
+    @Id
+    @GeneratedValue
+    private Long account_id;
     private String username;
+    private String password;
+     private String  ext_params;
+
 
     private String name;
 
     private String icon;
 
-    private String password;
 
     private String email;
 
@@ -24,11 +35,23 @@ public class Account {
 
     private Date update_time;
 
-    private Map<String,String> ext_params;
 
     private String mobile;
 
     private Long dev_id;
+    public Account(){}
+    public Account(String username,  String name, String icon,
+                   String password,  String mobile,
+                   String email, String ext_params)
+    {
+        this.username = username;
+        this.name = name;
+        this.icon = icon;
+        this.password = password;
+        this.mobile = mobile;
+        this.email = email;
+        this.ext_params = ext_params;
+    }
 
     public Long getDev_id() {
         return dev_id;
@@ -46,20 +69,21 @@ public class Account {
         this.mobile = mobile;
     }
 
-    public Map<String,String> getExt_params() {
+    public String getExt_params() {
         return ext_params;
     }
 
-    public void setExt_params(Map<String,String> ext_params) {
+
+    public void setExt_params(String ext_params) {
         this.ext_params = ext_params;
     }
 
-    public int getId() {
-        return id;
+    public Long getAccount_id() {
+        return account_id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setAccount_id(Long id) {
+        this.account_id = id;
     }
 
     public String getUsername() {
@@ -118,4 +142,16 @@ public class Account {
         this.update_time = update_time;
     }
 
+
 }
+
+
+
+
+
+
+
+
+
+
+

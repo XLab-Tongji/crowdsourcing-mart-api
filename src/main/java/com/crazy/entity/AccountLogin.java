@@ -1,12 +1,20 @@
 package com.crazy.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 
 /**
  * Created by SHIKUN on 2016/10/9.
  */
+@Entity
+@Table(name="ACCOUNT_LOGIN_LOG")
 public class AccountLogin {
-
+    @Id
+    @GeneratedValue
+    private Long id;
     private String ip;
 
     private String device;
@@ -21,9 +29,23 @@ public class AccountLogin {
 
     private String plat;
 
-    private Long id;
+
 
     private String username;
+    public AccountLogin()
+    {}
+    public AccountLogin( String ip, String token,  Date create_time,
+                         Date expire_time,  Long account_id,
+                        String plat,  String username)
+    {
+        this.ip = ip;
+        this.token = token;
+        this.create_time = create_time;
+        this.expire_time = expire_time;
+        this.account_id = account_id;
+        this.plat = plat;
+        this.username = username;
+    }
 
     public String getUsername() {
         return username;

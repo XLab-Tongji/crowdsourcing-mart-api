@@ -1,7 +1,9 @@
 package com.crazy.service.impl;
 
+import com.crazy.JPA.AccountLoginRepository;
+import com.crazy.JPA.AccountRepository;
 import com.crazy.entity.Account;
-import com.crazy.mapper.AccountMapper;
+import com.crazy.entity.AccountLogin;
 import com.crazy.mapper.MartGitConnectionMapper;
 import com.crazy.service.AccountService;
 import com.crazy.service.GitlabAccountService;
@@ -27,7 +29,10 @@ public class AccountServiceImpl implements AccountService {
 
 
     @Autowired
-    private AccountMapper accountMapper;
+    private AccountRepository accountRepository;
+    @Autowired
+    private AccountLoginRepository accountLoginRepository;
+
 
     @Autowired
     private Encryption encryption;
@@ -47,13 +52,25 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public ResJsonTemplate addAccount(Account account) {
         try {
-
-
+            Account savedAccount = new Account(account.getUsername(), account.getName(), account.getIcon(),
+                    encryption.doEncryption(account.getPassword()),
+                    account.getMobile(), account.getEmail(),
+                    account.getExt_params());
+            return new ResJsonTemplate("200",accountRepository.save(savedAccount));
+            /*
+            return new ResJsonTemplate("200",accountMapper.addAcount(account.getUsername(), account.getName(), account.getIcon(),
+                    encryption.doEncryption(account.getPassword()),
+                    account.getMobile(), account.getEmail(),
+                    account.getExt_params()
+            ));
+            */
+            /*
             return new ResJsonTemplate("200",accountMapper.addAcount(account.getUsername(), account.getName(), account.getIcon(),
                     encryption.doEncryption(account.getPassword()),
                     account.getMobile(), account.getEmail(),
                     convertJson.Map2Json(account.getExt_params())
             ));
+            */
 
             /*if (!gitlabAccountService.GitlabAddAccount(account)) {
                 return new ResJsonTemplate("500", "创建gitlab用户失败");
@@ -84,17 +101,25 @@ public class AccountServiceImpl implements AccountService {
 
         String result = null;
         String token = null;
-        Map<String, String> selectResult = accountMapper.getCheckInfo(account.getUsername());
+        String tmep = account.getUsername();
+        Account selectResult = accountRepository.findByUsername(account.getUsername());
+   //     Map<String, String> selectResult = accountMapper.getCheckInfo(account.getUsername());
 
         if (selectResult == null) {
             result = "没有此用户";
-        } else if (!encryption.checkPassword(account.getPassword(), selectResult.get("password"))) {
+        } else if (!encryption.checkPassword(account.getPassword(), selectResult.getPassword())) {
             result = "密码错误";
         } else {
             token = encryption.createToken();
+            /*
             accountMapper.addLoginLog(request.getRemoteAddr(), token, dateUtil.Str2Date(dateUtil.getNowTime()),
                     dateUtil.Str2Date(dateUtil.setExpire(30)), accountMapper.getUserId(account.getUsername()),
                     useragent, account.getUsername());
+            */
+            accountLoginRepository.save(new AccountLogin( request.getRemoteAddr(), token, dateUtil.Str2Date(dateUtil.getNowTime()),
+                    dateUtil.Str2Date(dateUtil.setExpire(30)),  selectResult.getAccount_id(),
+                    useragent, selectResult.getUsername()));
+
             result = token;
         }
 

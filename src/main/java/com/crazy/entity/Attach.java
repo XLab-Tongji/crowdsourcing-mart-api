@@ -1,14 +1,19 @@
 package com.crazy.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**附件功能
  * Created by SHIKUN on 2016/9/29.
  */
+@Entity
+@Table(name="ATTACH")
 public class Attach {
-
+    @Id
+    @GeneratedValue
     private Long attach_id;
 
     private String attach_url;
@@ -23,8 +28,8 @@ public class Attach {
 
     private Date update_time;
 
-    private Map<String, String> meta_data = new HashMap<>();
-
+   // private Map<String,String> meta_data;
+    private String meta_data;
     private String username;
 
     private Boolean is_del;
@@ -85,11 +90,11 @@ public class Attach {
         this.update_time = update_time;
     }
 
-    public Map<String, String> getMeta_data() {
+    public String getMeta_data() {
         return meta_data;
     }
 
-    public void setMeta_data(Map<String, String> meta_data) {
+    public void setMeta_data(String meta_data) {
         this.meta_data = meta_data;
     }
 

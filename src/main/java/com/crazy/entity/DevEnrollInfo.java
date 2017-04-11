@@ -1,25 +1,43 @@
 package com.crazy.entity;
 
+import javax.persistence.*;
 import java.util.Date;
 
 /**
  * Created by SHIKUN on 2016/10/16.
  */
-public class DevEnrollInfo {
+@Entity
+@Table(name="DEV_ENROLL_INFO")
+//多主键标志
+@IdClass(DevEnrollInfoPK.class)
+public class DevEnrollInfo  {
 
+    @Id
+    @GeneratedValue
+    private Long id;
+    @Id
     private String username;
-
-    private Long project_id;
+    @Id
+    @Column(name = "project_id")
+    private Long projectId;
 
     private Date enroll_date;
-
-
+    public DevEnrollInfo( String username,  Long project_id)
+    {
+        this.username = username;
+        this.projectId = project_id;
+        enroll_date = new Date();
+    }
+    public Long getId()
+    {
+        return id;
+    }
     public Long getProject_id() {
-        return project_id;
+        return projectId;
     }
 
     public void setProject_id(Long project_id) {
-        this.project_id = project_id;
+        this.projectId = project_id;
     }
 
     public String getUsername() {
@@ -43,7 +61,7 @@ public class DevEnrollInfo {
     public String toString() {
         return "DevEnrollInfo{" +
                 "username='" + username + '\'' +
-                ", enroll_project_id=" + project_id +
+                ", enroll_project_id=" + projectId +
                 ", enroll_date=" + enroll_date +
                 '}';
     }

@@ -2,12 +2,8 @@ package com.crazy.util;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.Null;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -53,5 +49,18 @@ public class ConvertJson {
 
         return listRes;
     }
+    public Map Json2Map(String json)
+    {
+        Map map = null;
+        try {
+            map = mapper.readValue(json, new TypeReference<Map>() {
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return map;
+
+    }
+
 
 }

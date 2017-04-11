@@ -1,20 +1,31 @@
 package com.crazy.entity;
 
+import javax.persistence.*;
 import java.util.Date;
 
 /**
  * Created by SHIKUN on 2016/10/26.
  */
+@Entity
+@Table(name="DEVELOPING_INFO")
+@IdClass(DevInfoPK.class)
 public class DevInfo {
-
+    @Id
+    @GeneratedValue
     private Long id;
-
+    @Id
     private String username;
-
-    private Long project_id;
+    @Id
+    @Column(name = "project_id")
+    private Long projectId;
 
     private Date confirm_date;
-
+    public DevInfo(String username,Long project_id)
+    {
+        this.username = username;
+        this.projectId = project_id;
+        confirm_date = new Date();
+    }
     public Long getId() {
         return id;
     }
@@ -32,11 +43,11 @@ public class DevInfo {
     }
 
     public Long getProject_id() {
-        return project_id;
+        return projectId;
     }
 
     public void setProject_id(Long project_id) {
-        this.project_id = project_id;
+        this.projectId = project_id;
     }
 
     public Date getConfirm_date() {
@@ -52,7 +63,7 @@ public class DevInfo {
         return "DevInfo{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
-                ", project_id=" + project_id +
+                ", project_id=" + projectId +
                 ", confirm_date=" + confirm_date +
                 '}';
     }
