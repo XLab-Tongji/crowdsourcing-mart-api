@@ -7,7 +7,7 @@ import java.util.Date;
  * Created by SHIKUN on 2016/10/16.
  */
 @Entity
-@Table(name="dev_enroll_info")
+@Table(name="DevEnrollInfo")
 //多主键标志
 @IdClass(DevEnrollInfoPK.class)
 public class DevEnrollInfo  {

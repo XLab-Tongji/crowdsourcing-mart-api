@@ -10,7 +10,7 @@ import java.util.Date;
  * Created by SHIKUN on 2016/10/15.
  */
 @Entity
-@Table(name="developer")
+@Table(name="Developer")
 public class Developer {
     @Id
     @GeneratedValue

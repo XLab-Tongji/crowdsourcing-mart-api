@@ -13,7 +13,7 @@ import java.util.Date;
  * Account 与 数据库ACCOUT映射
  */
 @Entity
-@Table(name="account")
+@Table(name="Account")
 public class Account {
 
     @Id

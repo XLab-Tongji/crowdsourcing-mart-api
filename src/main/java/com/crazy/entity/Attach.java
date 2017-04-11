@@ -10,7 +10,7 @@ import java.util.Date;
  * Created by SHIKUN on 2016/9/29.
  */
 @Entity
-@Table(name="attach")
+@Table(name="Attach")
 public class Attach {
     @Id
     @GeneratedValue
