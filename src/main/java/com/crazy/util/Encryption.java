@@ -1,5 +1,6 @@
 package com.crazy.util;
 
+import com.crazy.repository.AccountLoginRepository;
 import com.crazy.mapper.AccountMapper;
 import com.crazy.entity.AccountLogin;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ public class Encryption {
 
     @Autowired
     private AccountMapper accountMapper;
+    @Autowired
+    private AccountLoginRepository accountLoginRepository;
 
     @Autowired
     private DateUtil dateUtil;
@@ -47,7 +50,8 @@ public class Encryption {
     public String tokenValidate(String token) {
 
         String result = null;
-        AccountLogin tokenInfo = accountMapper.getTokenInfo(token);
+     //   AccountLogin tokenInfo = accountMapper.getTokenInfo(token);
+        AccountLogin tokenInfo = accountLoginRepository.findByToken(token);
         Date expire_time = tokenInfo.getExpire_time();
         Long account_id = tokenInfo.getAccount_id();
         Long id = tokenInfo.getId();
@@ -58,8 +62,15 @@ public class Encryption {
             result = "token有效";
         } else {
             token = createToken();
+            AccountLogin accountLogin = accountLoginRepository.findById(id);
+            accountLogin.setToken(token);
+            accountLogin.setCreate_time(dateUtil.Str2Date(dateUtil.getNowTime()));
+            accountLogin.setExpire_time(dateUtil.Str2Date(dateUtil.setExpire(30)));
+            /*
             accountMapper.updateToken(token, dateUtil.Str2Date(dateUtil.getNowTime()),
                     dateUtil.Str2Date(dateUtil.setExpire(30)), id);
+                    */
+            accountLoginRepository.save(accountLogin);
             result = token;
         }
 

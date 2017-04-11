@@ -1,8 +1,8 @@
 package com.crazy.service.impl;
 
-import com.crazy.JPA.DevEnrollInfoRepository;
-import com.crazy.JPA.DevInfoRepository;
-import com.crazy.JPA.ProjectRepository;
+import com.crazy.repository.DevEnrollInfoRepository;
+import com.crazy.repository.DevInfoRepository;
+import com.crazy.repository.ProjectRepository;
 import com.crazy.entity.DevEnrollInfo;
 import com.crazy.entity.DevInfo;
 import com.crazy.entity.Project;

@@ -1,4 +1,4 @@
-package com.crazy.JPA;
+package com.crazy.repository;
 
 import com.crazy.entity.Account;
 import org.springframework.data.repository.CrudRepository;
@@ -24,6 +24,7 @@ public interface AccountRepository extends CrudRepository<Account,Long> {
      * @return 返回符合username的account对象
      */
     public Account findByUsername(String username);
+
 
 
 }

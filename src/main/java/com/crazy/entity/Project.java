@@ -8,7 +8,7 @@ import java.util.Date;
  * Created by SHIKUN on 2016/9/12.
  */
 @Entity
-@Table(name="PROJECT")
+@Table(name="project")
 public class Project {
     @Id
     @GeneratedValue

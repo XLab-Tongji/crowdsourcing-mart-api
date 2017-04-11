@@ -1,4 +1,4 @@
-package com.crazy.JPA;
+package com.crazy.repository;
 
 import com.crazy.entity.test;
 import org.springframework.data.repository.CrudRepository;

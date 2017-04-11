@@ -1,7 +1,7 @@
 package com.crazy.service.impl;
 
-import com.crazy.JPA.AccountLoginRepository;
-import com.crazy.JPA.AccountRepository;
+import com.crazy.repository.AccountLoginRepository;
+import com.crazy.repository.AccountRepository;
 import com.crazy.entity.Account;
 import com.crazy.entity.AccountLogin;
 import com.crazy.mapper.MartGitConnectionMapper;

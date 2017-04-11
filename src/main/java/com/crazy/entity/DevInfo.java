@@ -7,7 +7,7 @@ import java.util.Date;
  * Created by SHIKUN on 2016/10/26.
  */
 @Entity
-@Table(name="DEVELOPING_INFO")
+@Table(name="developing_info")
 @IdClass(DevInfoPK.class)
 public class DevInfo {
     @Id

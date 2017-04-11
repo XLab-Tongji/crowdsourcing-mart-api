@@ -10,7 +10,7 @@ import java.util.Date;
  * Created by SHIKUN on 2016/10/9.
  */
 @Entity
-@Table(name="ACCOUNT_LOGIN_LOG")
+@Table(name="account_login_log")
 public class AccountLogin {
     @Id
     @GeneratedValue
@@ -34,6 +34,7 @@ public class AccountLogin {
     private String username;
     public AccountLogin()
     {}
+
     public AccountLogin( String ip, String token,  Date create_time,
                          Date expire_time,  Long account_id,
                         String plat,  String username)

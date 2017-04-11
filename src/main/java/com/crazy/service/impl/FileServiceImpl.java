@@ -1,6 +1,6 @@
 package com.crazy.service.impl;
 
-import com.crazy.JPA.AttachRepository;
+import com.crazy.repository.AttachRepository;
 import com.crazy.entity.Attach;
 import com.crazy.mapper.AttachMapper;
 import com.crazy.service.FileService;

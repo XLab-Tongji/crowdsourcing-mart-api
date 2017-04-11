@@ -6,6 +6,11 @@ import java.io.Serializable;
 /**
  * Created by jieping on 2017-04-11.
  */
+/**
+ * 多主键需要实现 Serializable
+ * 里面存放所需主键
+ * 并且实现equals 和 hashCode
+ */
 @IdClass(DevInfoPK.class)
 public class DevInfoPK implements Serializable{
     private Long id;
