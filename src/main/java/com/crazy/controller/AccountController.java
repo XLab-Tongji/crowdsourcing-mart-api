@@ -1,19 +1,13 @@
 package com.crazy.controller;
 
-import com.crazy.mapper.AccountMapper;
 import com.crazy.entity.Account;
-
 import com.crazy.service.AccountService;
-import com.crazy.util.*;
-
+import com.crazy.util.Encryption;
+import com.crazy.util.ResJsonTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 
 /**Account Controller

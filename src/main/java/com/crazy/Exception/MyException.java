@@ -1,4 +1,4 @@
-package com.crazy.Exception;
+package com.crazy.exception;
 
 /**
  * 异常捕获类

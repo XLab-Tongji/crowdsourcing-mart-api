@@ -1,8 +1,7 @@
 package com.crazy.util;
 
-import com.crazy.repository.AccountLoginRepository;
-import com.crazy.mapper.AccountMapper;
 import com.crazy.entity.AccountLogin;
+import com.crazy.repository.AccountLoginRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,8 +15,6 @@ import java.util.UUID;
 @Service
 public class Encryption {
 
-    @Autowired
-    private AccountMapper accountMapper;
     @Autowired
     private AccountLoginRepository accountLoginRepository;
 

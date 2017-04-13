@@ -1,8 +1,7 @@
 package com.crazy.service.impl;
 
-import com.crazy.repository.AttachRepository;
 import com.crazy.entity.Attach;
-import com.crazy.mapper.AttachMapper;
+import com.crazy.repository.AttachRepository;
 import com.crazy.service.FileService;
 import com.crazy.util.ConvertJson;
 import com.crazy.util.FileFunc;
@@ -18,9 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class FileServiceImpl implements FileService {
 
-
-    @Autowired
-    private AttachMapper attachMapper;
     @Autowired
     private AttachRepository attachRepository;
 

@@ -13,7 +13,7 @@ import java.util.Date;
  * Account 与 数据库ACCOUT映射
  */
 @Entity
-@Table(name="Account")
+@Table(name = "Account")
 public class Account {
 
     @Id
@@ -21,7 +21,7 @@ public class Account {
     private Long account_id;
     private String username;
     private String password;
-     private String  ext_params;
+    private String ext_params;
 
 
     private String name;
@@ -39,51 +39,27 @@ public class Account {
     private String mobile;
 
     private Long dev_id;
-    public Account(){}
-    public Account(String username,  String name, String icon,
-                   String password,  String mobile,
-                   String email, String ext_params)
-    {
+
+
+    private int role_id;
+
+    public Account(String username, String password, String ext_params, String name, String icon, String email, String mobile, int role_id) {
         this.username = username;
+        this.password = password;
+        this.ext_params = ext_params;
         this.name = name;
         this.icon = icon;
-        this.password = password;
-        this.mobile = mobile;
         this.email = email;
-        this.ext_params = ext_params;
-    }
-
-    public Long getDev_id() {
-        return dev_id;
-    }
-
-    public void setDev_id(Long dev_id) {
-        this.dev_id = dev_id;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
         this.mobile = mobile;
-    }
-
-    public String getExt_params() {
-        return ext_params;
-    }
-
-
-    public void setExt_params(String ext_params) {
-        this.ext_params = ext_params;
+        this.role_id = role_id;
     }
 
     public Long getAccount_id() {
         return account_id;
     }
 
-    public void setAccount_id(Long id) {
-        this.account_id = id;
+    public void setAccount_id(Long account_id) {
+        this.account_id = account_id;
     }
 
     public String getUsername() {
@@ -92,6 +68,22 @@ public class Account {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getExt_params() {
+        return ext_params;
+    }
+
+    public void setExt_params(String ext_params) {
+        this.ext_params = ext_params;
     }
 
     public String getName() {
@@ -108,14 +100,6 @@ public class Account {
 
     public void setIcon(String icon) {
         this.icon = icon;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getEmail() {
@@ -142,7 +126,29 @@ public class Account {
         this.update_time = update_time;
     }
 
+    public String getMobile() {
+        return mobile;
+    }
 
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public Long getDev_id() {
+        return dev_id;
+    }
+
+    public void setDev_id(Long dev_id) {
+        this.dev_id = dev_id;
+    }
+
+    public int getRole_id() {
+        return role_id;
+    }
+
+    public void setRole_id(int role_id) {
+        this.role_id = role_id;
+    }
 }
 
 

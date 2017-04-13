@@ -2,10 +2,7 @@ package com.crazy.service;
 
 import com.crazy.entity.DevEnrollInfo;
 import com.crazy.entity.DevInfo;
-import com.crazy.entity.Project;
 import com.crazy.util.ResJsonTemplate;
-import org.springframework.data.domain.Pageable;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -62,7 +59,4 @@ public interface ProjectService {
 
     //根据页码来获取项目列表 start是页码，size是每页显示的数目
     ResJsonTemplate getProjectListbyPageNumber(int start, int size);
-
-
-
 }

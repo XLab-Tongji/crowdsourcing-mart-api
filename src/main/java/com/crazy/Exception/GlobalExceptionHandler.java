@@ -1,4 +1,4 @@
-package com.crazy.Exception;
+package com.crazy.exception;
 
 import com.crazy.domain.ErrorInfo;
 import org.springframework.web.bind.annotation.ControllerAdvice;

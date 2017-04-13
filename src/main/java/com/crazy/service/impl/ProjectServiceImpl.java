@@ -19,7 +19,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-/**项目相关接口实现
+/**
+ * 项目相关接口实现
  * Created by SHIKUN on 2016/10/29.
  */
 @Service
@@ -41,12 +42,11 @@ public class ProjectServiceImpl implements ProjectService {
     private FileService fileService;
 
 
-
     @Override
     public ResJsonTemplate getAllproject() {
 
         try {
-     //       return new ResJsonTemplate("200", projectMapper.searchProjectall());
+            //       return new ResJsonTemplate("200", projectMapper.searchProjectall());
             return new ResJsonTemplate("200", projectRepository.findAll());
         } catch (Exception ex) {
             return new ResJsonTemplate("500", "查询失败");
@@ -60,10 +60,10 @@ public class ProjectServiceImpl implements ProjectService {
 
 //        ResJsonTemplate response1=fileService.insertFile(file, "src/main/webapp", username);
 
- //       int result=projectMapper.addProject(cost, delivery_day, warrenty_cycle, address, description, username, project_type, project_name);
-          projectRepository.save(new Project(cost, delivery_day, warrenty_cycle, address, description, username, project_type, project_name));
+        //       int result=projectMapper.addProject(cost, delivery_day, warrenty_cycle, address, description, username, project_type, project_name);
+        projectRepository.save(new Project(cost, delivery_day, warrenty_cycle, address, description, username, project_type, project_name));
 //        if((response1.getStatus()=="200")&&(result==1)){
-            return new ResJsonTemplate("200", "创建成功");
+        return new ResJsonTemplate("200", "创建成功");
 //        }else {
 //            return new ResJsonTemplate("500", "创建失败");
 //        }
@@ -89,10 +89,9 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ResJsonTemplate deleteEnrollInfo(String username, Long enroll_project_id) {
         try {
-  //          return new ResJsonTemplate("200", projectMapper.deleteEnrollInfo(enroll_project_id,username));
-            List<DevEnrollInfo> list = devEnrollInfoRepository.findByProjectIdAndUsername(enroll_project_id,username);
-            for(int i = 0;i<list.size();i++)
-            {
+            //          return new ResJsonTemplate("200", projectMapper.deleteEnrollInfo(enroll_project_id,username));
+            List<DevEnrollInfo> list = devEnrollInfoRepository.findByProjectIdAndUsername(enroll_project_id, username);
+            for (int i = 0; i < list.size(); i++) {
                 devEnrollInfoRepository.delete(list.get(i));
             }
             return new ResJsonTemplate("200", "delete successfully");
@@ -104,7 +103,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ResJsonTemplate getEnrollCountByProjectId(Long id) {
         try {
-         //   return new ResJsonTemplate("200", projectMapper.getProjectCount(id));
+            //   return new ResJsonTemplate("200", projectMapper.getProjectCount(id));
             return new ResJsonTemplate("200", devEnrollInfoRepository.findByProjectId(id).size());
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -115,7 +114,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ResJsonTemplate getEnrollListByDevUsername(String username) {
         try {
-            return new ResJsonTemplate("200", projectMapper.searchProjectInfobyUsername(username));
+            return new ResJsonTemplate("200", projectRepository.searchProjectInfobyUsername(username));
         } catch (Exception ex) {
             ex.printStackTrace();
             return new ResJsonTemplate("500", "未查询到项目");
@@ -125,8 +124,8 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ResJsonTemplate getProjectListbyusername(String username) {
         try {
-      //      return new ResJsonTemplate("200", projectMapper.searchProjectbycreatUser(username));
-            return new ResJsonTemplate("200",projectRepository.findByUsername(username));
+            //      return new ResJsonTemplate("200", projectMapper.searchProjectbycreatUser(username));
+            return new ResJsonTemplate("200", projectRepository.findByUsername(username));
         } catch (Exception ex) {
             return new ResJsonTemplate("500", "查询失败");
         }
@@ -136,7 +135,7 @@ public class ProjectServiceImpl implements ProjectService {
     public ResJsonTemplate getProjectDetailbyUsernameId(String username, Long id) {
         try {
 
-       //     return new ResJsonTemplate("200", projectMapper.searchProjectbyId(id, username));
+            //     return new ResJsonTemplate("200", projectMapper.searchProjectbyId(id, username));
             return new ResJsonTemplate("200", projectRepository.findByProjectIdAndUsername(id, username));
         } catch (Exception ex) {
             return new ResJsonTemplate("500", "查询失败");
@@ -146,7 +145,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ResJsonTemplate getProjectDetailByProjectId(Long id) {
         try {
-     //       return new ResJsonTemplate("200", projectMapper.searchProjectonlyId(id));
+            //       return new ResJsonTemplate("200", projectMapper.searchProjectonlyId(id));
             return new ResJsonTemplate("200", projectRepository.findByProjectId(id));
         } catch (Exception ex) {
             return new ResJsonTemplate("500", "查询失败");
@@ -173,8 +172,8 @@ public class ProjectServiceImpl implements ProjectService {
     public ResJsonTemplate confirmDevelopMember(List<DevInfo> devInfos) {
         try {
             for (int i = 0; i < devInfos.size(); i++) {
-                  devInfoRepository.save(devInfos.get(i));
-       //         projectMapper.insertDevelopingInfo(devInfos.get(i).getUsername(), devInfos.get(i).getProject_id());
+                devInfoRepository.save(devInfos.get(i));
+                //         projectMapper.insertDevelopingInfo(devInfos.get(i).getUsername(), devInfos.get(i).getProject_id());
 
             }
             return new ResJsonTemplate("200", "ok");
@@ -186,7 +185,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ResJsonTemplate getDeveloperCountbyProjectId(Long id) {
         try {
-       //     return new ResJsonTemplate("200", projectMapper.getDevelopProjectCount(id));
+            //     return new ResJsonTemplate("200", projectMapper.getDevelopProjectCount(id));
             return new ResJsonTemplate("200", devInfoRepository.findByProjectId(id).size());
         } catch (Exception e) {
             System.out.println(e);
@@ -197,7 +196,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ResJsonTemplate getDevProjectListbyDevelopUsername(String username) {
         try {
-            return new ResJsonTemplate("200", projectMapper.searchDevelopingProjectbyUsername(username));
+            return new ResJsonTemplate("200", projectRepository.searchDevelopingProjectbyUsername(username));
         } catch (Exception ex) {
             return new ResJsonTemplate("500", "查询失败");
         }
@@ -206,14 +205,13 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ResJsonTemplate getDevelopUsernameListByProjectId(Long id) {
         try {
-     //       return new ResJsonTemplate("200", projectMapper.searchEnrollmemberbyProjectId(id));
+            //       return new ResJsonTemplate("200", projectMapper.searchEnrollmemberbyProjectId(id));
             List<DevEnrollInfo> listD = devEnrollInfoRepository.findByProjectId(id);
             List<String> listS = new LinkedList<String>();
-            for(int i = 0;i<listD.size();i++)
-            {
+            for (int i = 0; i < listD.size(); i++) {
                 listS.add(listD.get(i).getUsername());
             }
-            return new ResJsonTemplate("200",listS);
+            return new ResJsonTemplate("200", listS);
         } catch (Exception e) {
             return new ResJsonTemplate("500", "查询失败");
         }
@@ -223,7 +221,7 @@ public class ProjectServiceImpl implements ProjectService {
     public ResJsonTemplate getDevelopDetailByProjectId(Long id) {
 
         try {
-            return new ResJsonTemplate("200", projectMapper.searchDeveloperEnrollInfo(id));
+            return new ResJsonTemplate("200", projectRepository.searchDeveloperEnrollInfo(id));
         } catch (Exception ex) {
             return new ResJsonTemplate("500", "查询失败");
         }
@@ -238,9 +236,9 @@ public class ProjectServiceImpl implements ProjectService {
         Map<String, Integer> pageinfo = new HashMap<>();
 
 
-      //  int totalPage=paging.getTotalPage(projectMapper.getProjectCountPage(),size);
-        int totalPage=paging.getTotalPage((int)projectRepository.count(),size);
-        int startPage = paging.convertStartPage(start,size);
+        //  int totalPage=paging.getTotalPage(projectMapper.getProjectCountPage(),size);
+        int totalPage = paging.getTotalPage((int) projectRepository.count(), size);
+        int startPage = paging.convertStartPage(start, size);
 
         pageinfo.put("totalPage", totalPage);
         pageinfo.put("currentPage", start);
@@ -250,7 +248,6 @@ public class ProjectServiceImpl implements ProjectService {
 
         return new ResJsonTemplate("200", result);
     }
-
 
 
 }

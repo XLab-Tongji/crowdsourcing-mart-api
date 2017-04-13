@@ -1,10 +1,9 @@
 package com.crazy.service.impl;
 
-import com.crazy.repository.AccountLoginRepository;
-import com.crazy.repository.AccountRepository;
 import com.crazy.entity.Account;
 import com.crazy.entity.AccountLogin;
-import com.crazy.mapper.MartGitConnectionMapper;
+import com.crazy.repository.AccountLoginRepository;
+import com.crazy.repository.AccountRepository;
 import com.crazy.service.AccountService;
 import com.crazy.service.GitlabAccountService;
 import com.crazy.util.ConvertJson;
@@ -46,17 +45,14 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     private GitlabAccountService gitlabAccountService;
 
-    @Autowired
-    private MartGitConnectionMapper martGitConnectionMapper;
-
     @Override
     public ResJsonTemplate addAccount(Account account) {
         try {
             Account savedAccount = new Account(account.getUsername(), account.getName(), account.getIcon(),
                     encryption.doEncryption(account.getPassword()),
                     account.getMobile(), account.getEmail(),
-                    account.getExt_params());
-            return new ResJsonTemplate("200",accountRepository.save(savedAccount));
+                    account.getExt_params(), 1);
+            return new ResJsonTemplate("200", accountRepository.save(savedAccount));
             /*
             return new ResJsonTemplate("200",accountMapper.addAcount(account.getUsername(), account.getName(), account.getIcon(),
                     encryption.doEncryption(account.getPassword()),
@@ -103,7 +99,7 @@ public class AccountServiceImpl implements AccountService {
         String token = null;
         String tmep = account.getUsername();
         Account selectResult = accountRepository.findByUsername(account.getUsername());
-   //     Map<String, String> selectResult = accountMapper.getCheckInfo(account.getUsername());
+        //     Map<String, String> selectResult = accountMapper.getCheckInfo(account.getUsername());
 
         if (selectResult == null) {
             result = "没有此用户";
@@ -116,8 +112,8 @@ public class AccountServiceImpl implements AccountService {
                     dateUtil.Str2Date(dateUtil.setExpire(30)), accountMapper.getUserId(account.getUsername()),
                     useragent, account.getUsername());
             */
-            accountLoginRepository.save(new AccountLogin( request.getRemoteAddr(), token, dateUtil.Str2Date(dateUtil.getNowTime()),
-                    dateUtil.Str2Date(dateUtil.setExpire(30)),  selectResult.getAccount_id(),
+            accountLoginRepository.save(new AccountLogin(request.getRemoteAddr(), token, dateUtil.Str2Date(dateUtil.getNowTime()),
+                    dateUtil.Str2Date(dateUtil.setExpire(30)), selectResult.getAccount_id(),
                     useragent, selectResult.getUsername()));
 
             result = token;

@@ -8,8 +8,8 @@ import java.util.List;
 /**
  * Created by jieping on 2017-04-11.
  */
-public interface DevInfoRepository extends CrudRepository<DevInfo,Long> {
-    public DevInfo save(DevInfo devInfo);
-    public List<DevInfo> findByProjectId(Long projectId);
+public interface DevInfoRepository extends CrudRepository<DevInfo, Long> {
+    DevInfo save(DevInfo devInfo);
 
+    List<DevInfo> findByProjectId(Long projectId);
 }
