@@ -1,9 +1,6 @@
 package com.crazy.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 /**
  * Created by SHIKUN on 2016/9/29.
@@ -19,6 +16,7 @@ public class Account {
     @Id
     @GeneratedValue
     private Long account_id;
+    @Column(name = "username",unique = true)
     private String username;
     private String password;
     private String ext_params;
