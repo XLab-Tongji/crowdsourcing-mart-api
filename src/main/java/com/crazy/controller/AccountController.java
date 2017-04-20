@@ -1,12 +1,14 @@
 package com.crazy.controller;
 
 import com.crazy.entity.Account;
+import com.crazy.repository.AccountRepository;
 import com.crazy.security.JwtAuthenticationRequest;
 import com.crazy.security.JwtAuthenticationResponse;
 import com.crazy.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +27,9 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
+    @Autowired
+    private AccountRepository accountRepository;
+
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(
             @RequestBody JwtAuthenticationRequest authenticationRequest) throws AuthenticationException {
@@ -35,9 +40,17 @@ public class AccountController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public  Account register(@RequestBody Account addedUser) throws AuthenticationException {
+    public Account register(@RequestBody Account addedUser) throws AuthenticationException {
         return accountService.register(addedUser);
     }
+
+    @PreAuthorize("hasRole('user')")
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public Account getUserByUsername(@RequestParam(value = "username") String username) {
+        return accountRepository.findByUsername(username);
+    }
+
+
 //
 //    @Autowired
 //    private AccountService accountService;

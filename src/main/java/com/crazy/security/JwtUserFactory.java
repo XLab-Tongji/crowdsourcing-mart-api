@@ -40,13 +40,13 @@ public class JwtUserFactory {
     private static List<GrantedAuthority> mapToGrantedAuthorities(Long role_id) {
         //此处repository调用存在一定问题，先用role_id手动判定代替而不访问数据库。
         //List<Role> roles = roleRepository.findByRoleId(role_id);
-        List<String> role_name = new ArrayList<String>();
+        List<String> role_name = new ArrayList();
 //        for (int i = 0; i < roles.size(); i++) {
 //            role_name.add(roles.get(i).getRoleName());
 //        }
-        if(role_id.equals(1))
+        if (role_id == 1)
             role_name.add("user");
-        else if(role_id.equals(2))
+        else if (role_id == 2)
             role_name.add("admin");
         return role_name.stream()
                 .map(SimpleGrantedAuthority::new)

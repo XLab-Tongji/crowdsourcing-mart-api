@@ -26,7 +26,7 @@ public class AccountServiceImpl implements AccountService {
     private JwtTokenUtil jwtTokenUtil;
     private AccountRepository userRepository;
 
-    @Value("\"Bearer \"")
+    @Value("")
     private String tokenHead;
 
     @Autowired
