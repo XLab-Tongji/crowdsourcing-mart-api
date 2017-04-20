@@ -23,14 +23,16 @@ public interface ProjectRepository extends CrudRepository<Project, Long>, Paging
     List<Project> findByProjectIdAndUsername(Long project_id, String username);
 
     long count();
+    @Query("SELECT a FROM Project a , DevEnrollInfo b WHERE a.projectId=b.projectId AND b.username=?1")
+    //@Query("SELECT  from Project project,DevEnrollInfo info where project.username=?1")
+    List<Project> searchProjectInfobyUsername(String username);
 
-    @Query("select all from Project project,DevEnrollInfo info where project.username=?1")
-    List<Project> searchProjectInfobyUsername(String usernname);
-
-    @Query("select all from Project project, DevInfo info where project.username=?1")
+    @Query("SELECT a FROM Project a, DevInfo b WHERE a.projectId=b.projectId AND b.username=?1")
+ //   @Query("select all from Project project, DevInfo info where project.username=?1")
     List<Project> searchDevelopingProjectbyUsername(String username);
 
-    @Query("select all from Developer developer,DevEnrollInfo info where info.project_id=?1")
+    @Query("SELECT b FROM DevEnrollInfo a , Developer b WHERE a.username=b.username AND a.projectId=?1")
+  //  @Query("select all from Developer developer,DevEnrollInfo info where info.project_id=?1")
     List<Developer> searchDeveloperEnrollInfo(Long projectId);
 
 }

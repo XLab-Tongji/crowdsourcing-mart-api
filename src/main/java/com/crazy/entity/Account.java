@@ -1,9 +1,6 @@
 package com.crazy.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 /**
  * Created by SHIKUN on 2016/9/29.
@@ -17,12 +14,13 @@ import java.util.Date;
 public class Account {
 
     @Id
+    @Column(nullable = false)
     @GeneratedValue
     private Long account_id;
+    @Column(name = "username", unique = true)
     private String username;
     private String password;
     private String ext_params;
-
 
     private String name;
 
@@ -41,18 +39,12 @@ public class Account {
     private Long dev_id;
 
 
-    private int role_id;
+    private Long role_id;
 
-    public Account(String username, String password, String ext_params, String name, String icon, String email, String mobile, int role_id) {
-        this.username = username;
-        this.password = password;
-        this.ext_params = ext_params;
-        this.name = name;
-        this.icon = icon;
-        this.email = email;
-        this.mobile = mobile;
-        this.role_id = role_id;
+    public Account() {
+
     }
+
 
     public Long getAccount_id() {
         return account_id;
@@ -142,11 +134,11 @@ public class Account {
         this.dev_id = dev_id;
     }
 
-    public int getRole_id() {
+    public Long getRole_id() {
         return role_id;
     }
 
-    public void setRole_id(int role_id) {
+    public void setRole_id(Long role_id) {
         this.role_id = role_id;
     }
 }
