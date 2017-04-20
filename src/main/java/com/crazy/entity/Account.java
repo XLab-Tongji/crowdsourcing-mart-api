@@ -17,7 +17,11 @@ public class Account {
     @Column(nullable = false)
     @GeneratedValue
     private Long account_id;
+<<<<<<< HEAD
     @Column(name = "username", unique = true)
+=======
+    @Column(name = "username",unique = true)
+>>>>>>> af87fc58949c25d851e0cf7ae94f0395f89f6475
     private String username;
     private String password;
     private String ext_params;
