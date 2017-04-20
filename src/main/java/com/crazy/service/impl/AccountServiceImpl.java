@@ -50,6 +50,7 @@ public class AccountServiceImpl implements AccountService {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         final String rawPassword = userToAdd.getPassword();
         userToAdd.setPassword(encoder.encode(rawPassword));
+        userToAdd.setRole_id(1L);
         return userRepository.save(userToAdd);
     }
 
