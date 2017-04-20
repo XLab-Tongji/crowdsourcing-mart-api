@@ -5,6 +5,7 @@ import com.crazy.service.AccountService;
 import com.crazy.util.Encryption;
 import com.crazy.util.ResJsonTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -40,7 +41,7 @@ public class AccountController {
 
         return accountService.checkAccount(account, useragent, request);
     }
-
+    @PreAuthorize("hasRole('user')")
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public String test(@RequestParam(value = "token") String token) {
         return encryption.tokenValidate(token);

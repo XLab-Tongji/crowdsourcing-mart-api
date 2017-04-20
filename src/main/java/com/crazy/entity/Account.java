@@ -1,7 +1,14 @@
 package com.crazy.entity;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 /**
  * Created by SHIKUN on 2016/9/29.
  */
@@ -11,7 +18,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "Account")
-public class Account {
+public class Account implements UserDetails {
 
     @Id
     @GeneratedValue
@@ -26,7 +33,6 @@ public class Account {
 
     private String icon;
 
-
     private String email;
 
     private Date create_time;
@@ -39,9 +45,15 @@ public class Account {
     private Long dev_id;
 
 
-    private int role_id;
-
-    public Account(String username, String password, String ext_params, String name, String icon, String email, String mobile, int role_id) {
+    private Long role_id;
+    @Transient
+    private  Collection<GrantedAuthority> authorities;
+    public Account()
+    {
+        List<GrantedAuthority> authties = new ArrayList<GrantedAuthority>();
+        authties.add(new SimpleGrantedAuthority("user"));
+    }
+    public Account(String username, String password, String ext_params, String name, String icon, String email, String mobile,Long role_id) {
         this.username = username;
         this.password = password;
         this.ext_params = ext_params;
@@ -50,6 +62,43 @@ public class Account {
         this.email = email;
         this.mobile = mobile;
         this.role_id = role_id;
+        SearchRole searchRole = new SearchRole();
+        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+
+        authorities.add(new SimpleGrantedAuthority(searchRole.getRoleName(this.getRole_id()).getRole_name()));
+    }
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+
+        List<GrantedAuthority> auths = new ArrayList<GrantedAuthority>();
+        Long t = this.getRole_id();
+        String roleName = t==1?"user":"admin";
+        auths.add(new SimpleGrantedAuthority(roleName));
+
+        return auths;
     }
 
     public Long getAccount_id() {
@@ -64,9 +113,7 @@ public class Account {
         return username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+
 
     public String getPassword() {
         return password;
@@ -140,13 +187,31 @@ public class Account {
         this.dev_id = dev_id;
     }
 
-    public int getRole_id() {
+    public Long getRole_id() {
         return role_id;
     }
 
-    public void setRole_id(int role_id) {
+    public void setRole_id(Long role_id) {
         this.role_id = role_id;
     }
+    @Override
+    public String toString()
+    {
+        return "Account{" +
+                "account_id=" + account_id.toString() +
+                ", username=" + username +
+                ", roleId=" + role_id.toString()  +
+                ", dev_id=" + dev_id.toString() +
+                ", email=" + email   +
+                ", create_time=" + create_time.toString() +
+                ", update_time=" + update_time.toString() +
+                ", mobile=" + mobile +
+                ", name=" + name +
+                ", ext_params=" +ext_params+
+                ", icon" + icon +
+                '}';
+    }
+
 }
 
 

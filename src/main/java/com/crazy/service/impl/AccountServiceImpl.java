@@ -48,11 +48,12 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public ResJsonTemplate addAccount(Account account) {
         try {
-            Account savedAccount = new Account(account.getUsername(), account.getName(), account.getIcon(),
-                    encryption.doEncryption(account.getPassword()),
-                    account.getMobile(), account.getEmail(),
-                    account.getExt_params(), 1);
-            return new ResJsonTemplate("200", accountRepository.save(savedAccount));
+            Account savedAccount = new Account(account.getUsername(), encryption.doEncryption(account.getPassword()), account.getExt_params(),
+                    account.getName(),
+                    account.getIcon(), account.getEmail(),
+                    account.getMobile(), 1L);
+            Account temp = accountRepository.save(savedAccount);
+            return new ResJsonTemplate("200", temp);
             /*
             return new ResJsonTemplate("200",accountMapper.addAcount(account.getUsername(), account.getName(), account.getIcon(),
                     encryption.doEncryption(account.getPassword()),
