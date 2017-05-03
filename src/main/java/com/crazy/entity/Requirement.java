@@ -12,8 +12,10 @@ public class Requirement {
     @Id
     @GeneratedValue
     private Long id;
-    private String requirement_name;
-    private String requirement_type;
+    @Column(name = "requirement_name")
+    private String requirementName;
+    @Column(name = "requirement_type")
+    private String requirementType;
     private Date start_time;
     private Date end_time;
     private int need_manager;
@@ -29,19 +31,19 @@ public class Requirement {
     }
     public void setRequirement_name(String r)
     {
-        requirement_name = r;
+        requirementName = r;
     }
     public String getRequirement_name()
     {
-        return requirement_name;
+        return requirementName;
     }
     public void setRequirement_type(String t)
     {
-        requirement_type = t;
+        requirementType = t;
     }
     public String getRequirement_type()
     {
-        return requirement_type;
+        return requirementType;
     }
     public void setStart_time(Date s)
     {
