@@ -17,6 +17,7 @@ public class Account {
     @Column(nullable = false)
     @GeneratedValue
     private Long account_id;
+    @Column(unique = true)
     private String username;
     private String password;
     private String ext_params;
@@ -25,7 +26,7 @@ public class Account {
 
     private String icon;
 
-
+    @Column(unique = true)
     private String email;
 
     private Date create_time;
@@ -37,14 +38,20 @@ public class Account {
 
     private Long dev_id;
 
-
     private Long role_id;
-
+    private Long info_id;
     public Account() {
 
     }
 
-
+    public Long getInfo_id()
+    {
+        return info_id;
+    }
+    public void setInfo_id(Long i)
+    {
+        info_id = i;
+    }
     public Long getAccount_id() {
         return account_id;
     }

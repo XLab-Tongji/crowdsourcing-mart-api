@@ -1,7 +1,9 @@
 package com.crazy.service.impl;
 
 import com.crazy.entity.Account;
+import com.crazy.entity.UserInfoDetail;
 import com.crazy.repository.AccountRepository;
+import com.crazy.repository.UserInfoDetailRepository;
 import com.crazy.security.JwtTokenUtil;
 import com.crazy.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,10 @@ public class AccountServiceImpl implements AccountService {
     private UserDetailsService userDetailsService;
     private JwtTokenUtil jwtTokenUtil;
     private AccountRepository userRepository;
+
+    @Autowired
+    private UserInfoDetailRepository userInfoDetailRepository;
+
 
     @Value("")
     private String tokenHead;
@@ -51,7 +57,10 @@ public class AccountServiceImpl implements AccountService {
         final String rawPassword = userToAdd.getPassword();
         userToAdd.setPassword(encoder.encode(rawPassword));
         userToAdd.setRole_id(1L);
-        return userRepository.save(userToAdd);
+        UserInfoDetail userInfoDetail = new UserInfoDetail();
+        userToAdd.setInfo_id(userInfoDetail.getId());
+        return  userRepository.save(userToAdd);
+
     }
 
     @Override

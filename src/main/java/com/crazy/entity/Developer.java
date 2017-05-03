@@ -1,9 +1,6 @@
 package com.crazy.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 /**developer domain
@@ -15,12 +12,17 @@ public class Developer {
     @Id
     @GeneratedValue
     private Long dev_id;
+    @Column(unique = true)
     private String username;
     private Long account_id;
     private String dev_domain;
     private String dev_intro;
     private String ext_param;
     private Date Enroll_date;
+
+    private String skill_name;
+    private String skill_detail;
+    private byte[] certificate;
     public Long getDev_id()
     {
         return dev_id;
@@ -34,6 +36,30 @@ public class Developer {
         Enroll_date = enroll_date;
     }
     */
+    public void setCertificate(byte[] c)
+    {
+        certificate = c;
+    }
+    public byte[] getCertificate()
+    {
+        return certificate;
+    }
+    public void setSkill_name(String s)
+    {
+        skill_name = s;
+    }
+    public String getSkill_name()
+    {
+        return skill_name;
+    }
+    public void setSkill_detail(String s)
+    {
+        skill_detail = s;
+    }
+    public String getSkill_detail()
+    {
+        return skill_detail;
+    }
 
     public String getDev_intro() {
         return dev_intro;
