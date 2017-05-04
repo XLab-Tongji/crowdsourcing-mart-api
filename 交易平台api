@@ -41,7 +41,7 @@
 		code:201注册成功
 			 400注册失败
 	个人页面
-		3实名认证  ok（新建表？需要传入token）
+		3实名认证  ok（新建表？需要传入token）暂时无法正常使用，若使用，需要token对应的账号有developer身份
 			url:/api/user/verification
 			method:POST
 			request:
