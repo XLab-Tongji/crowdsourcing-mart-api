@@ -16,6 +16,7 @@ import com.crazy.util.ConvertJson;
 import com.crazy.util.ResJsonTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Date;
 
 
 /**
@@ -126,7 +128,22 @@ public class AccountController {
     }
     @RequestMapping(value = "/user/requirement", method = RequestMethod.POST)
     public ResJsonTemplate createRequirement(
-            HttpServletRequest request, @RequestBody Requirement requirement,@RequestParam(value = "file") MultipartFile file) throws AuthenticationException, IOException {
+            HttpServletRequest request,
+            @RequestParam(value = "requirement_name") String requirement_name,
+            @RequestParam(value = "requirement_type") String requirement_type,
+            @RequestParam(value = "need_manager") int need_manager,
+            @RequestParam(value = "start_time" ) @DateTimeFormat(pattern="yyyy-MM-dd") Date start_time,
+            @RequestParam(value = "end_time") @DateTimeFormat(pattern="yyyy-MM-dd") Date end_time,
+            @RequestParam(value = "requirement_detail") String requirement_detail,
+            @RequestParam(value = "file") MultipartFile file) throws AuthenticationException, IOException {
+
+        Requirement requirement = new Requirement();
+        requirement.setRequirement_name(requirement_name);
+        requirement.setRequirement_type(requirement_type);
+        requirement.setRequirement_detail(requirement_detail);
+        requirement.setNeed_manager(need_manager);
+        requirement.setStart_time(start_time);
+        requirement.setEnd_time(end_time);
         byte[] data = new byte[file.getInputStream().available()];
         file.getInputStream().read(data);
         requirement.setFile(data);
