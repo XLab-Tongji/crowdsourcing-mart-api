@@ -19,9 +19,10 @@ public class Developer {
     private String dev_intro;
     private String ext_param;
     private Date Enroll_date;
-
     private String skill_name;
     private String skill_detail;
+    @Lob @Basic(fetch = FetchType.LAZY)
+    @Column(length=100000)
     private byte[] certificate;
     public Long getDev_id()
     {

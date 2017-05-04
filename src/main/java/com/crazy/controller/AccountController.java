@@ -19,8 +19,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 
 /**
@@ -84,8 +86,9 @@ public class AccountController {
         java.lang.String username = jwtTokenUtil.getUsernameFromToken(token);
         Account account = accountRepository.findByUsername(username);
         if (jwtTokenUtil.validateToken(token, JwtUserFactory.create(account))) {
-            userInfoDetail.setId(account.getInfo_id());
-            userInfoDetailRepository.save(userInfoDetail);
+
+            account.setInfo_id(userInfoDetailRepository.save(userInfoDetail).getId());
+            accountRepository.save(account);
             return new ResJsonTemplate("200", "实名认证成功");
         }
         return new ResJsonTemplate("400", "实名认证失败");
@@ -94,30 +97,39 @@ public class AccountController {
 
     @RequestMapping(value = "/user/skill", method = RequestMethod.POST)
     public ResJsonTemplate developerSkill(
-            HttpServletRequest request, @RequestParam(value = "certificate") byte[] certificate, @RequestBody skill s) throws AuthenticationException {
+            HttpServletRequest request,@RequestParam(value = "certificate") MultipartFile file, @RequestParam(value = "skill_name") String skill_name,@RequestParam(value = "skill_detail") String skill_detail) throws AuthenticationException, IOException {
         java.lang.String token = request.getHeader("Authorization");
+        byte[] data = new byte[file.getInputStream().available()];
+        file.getInputStream().read(data);
+
+
         if (token == null) {
             return new ResJsonTemplate("400", "上传失败，无该用户");
         }
         java.lang.String username = jwtTokenUtil.getUsernameFromToken(token);
         Developer developer = developerRepository.findByUsername(username);
-        developer.setSkill_name(s.getSkill_name());
-        developer.setSkill_detail(s.getSkill_detail());
-        developer.setCertificate(certificate);
+        developer.setSkill_name(skill_name);
+        developer.setSkill_detail(skill_detail);
+        developer.setCertificate(data);
         developerRepository.save(developer);
 
 
 
         data1 d = new data1();
-        d.setCertificate(certificate);
+        d.setCertificate(data);
+        skill s = new skill();
+        s.setSkill_name(skill_name);
+        s.setSkill_detail(skill_detail);
         d.setSkill(s);
         return new ResJsonTemplate("201",d);
 
     }
     @RequestMapping(value = "/user/requirement", method = RequestMethod.POST)
     public ResJsonTemplate createRequirement(
-            HttpServletRequest request, @RequestBody Requirement requirement) throws AuthenticationException {
-
+            HttpServletRequest request, @RequestBody Requirement requirement,@RequestParam(value = "file") MultipartFile file) throws AuthenticationException, IOException {
+        byte[] data = new byte[file.getInputStream().available()];
+        file.getInputStream().read(data);
+        requirement.setFile(data);
         requirementRepository.save(requirement);
         return new ResJsonTemplate("201","创建需求成功");
 
