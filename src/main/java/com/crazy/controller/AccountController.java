@@ -21,6 +21,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -107,21 +109,58 @@ public class AccountController {
         developerRepository.save(developer);
 
 
-
         data1 d = new data1();
         d.setCertificate(certificate);
         d.setSkill(s);
-        return new ResJsonTemplate("201",d);
+        return new ResJsonTemplate("201", d);
 
     }
+
     @RequestMapping(value = "/user/requirement", method = RequestMethod.POST)
     public ResJsonTemplate createRequirement(
             HttpServletRequest request, @RequestBody Requirement requirement) throws AuthenticationException {
 
         requirementRepository.save(requirement);
-        return new ResJsonTemplate("201","创建需求成功");
+        return new ResJsonTemplate("201", "创建需求成功");
 
     }
+
+    @RequestMapping(value = "/user/requirement", method = RequestMethod.GET)
+    public ResJsonTemplate GetRequirements(HttpServletRequest request, @RequestParam(value = "state") String state) {
+        String token = request.getHeader("Authorization");
+        if (token == null) {
+            return new ResJsonTemplate("401", "权限错误");
+        }
+        RequirementsList requirementsList = new RequirementsList();
+        requirementsList.setRequirementArrayList(requirementRepository.getRequirementsByRequirementType(state));
+        return new ResJsonTemplate("200", requirementsList);
+    }
+
+    @RequestMapping(value = "/user/requirement/{id}", method = RequestMethod.DELETE)
+    public ResJsonTemplate DeleteRequirement(HttpServletRequest request, @PathVariable Long id) {
+        String token = request.getHeader("Authorization");
+        if (token == null) {
+            return new ResJsonTemplate("401", "权限错误");
+        }
+        requirementRepository.deleteById(id);
+        return new ResJsonTemplate("200", "删除成功");
+    }
+
+    @RequestMapping(value = "/user/requirement/{id}", method = RequestMethod.PUT)
+    public ResJsonTemplate UpdateRequirement(HttpServletRequest request, @RequestBody Requirement requirement, @PathVariable Long id) {
+        String token = request.getHeader("Authorization");
+        if (token == null) {
+            return new ResJsonTemplate("401", "权限错误");
+        }
+
+        if (!requirementRepository.exists(id)) {
+            return new ResJsonTemplate("404", "需求不存在");
+        }
+        requirementRepository.save(requirement);
+        return new ResJsonTemplate("201", "更新成功");
+    }
+
+
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResJsonTemplate register(@RequestBody Account addedUser) throws AuthenticationException {
         if (accountService.register(addedUser) != null) {
@@ -169,77 +208,88 @@ public class AccountController {
 //    }
 
 
-
 //用于 获取前端的skill信息
 
 
 class data1 {
     private byte[] certificate;
     private skill skill;
-    public void setCertificate(byte[] c)
-    {
+
+    public void setCertificate(byte[] c) {
         certificate = c;
     }
-    public byte[] getCertificate()
-    {
+
+    public byte[] getCertificate() {
         return certificate;
     }
-    public void setSkill(skill s)
-    {
+
+    public void setSkill(skill s) {
         skill = s;
     }
-    public skill getSkill()
-    {
+
+    public skill getSkill() {
         return skill;
     }
 }
-class data2
-{
+
+class data2 {
     private java.lang.String token;
     private UserInfoDetail userInfoDetail;
-    public void setToken(java.lang.String t)
-    {
+
+    public void setToken(java.lang.String t) {
         token = t;
     }
-    public java.lang.String getToken()
-    {
+
+    public java.lang.String getToken() {
         return token;
     }
-    public void setUserInfoDetail(UserInfoDetail u)
-    {
+
+    public void setUserInfoDetail(UserInfoDetail u) {
         userInfoDetail = u;
     }
-    public UserInfoDetail getUserInfoDetail()
-    {
+
+    public UserInfoDetail getUserInfoDetail() {
         return userInfoDetail;
     }
 }
-class skill
-{
+
+class skill {
     private java.lang.String skill_name;
     private java.lang.String skill_detail;
-    public java.lang.String getSkill_name()
-    {
+
+    public java.lang.String getSkill_name() {
         return skill_name;
     }
-    public void setSkill_name(java.lang.String s)
-    {
+
+    public void setSkill_name(java.lang.String s) {
         skill_name = s;
     }
-    public java.lang.String getSkill_detail()
-    {
+
+    public java.lang.String getSkill_detail() {
         return skill_detail;
     }
-    public void setSkill_detail(java.lang.String s)
-    {
+
+    public void setSkill_detail(java.lang.String s) {
         skill_detail = s;
     }
+
     @Override
-    public java.lang.String toString()
-    {
+    public java.lang.String toString() {
         return "skill{" +
-                "skill_name='" + skill_name+ '\'' +
+                "skill_name='" + skill_name + '\'' +
                 ", skill_detail='" + skill_detail + '\'' +
                 '}';
+    }
+}
+
+class RequirementsList {
+    private List<Requirement> requirementArrayList = new ArrayList<>();
+
+    public List<Requirement> getRequirementArrayList() {
+        return requirementArrayList;
+    }
+
+    public void setRequirementArrayList(List<Requirement> requirementArrayList) {
+        this.requirementArrayList = requirementArrayList;
     }
 }
