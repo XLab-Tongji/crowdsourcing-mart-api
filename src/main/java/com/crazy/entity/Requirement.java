@@ -20,6 +20,8 @@ public class Requirement {
     private Date end_time;
     private int need_manager;
     private String requirement_detail;
+    @Lob @Basic(fetch = FetchType.LAZY)
+    @Column(length=100000)
     private byte[] file;
     public void setId(Long i)
     {
