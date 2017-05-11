@@ -9,12 +9,9 @@ import java.util.List;
  * Created by jieping on 2017-05-03.
  */
 public interface RequirementRepository extends CrudRepository<Requirement, Long> {
-<<<<<<< HEAD
     List<Requirement> findByCreatorId(Long id);
-=======
     Requirement findByRequirementName(String name);
 
->>>>>>> origin/master
     Requirement save(Requirement requirement);
 
     int deleteById(Long id);
