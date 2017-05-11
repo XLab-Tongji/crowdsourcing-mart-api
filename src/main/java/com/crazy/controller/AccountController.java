@@ -1,14 +1,12 @@
 package com.crazy.controller;
 
-import com.crazy.entity.Account;
-import com.crazy.entity.ProjectExperience;
-import com.crazy.entity.Requirement;
-import com.crazy.entity.UserInfoDetail;
+import com.crazy.entity.*;
 import com.crazy.repository.*;
 import com.crazy.security.JwtAuthenticationRequest;
 import com.crazy.security.JwtTokenUtil;
 import com.crazy.security.JwtUserFactory;
 import com.crazy.service.AccountService;
+import com.crazy.service.RequirementDetail;
 import com.crazy.util.ConvertJson;
 import com.crazy.util.ResJsonTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -187,6 +185,45 @@ public class AccountController {
         return new ResJsonTemplate("200", simpleRequirements);
     }
 
+    @RequestMapping(value = "/requirement/{id}", method = RequestMethod.DELETE)
+    public ResJsonTemplate DeteleRequirement(HttpServletRequest request, @PathVariable Long id) {
+        String token = request.getHeader("Authorization");
+        if (token == null) {
+            return new ResJsonTemplate("401", "权限错误");
+        }
+        if (!requirementRepository.exists(id)) {
+            return new ResJsonTemplate("400", "删除失败");
+        }
+        requirementRepository.deleteById(id);
+        return new ResJsonTemplate("200", "删除成功");
+    }
+
+    @RequestMapping(value = "/requirement/{id}", method = RequestMethod.PUT)
+    public ResJsonTemplate UpdateRequirement(HttpServletRequest request, @RequestBody Requirement requirement, @PathVariable Long id) {
+        String token = request.getHeader("Authorization");
+        if (token == null) {
+            return new ResJsonTemplate("401", "权限错误");
+        }
+        if (!requirementRepository.exists(id)) {
+            return new ResJsonTemplate("400", "删除失败");
+        }
+        requirement.setId(id);
+        requirementRepository.save(requirement);
+        return new ResJsonTemplate("200", "更新成功");
+    }
+
+    @RequestMapping(value = "/requirement/{id}", method = RequestMethod.GET)
+    public ResJsonTemplate GetRequirementDetail(HttpServletRequest request, @PathVariable Long id) {
+        String token = request.getHeader("Authorization");
+        if (token == null) {
+            return new ResJsonTemplate("401", "权限错误");
+        }
+        RequirementDetail requirementDetail = new RequirementDetail();
+        requirementDetail = accountService.GetRequirementDetail(id);
+        return new ResJsonTemplate("200", requirementDetail);
+    }
+
+
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResJsonTemplate register(@RequestBody Account addedUser) throws AuthenticationException {
         if (accountService.register(addedUser) != null) {
@@ -317,4 +354,3 @@ class simpleRequirement {
         this.requirement_name = requirement_name;
     }
 }
-

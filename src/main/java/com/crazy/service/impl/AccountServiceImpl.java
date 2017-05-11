@@ -1,11 +1,17 @@
 package com.crazy.service.impl;
 
 import com.crazy.entity.Account;
+import com.crazy.entity.DevEnrollInfo;
+import com.crazy.entity.Requirement;
 import com.crazy.entity.UserInfoDetail;
 import com.crazy.repository.AccountRepository;
+import com.crazy.repository.DevEnrollInfoRepository;
+import com.crazy.repository.RequirementRepository;
 import com.crazy.repository.UserInfoDetailRepository;
 import com.crazy.security.JwtTokenUtil;
 import com.crazy.service.AccountService;
+import com.crazy.service.RequirementDetail;
+import com.crazy.service.SimpleAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,6 +22,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 用户服务实现类
@@ -30,6 +39,15 @@ public class AccountServiceImpl implements AccountService {
 
     @Autowired
     private UserInfoDetailRepository userInfoDetailRepository;
+
+    @Autowired
+    private DevEnrollInfoRepository devEnrollInfoRepository;
+
+    @Autowired
+    private AccountRepository accountRepository;
+
+    @Autowired
+    private RequirementRepository requirementRepository;
 
 
     @Value("")
@@ -59,7 +77,7 @@ public class AccountServiceImpl implements AccountService {
         userToAdd.setRole_id(1L);
         UserInfoDetail userInfoDetail = new UserInfoDetail();
         userToAdd.setInfo_id(userInfoDetail.getId());
-        return  userRepository.save(userToAdd);
+        return userRepository.save(userToAdd);
 
     }
 
@@ -76,8 +94,35 @@ public class AccountServiceImpl implements AccountService {
         return token;
     }
 
+    @Override
+    public RequirementDetail GetRequirementDetail(Long requirementId) {
+        List<SimpleAccount> developers = new ArrayList<>();
+        List<DevEnrollInfo> devEnrollInfo = new ArrayList<>();
+        devEnrollInfo = devEnrollInfoRepository.findByProjectId(requirementId);
+        for (int i = 0; i < devEnrollInfo.size(); i++) {
+            String userName = devEnrollInfo.get(i).getUsername();
+            Account account = accountRepository.findByUsername(userName);
+            SimpleAccount simpleAccount = new SimpleAccount();
+            simpleAccount.setEmail(account.getEmail());
+            simpleAccount.setName(account.getName());
+            simpleAccount.setPhoneNumber(account.getMobile());
+            developers.add(simpleAccount);
+        }
+        Requirement requirement = requirementRepository.findOne(requirementId);
+        RequirementDetail requirementDetail = new RequirementDetail();
+        requirementDetail.setRequirementName(requirement.getRequirement_name());
+        requirementDetail.setRequirementType(requirement.getRequirement_type());
+        requirementDetail.setStart_time(requirement.getStart_time());
+        requirementDetail.setEnd_time(requirement.getEnd_time());
+        requirementDetail.setNeed_manager(requirement.getNeed_manager());
+        requirementDetail.setRequirement_detail(requirement.getRequirement_detail());
+        requirementDetail.setFile(requirement.getFile());
+        requirementDetail.setDevelopers(developers);
+        return requirementDetail;
+    }
 
-//
+
+    //
 //    @Autowired
 //    private AccountRepository accountRepository;
 //    @Autowired
