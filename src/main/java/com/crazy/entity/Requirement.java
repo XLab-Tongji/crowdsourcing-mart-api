@@ -18,11 +18,31 @@ public class Requirement {
     private String requirementType;
     private Date start_time;
     private Date end_time;
+
     private int need_manager;
     private String requirement_detail;
     @Lob @Basic(fetch = FetchType.LAZY)
     @Column(length=100000)
     private byte[] file;
+    private int requirement_state = 1;
+    private Long creatorId;
+
+    public Long getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(Long creatorId) {
+        this.creatorId = creatorId;
+    }
+
+    public void setRequirement_state(int requirement_state) {
+        this.requirement_state = requirement_state;
+    }
+
+    public int getRequirement_state() {
+        return requirement_state;
+    }
+
     public void setId(Long i)
     {
         id = i;

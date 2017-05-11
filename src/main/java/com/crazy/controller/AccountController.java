@@ -1,13 +1,10 @@
 package com.crazy.controller;
 
 import com.crazy.entity.Account;
-import com.crazy.entity.Developer;
+import com.crazy.entity.ProjectExperience;
 import com.crazy.entity.Requirement;
 import com.crazy.entity.UserInfoDetail;
-import com.crazy.repository.AccountRepository;
-import com.crazy.repository.DeveloperRepository;
-import com.crazy.repository.RequirementRepository;
-import com.crazy.repository.UserInfoDetailRepository;
+import com.crazy.repository.*;
 import com.crazy.security.JwtAuthenticationRequest;
 import com.crazy.security.JwtTokenUtil;
 import com.crazy.security.JwtUserFactory;
@@ -54,6 +51,8 @@ public class AccountController {
     private RequirementRepository requirementRepository;
     @Autowired
     private ConvertJson convertJson;
+    @Autowired
+    private ProjectExperienceRepository projectExperienceRepository;
 
     //获取token
     @RequestMapping(value = "/session", method = RequestMethod.POST)
@@ -100,25 +99,27 @@ public class AccountController {
 
     }
 
-    @RequestMapping(value = "/user/skill", method = RequestMethod.POST)
+    @RequestMapping(value = "/user/projectExperience", method = RequestMethod.POST)
     public ResJsonTemplate developerSkill(
+<<<<<<< HEAD
             HttpServletRequest request, @RequestParam(value = "certificate") MultipartFile file, @RequestParam(value = "skill_name") String skill_name, @RequestParam(value = "skill_detail") String skill_detail) throws AuthenticationException, IOException {
+=======
+            HttpServletRequest request,@RequestParam(value = "certificate",required = false) MultipartFile file,
+            @RequestParam(value = "project_name") String project_name,
+            @RequestParam(value = "project_region") String project_region,
+            @RequestParam(value = "project_address") String project_address,
+            @RequestParam(value = "project_text") String project_text
+            ) throws AuthenticationException, IOException {
+>>>>>>> origin/master
         java.lang.String token = request.getHeader("Authorization");
-        byte[] data = new byte[file.getInputStream().available()];
-        file.getInputStream().read(data);
-
-
         if (token == null) {
             return new ResJsonTemplate("400", "上传失败，无该用户");
         }
         java.lang.String username = jwtTokenUtil.getUsernameFromToken(token);
-        Developer developer = developerRepository.findByUsername(username);
-        developer.setSkill_name(skill_name);
-        developer.setSkill_detail(skill_detail);
-        developer.setCertificate(data);
-        developerRepository.save(developer);
+        Account account = accountRepository.findByUsername(username);
 
 
+<<<<<<< HEAD
         data1 d = new data1();
         d.setCertificate(data);
         skill s = new skill();
@@ -130,6 +131,26 @@ public class AccountController {
     }
 
     @RequestMapping(value = "/user/requirement", method = RequestMethod.POST)
+=======
+        ProjectExperience projectExperience = new ProjectExperience();
+        projectExperience.setAccountId(account.getAccount_id());
+        projectExperience.setProjectAddress(project_address);
+        projectExperience.setProjectName(project_name);
+        projectExperience.setProjectRegion(project_region);
+        projectExperience.setProjectText(project_text);
+        if(file!=null)
+        {
+            byte[] data = new byte[file.getInputStream().available()];
+            file.getInputStream().read(data);
+            projectExperience.setCertificate(data);
+        }
+
+        ProjectExperience temp = projectExperienceRepository.save(projectExperience);
+        return new ResJsonTemplate("201",temp);
+
+    }
+    @RequestMapping(value = "/requirement", method = RequestMethod.POST)
+>>>>>>> origin/master
     public ResJsonTemplate createRequirement(
             HttpServletRequest request,
             @RequestParam(value = "requirement_name") String requirement_name,
@@ -138,18 +159,28 @@ public class AccountController {
             @RequestParam(value = "start_time") @DateTimeFormat(pattern = "yyyy-MM-dd") Date start_time,
             @RequestParam(value = "end_time") @DateTimeFormat(pattern = "yyyy-MM-dd") Date end_time,
             @RequestParam(value = "requirement_detail") String requirement_detail,
-            @RequestParam(value = "file") MultipartFile file) throws AuthenticationException, IOException {
-
+            @RequestParam(value = "file",required = false) MultipartFile file) throws AuthenticationException, IOException {
+        java.lang.String token = request.getHeader("Authorization");
+        if (token == null) {
+            return new ResJsonTemplate("400", "token无效");
+        }
+        java.lang.String username = jwtTokenUtil.getUsernameFromToken(token);
+        Account account = accountRepository.findByUsername(username);
         Requirement requirement = new Requirement();
+        requirement.setCreatorId(account.getAccount_id());
         requirement.setRequirement_name(requirement_name);
         requirement.setRequirement_type(requirement_type);
         requirement.setRequirement_detail(requirement_detail);
         requirement.setNeed_manager(need_manager);
         requirement.setStart_time(start_time);
         requirement.setEnd_time(end_time);
-        byte[] data = new byte[file.getInputStream().available()];
-        file.getInputStream().read(data);
-        requirement.setFile(data);
+        if(file!=null)
+        {
+            byte[] data = new byte[file.getInputStream().available()];
+            file.getInputStream().read(data);
+            requirement.setFile(data);
+        }
+
         requirementRepository.save(requirement);
         return new ResJsonTemplate("201", "创建需求成功");
 
@@ -165,6 +196,7 @@ public class AccountController {
         requirementsList.setRequirementArrayList(requirementRepository.getRequirementsByRequirementType(state));
         return new ResJsonTemplate("200", requirementsList);
     }
+<<<<<<< HEAD
 
     @RequestMapping(value = "/user/requirement/{id}", method = RequestMethod.DELETE)
     public ResJsonTemplate DeleteRequirement(HttpServletRequest request, @PathVariable Long id) {
@@ -193,6 +225,30 @@ public class AccountController {
     }
 
 
+=======
+    @RequestMapping(value= "/requirement",method=RequestMethod.GET)
+    public ResJsonTemplate getRequirement(HttpServletRequest request)
+    {
+        java.lang.String token = request.getHeader("Authorization");
+        if (token == null) {
+            return new ResJsonTemplate("400", "token无效");
+        }
+        java.lang.String username = jwtTokenUtil.getUsernameFromToken(token);
+        Account account = accountRepository.findByUsername(username);
+        List<Requirement> requirements = requirementRepository.findByCreatorId(account.getAccount_id());
+        ArrayList<simpleRequirement> simpleRequirements = new ArrayList<simpleRequirement>();
+        for(int i = 0;i<requirements.size();i++)
+        {
+            simpleRequirement s = new simpleRequirement();
+            s.setRequirement_id(requirements.get(i).getId());
+            s.setRequirement_type(requirements.get(i).getRequirement_type());
+            s.setRequirement_name(requirements.get(i).getRequirement_name());
+            s.setRequirement_state(requirements.get(i).getRequirement_state());
+            simpleRequirements.add(s);
+        }
+        return new ResJsonTemplate("200",simpleRequirements);
+    }
+>>>>>>> origin/master
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResJsonTemplate register(@RequestBody Account addedUser) throws AuthenticationException {
         if (accountService.register(addedUser) != null) {
@@ -285,6 +341,7 @@ class skill {
                 '}';
     }
 }
+<<<<<<< HEAD
 
 class RequirementsList {
     private List<Requirement> requirementArrayList = new ArrayList<>();
@@ -295,6 +352,45 @@ class RequirementsList {
 
     public void setRequirementArrayList(List<Requirement> requirementArrayList) {
         this.requirementArrayList = requirementArrayList;
+=======
+class simpleRequirement
+{
+    private Long requirement_id;
+    private String requirement_name;
+    private String requirement_type;
+    private int requirement_state;
+
+    public Long getRequirement_id() {
+        return requirement_id;
+    }
+
+    public void setRequirement_id(Long requirement_id) {
+        this.requirement_id = requirement_id;
+    }
+
+    public int getRequirement_state() {
+        return requirement_state;
+    }
+
+    public void setRequirement_state(int requirement_state) {
+        this.requirement_state = requirement_state;
+    }
+
+    public String getRequirement_type() {
+        return requirement_type;
+    }
+
+    public void setRequirement_type(String requirement_type) {
+        this.requirement_type = requirement_type;
+    }
+
+    public String getRequirement_name() {
+        return requirement_name;
+    }
+
+    public void setRequirement_name(String requirement_name) {
+        this.requirement_name = requirement_name;
+>>>>>>> origin/master
     }
 }
 
