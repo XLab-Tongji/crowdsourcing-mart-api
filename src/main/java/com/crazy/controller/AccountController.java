@@ -78,14 +78,11 @@ public class AccountController {
         // Return the token
         //     return ResponseEntity.ok(new JwtAuthenticationResponse(token));
     }
-
+    @PreAuthorize("hasRole('user')")
     @RequestMapping(value = "/user/verification", method = RequestMethod.POST)
     public ResJsonTemplate UserInfoVerifacation(
             HttpServletRequest request, @RequestBody UserInfoDetail userInfoDetail) throws AuthenticationException {
         java.lang.String token = request.getHeader("Authorization");
-        if (token == null) {
-            return new ResJsonTemplate("400", "实名认证失败");
-        }
         java.lang.String username = jwtTokenUtil.getUsernameFromToken(token);
         Account account = accountRepository.findByUsername(username);
         if (jwtTokenUtil.validateToken(token, JwtUserFactory.create(account))) {
@@ -97,7 +94,7 @@ public class AccountController {
         return new ResJsonTemplate("400", "实名认证失败");
 
     }
-
+    @PreAuthorize("hasRole('user')")
     @RequestMapping(value = "/user/projectExperience", method = RequestMethod.POST)
     public ResJsonTemplate developerSkill(
             HttpServletRequest request,@RequestParam(value = "certificate",required = false) MultipartFile file,
@@ -107,9 +104,6 @@ public class AccountController {
             @RequestParam(value = "project_text") String project_text
             ) throws AuthenticationException, IOException {
         java.lang.String token = request.getHeader("Authorization");
-        if (token == null) {
-            return new ResJsonTemplate("400", "上传失败，无该用户");
-        }
         java.lang.String username = jwtTokenUtil.getUsernameFromToken(token);
         Account account = accountRepository.findByUsername(username);
 
@@ -131,6 +125,7 @@ public class AccountController {
         return new ResJsonTemplate("201",temp);
 
     }
+    @PreAuthorize("hasRole('user')")
     @RequestMapping(value = "/requirement", method = RequestMethod.POST)
     public ResJsonTemplate createRequirement(
             HttpServletRequest request,
@@ -142,9 +137,6 @@ public class AccountController {
             @RequestParam(value = "requirement_detail") String requirement_detail,
             @RequestParam(value = "file",required = false) MultipartFile file) throws AuthenticationException, IOException {
         java.lang.String token = request.getHeader("Authorization");
-        if (token == null) {
-            return new ResJsonTemplate("400", "token无效");
-        }
         java.lang.String username = jwtTokenUtil.getUsernameFromToken(token);
         Account account = accountRepository.findByUsername(username);
         Requirement requirement = new Requirement();
@@ -166,13 +158,11 @@ public class AccountController {
         return new ResJsonTemplate("201","创建需求成功");
 
     }
+    @PreAuthorize("hasRole('user')")
     @RequestMapping(value= "/requirement",method=RequestMethod.GET)
     public ResJsonTemplate getRequirement(HttpServletRequest request)
     {
         java.lang.String token = request.getHeader("Authorization");
-        if (token == null) {
-            return new ResJsonTemplate("400", "token无效");
-        }
         java.lang.String username = jwtTokenUtil.getUsernameFromToken(token);
         Account account = accountRepository.findByUsername(username);
         List<Requirement> requirements = requirementRepository.findByCreatorId(account.getAccount_id());
