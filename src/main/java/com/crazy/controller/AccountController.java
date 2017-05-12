@@ -1,6 +1,9 @@
 package com.crazy.controller;
 
-import com.crazy.entity.*;
+import com.crazy.entity.Account;
+import com.crazy.entity.ProjectExperience;
+import com.crazy.entity.Requirement;
+import com.crazy.entity.UserInfoDetail;
 import com.crazy.repository.*;
 import com.crazy.security.JwtAuthenticationRequest;
 import com.crazy.security.JwtTokenUtil;
@@ -22,8 +25,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 
 /**
@@ -78,7 +79,7 @@ public class AccountController {
         // Return the token
         //     return ResponseEntity.ok(new JwtAuthenticationResponse(token));
     }
-    @PreAuthorize("hasRole('user')")
+
     @RequestMapping(value = "/user/verification", method = RequestMethod.POST)
     public ResJsonTemplate UserInfoVerifacation(
             HttpServletRequest request, @RequestBody UserInfoDetail userInfoDetail) throws AuthenticationException {
@@ -94,7 +95,7 @@ public class AccountController {
         return new ResJsonTemplate("400", "实名认证失败");
 
     }
-    @PreAuthorize("hasRole('user')")
+
     @RequestMapping(value = "/user/projectExperience", method = RequestMethod.POST)
     public ResJsonTemplate developerSkill(
             HttpServletRequest request, @RequestParam(value = "certificate", required = false) MultipartFile file,
@@ -125,7 +126,7 @@ public class AccountController {
 
     }
 
-    @PreAuthorize("hasRole('user')")
+
     @RequestMapping(value = "/requirement", method = RequestMethod.POST)
     public ResJsonTemplate createRequirement(
             HttpServletRequest request,
@@ -158,7 +159,7 @@ public class AccountController {
 
     }
 
-    @PreAuthorize("hasRole('user')")
+
     @RequestMapping(value= "/requirement",method=RequestMethod.GET)
     public ResJsonTemplate getRequirement(HttpServletRequest request)
     {
