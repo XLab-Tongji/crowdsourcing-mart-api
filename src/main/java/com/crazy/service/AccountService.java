@@ -10,12 +10,7 @@ public interface AccountService {
     Account register(Account userToAdd);
 
     String login(String username, String password);
-//    //注册用户
-//    public ResJsonTemplate addAccount(Account account);
-//
-//    //用户登录
-//    public ResJsonTemplate checkAccount(Account account, String useragent, HttpServletRequest request);
-//
 
+    public RequirementDetail GetRequirementDetail(Long requirementId);
 }
 

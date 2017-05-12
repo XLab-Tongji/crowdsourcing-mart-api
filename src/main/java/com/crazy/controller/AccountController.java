@@ -1,14 +1,12 @@
 package com.crazy.controller;
 
-import com.crazy.entity.Account;
-import com.crazy.entity.ProjectExperience;
-import com.crazy.entity.Requirement;
-import com.crazy.entity.UserInfoDetail;
+import com.crazy.entity.*;
 import com.crazy.repository.*;
 import com.crazy.security.JwtAuthenticationRequest;
 import com.crazy.security.JwtTokenUtil;
 import com.crazy.security.JwtUserFactory;
 import com.crazy.service.AccountService;
+import com.crazy.service.RequirementDetail;
 import com.crazy.util.ConvertJson;
 import com.crazy.util.ResJsonTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +22,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 
 /**
@@ -97,12 +97,12 @@ public class AccountController {
     @PreAuthorize("hasRole('user')")
     @RequestMapping(value = "/user/projectExperience", method = RequestMethod.POST)
     public ResJsonTemplate developerSkill(
-            HttpServletRequest request,@RequestParam(value = "certificate",required = false) MultipartFile file,
+            HttpServletRequest request, @RequestParam(value = "certificate", required = false) MultipartFile file,
             @RequestParam(value = "project_name") String project_name,
             @RequestParam(value = "project_region") String project_region,
             @RequestParam(value = "project_address") String project_address,
             @RequestParam(value = "project_text") String project_text
-            ) throws AuthenticationException, IOException {
+    ) throws AuthenticationException, IOException {
         java.lang.String token = request.getHeader("Authorization");
         java.lang.String username = jwtTokenUtil.getUsernameFromToken(token);
         Account account = accountRepository.findByUsername(username);
@@ -114,17 +114,17 @@ public class AccountController {
         projectExperience.setProjectName(project_name);
         projectExperience.setProjectRegion(project_region);
         projectExperience.setProjectText(project_text);
-        if(file!=null)
-        {
+        if (file != null) {
             byte[] data = new byte[file.getInputStream().available()];
             file.getInputStream().read(data);
             projectExperience.setCertificate(data);
         }
 
         ProjectExperience temp = projectExperienceRepository.save(projectExperience);
-        return new ResJsonTemplate("201",temp);
+        return new ResJsonTemplate("201", temp);
 
     }
+
     @PreAuthorize("hasRole('user')")
     @RequestMapping(value = "/requirement", method = RequestMethod.POST)
     public ResJsonTemplate createRequirement(
@@ -132,10 +132,10 @@ public class AccountController {
             @RequestParam(value = "requirement_name") String requirement_name,
             @RequestParam(value = "requirement_type") String requirement_type,
             @RequestParam(value = "need_manager") int need_manager,
-            @RequestParam(value = "start_time" ) @DateTimeFormat(pattern="yyyy-MM-dd") Date start_time,
-            @RequestParam(value = "end_time") @DateTimeFormat(pattern="yyyy-MM-dd") Date end_time,
+            @RequestParam(value = "start_time") @DateTimeFormat(pattern = "yyyy-MM-dd") Date start_time,
+            @RequestParam(value = "end_time") @DateTimeFormat(pattern = "yyyy-MM-dd") Date end_time,
             @RequestParam(value = "requirement_detail") String requirement_detail,
-            @RequestParam(value = "file",required = false) MultipartFile file) throws AuthenticationException, IOException {
+            @RequestParam(value = "file", required = false) MultipartFile file) throws AuthenticationException, IOException {
         java.lang.String token = request.getHeader("Authorization");
         java.lang.String username = jwtTokenUtil.getUsernameFromToken(token);
         Account account = accountRepository.findByUsername(username);
@@ -147,28 +147,29 @@ public class AccountController {
         requirement.setNeed_manager(need_manager);
         requirement.setStart_time(start_time);
         requirement.setEnd_time(end_time);
-        if(file!=null)
-        {
+        if (file != null) {
             byte[] data = new byte[file.getInputStream().available()];
             file.getInputStream().read(data);
             requirement.setFile(data);
         }
 
         requirementRepository.save(requirement);
-        return new ResJsonTemplate("201","创建需求成功");
+        return new ResJsonTemplate("201", "创建需求成功");
 
     }
+
     @PreAuthorize("hasRole('user')")
     @RequestMapping(value= "/requirement",method=RequestMethod.GET)
     public ResJsonTemplate getRequirement(HttpServletRequest request)
     {
+
+
         java.lang.String token = request.getHeader("Authorization");
         java.lang.String username = jwtTokenUtil.getUsernameFromToken(token);
         Account account = accountRepository.findByUsername(username);
         List<Requirement> requirements = requirementRepository.findByCreatorId(account.getAccount_id());
         ArrayList<simpleRequirement> simpleRequirements = new ArrayList<simpleRequirement>();
-        for(int i = 0;i<requirements.size();i++)
-        {
+        for (int i = 0; i < requirements.size(); i++) {
             simpleRequirement s = new simpleRequirement();
             s.setRequirement_id(requirements.get(i).getId());
             s.setRequirement_type(requirements.get(i).getRequirement_type());
@@ -176,8 +177,48 @@ public class AccountController {
             s.setRequirement_state(requirements.get(i).getRequirement_state());
             simpleRequirements.add(s);
         }
-        return new ResJsonTemplate("200",simpleRequirements);
+        return new ResJsonTemplate("200", simpleRequirements);
     }
+
+    @RequestMapping(value = "/requirement/{id}", method = RequestMethod.DELETE)
+    public ResJsonTemplate DeteleRequirement(HttpServletRequest request, @PathVariable Long id) {
+        String token = request.getHeader("Authorization");
+        if (token == null) {
+            return new ResJsonTemplate("401", "权限错误");
+        }
+        if (!requirementRepository.exists(id)) {
+            return new ResJsonTemplate("400", "删除失败");
+        }
+        requirementRepository.deleteById(id);
+        return new ResJsonTemplate("200", "删除成功");
+    }
+
+    @RequestMapping(value = "/requirement/{id}", method = RequestMethod.PUT)
+    public ResJsonTemplate UpdateRequirement(HttpServletRequest request, @RequestBody Requirement requirement, @PathVariable Long id) {
+        String token = request.getHeader("Authorization");
+        if (token == null) {
+            return new ResJsonTemplate("401", "权限错误");
+        }
+        if (!requirementRepository.exists(id)) {
+            return new ResJsonTemplate("400", "删除失败");
+        }
+        requirement.setId(id);
+        requirementRepository.save(requirement);
+        return new ResJsonTemplate("200", "更新成功");
+    }
+
+    @RequestMapping(value = "/requirement/{id}", method = RequestMethod.GET)
+    public ResJsonTemplate GetRequirementDetail(HttpServletRequest request, @PathVariable Long id) {
+        String token = request.getHeader("Authorization");
+        if (token == null) {
+            return new ResJsonTemplate("401", "权限错误");
+        }
+        RequirementDetail requirementDetail = new RequirementDetail();
+        requirementDetail = accountService.GetRequirementDetail(id);
+        return new ResJsonTemplate("200", requirementDetail);
+    }
+
+
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResJsonTemplate register(@RequestBody Account addedUser) throws AuthenticationException {
         if (accountService.register(addedUser) != null) {
@@ -195,36 +236,6 @@ public class AccountController {
     }
 
 }
-//
-//    @Autowired
-//    private AccountService accountService;
-//
-//
-//    @Autowired
-//    private Encryption encryption;
-//
-//
-//    @RequestMapping(value = "/register", method = RequestMethod.POST)
-//    @ResponseBody
-//    public ResJsonTemplate addAccount(@RequestBody Account account) {
-//        return accountService.addAccount(account);
-//    }
-//
-//
-//    @RequestMapping(value = "/login", method = RequestMethod.POST)
-//    @ResponseBody
-//    public  ResJsonTemplate checkAccount(@RequestBody Account account, @RequestHeader(value = "User-Agent") String useragent,
-//                                 HttpServletRequest request) {
-//
-//        return accountService.checkAccount(account, useragent, request);
-//    }
-//
-//    @RequestMapping(value = "/test", method = RequestMethod.GET)
-//    public String test(@RequestParam(value = "token") String token) {
-//        return encryption.tokenValidate(token);
-//    }
-
-
 
 //用于 获取前端的skill信息
 
@@ -232,75 +243,75 @@ public class AccountController {
 class data1 {
     private byte[] certificate;
     private skill skill;
-    public void setCertificate(byte[] c)
-    {
+
+    public void setCertificate(byte[] c) {
         certificate = c;
     }
-    public byte[] getCertificate()
-    {
+
+    public byte[] getCertificate() {
         return certificate;
     }
-    public void setSkill(skill s)
-    {
+
+    public void setSkill(skill s) {
         skill = s;
     }
-    public skill getSkill()
-    {
+
+    public skill getSkill() {
         return skill;
     }
 }
-class data2
-{
+
+class data2 {
     private java.lang.String token;
     private UserInfoDetail userInfoDetail;
-    public void setToken(java.lang.String t)
-    {
+
+    public void setToken(java.lang.String t) {
         token = t;
     }
-    public java.lang.String getToken()
-    {
+
+    public java.lang.String getToken() {
         return token;
     }
-    public void setUserInfoDetail(UserInfoDetail u)
-    {
+
+    public void setUserInfoDetail(UserInfoDetail u) {
         userInfoDetail = u;
     }
-    public UserInfoDetail getUserInfoDetail()
-    {
+
+    public UserInfoDetail getUserInfoDetail() {
         return userInfoDetail;
     }
 }
-class skill
-{
+
+class skill {
     private java.lang.String skill_name;
     private java.lang.String skill_detail;
-    public java.lang.String getSkill_name()
-    {
+
+    public java.lang.String getSkill_name() {
         return skill_name;
     }
-    public void setSkill_name(java.lang.String s)
-    {
+
+    public void setSkill_name(java.lang.String s) {
         skill_name = s;
     }
-    public java.lang.String getSkill_detail()
-    {
+
+    public java.lang.String getSkill_detail() {
         return skill_detail;
     }
-    public void setSkill_detail(java.lang.String s)
-    {
+
+    public void setSkill_detail(java.lang.String s) {
         skill_detail = s;
     }
+
     @Override
-    public java.lang.String toString()
-    {
+    public java.lang.String toString() {
         return "skill{" +
-                "skill_name='" + skill_name+ '\'' +
+                "skill_name='" + skill_name + '\'' +
                 ", skill_detail='" + skill_detail + '\'' +
                 '}';
     }
 }
-class simpleRequirement
-{
+
+class simpleRequirement {
     private Long requirement_id;
     private String requirement_name;
     private String requirement_type;
@@ -338,4 +349,3 @@ class simpleRequirement
         this.requirement_name = requirement_name;
     }
 }
-

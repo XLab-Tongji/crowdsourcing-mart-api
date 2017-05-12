@@ -7,10 +7,10 @@ import java.util.Date;
  * Created by SHIKUN on 2016/10/16.
  */
 @Entity
-@Table(name="DevEnrollInfo")
+@Table(name = "DevEnrollInfo")
 //多主键标志
 @IdClass(DevEnrollInfoPK.class)
-public class DevEnrollInfo  {
+public class DevEnrollInfo {
 
     @Id
     @GeneratedValue
@@ -22,16 +22,21 @@ public class DevEnrollInfo  {
     private Long projectId;
 
     private Date enroll_date;
-    public DevEnrollInfo( String username,  Long project_id)
-    {
+
+    public DevEnrollInfo() {
+
+    }
+
+    public DevEnrollInfo(String username, Long project_id) {
         this.username = username;
         this.projectId = project_id;
         enroll_date = new Date();
     }
-    public Long getId()
-    {
+
+    public Long getId() {
         return id;
     }
+
     public Long getProject_id() {
         return projectId;
     }
