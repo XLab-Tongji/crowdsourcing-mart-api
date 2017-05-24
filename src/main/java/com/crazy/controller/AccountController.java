@@ -1,15 +1,15 @@
 package com.crazy.controller;
 
 import com.crazy.entity.Account;
-import com.crazy.entity.ProjectExperience;
 import com.crazy.entity.Requirement;
 import com.crazy.entity.UserInfoDetail;
-import com.crazy.repository.*;
+import com.crazy.repository.AccountRepository;
+import com.crazy.repository.DeveloperRepository;
+import com.crazy.repository.RequirementRepository;
+import com.crazy.repository.UserInfoDetailRepository;
 import com.crazy.security.JwtAuthenticationRequest;
 import com.crazy.security.JwtTokenUtil;
-import com.crazy.security.JwtUserFactory;
-import com.crazy.service.AccountService;
-import com.crazy.service.RequirementDetail;
+import com.crazy.service.*;
 import com.crazy.util.ConvertJson;
 import com.crazy.util.ResJsonTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 
 /**
@@ -41,6 +39,12 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
     @Autowired
+    private RequirementService requirementService;
+    @Autowired
+    private UserInfoDetailService userInfoDetailService;
+    @Autowired
+    private ProjectExperienceService projectExperienceService;
+    @Autowired
     UserInfoDetailRepository userInfoDetailRepository;
     @Autowired
     JwtTokenUtil jwtTokenUtil;
@@ -52,8 +56,6 @@ public class AccountController {
     private RequirementRepository requirementRepository;
     @Autowired
     private ConvertJson convertJson;
-    @Autowired
-    private ProjectExperienceRepository projectExperienceRepository;
 
     //获取token
     @RequestMapping(value = "/session", method = RequestMethod.POST)
@@ -83,16 +85,8 @@ public class AccountController {
     @RequestMapping(value = "/user/verification", method = RequestMethod.POST)
     public ResJsonTemplate UserInfoVerifacation(
             HttpServletRequest request, @RequestBody UserInfoDetail userInfoDetail) throws AuthenticationException {
-        java.lang.String token = request.getHeader("Authorization");
-        java.lang.String username = jwtTokenUtil.getUsernameFromToken(token);
-        Account account = accountRepository.findByUsername(username);
-        if (jwtTokenUtil.validateToken(token, JwtUserFactory.create(account))) {
-
-            account.setInfo_id(userInfoDetailRepository.save(userInfoDetail).getId());
-            accountRepository.save(account);
-            return new ResJsonTemplate("200", "实名认证成功");
-        }
-        return new ResJsonTemplate("400", "实名认证失败");
+        Account account = getAccount(request);
+        return userInfoDetailService.addUserInfoDetail(account,userInfoDetail);
 
     }
 
@@ -104,25 +98,15 @@ public class AccountController {
             @RequestParam(value = "project_address") String project_address,
             @RequestParam(value = "project_text") String project_text
     ) throws AuthenticationException, IOException {
-        java.lang.String token = request.getHeader("Authorization");
-        java.lang.String username = jwtTokenUtil.getUsernameFromToken(token);
-        Account account = accountRepository.findByUsername(username);
+        Account account = getAccount(request);
+        return projectExperienceService.addExperience(account,
+                file,
+                project_name,
+                project_region,
+                project_address,
+                project_text);
 
 
-        ProjectExperience projectExperience = new ProjectExperience();
-        projectExperience.setAccountId(account.getAccount_id());
-        projectExperience.setProjectAddress(project_address);
-        projectExperience.setProjectName(project_name);
-        projectExperience.setProjectRegion(project_region);
-        projectExperience.setProjectText(project_text);
-        if (file != null) {
-            byte[] data = new byte[file.getInputStream().available()];
-            file.getInputStream().read(data);
-            projectExperience.setCertificate(data);
-        }
-
-        ProjectExperience temp = projectExperienceRepository.save(projectExperience);
-        return new ResJsonTemplate("201", temp);
 
     }
 
@@ -137,25 +121,14 @@ public class AccountController {
             @RequestParam(value = "end_time") @DateTimeFormat(pattern = "yyyy-MM-dd") Date end_time,
             @RequestParam(value = "requirement_detail") String requirement_detail,
             @RequestParam(value = "file", required = false) MultipartFile file) throws AuthenticationException, IOException {
-        java.lang.String token = request.getHeader("Authorization");
-        java.lang.String username = jwtTokenUtil.getUsernameFromToken(token);
-        Account account = accountRepository.findByUsername(username);
-        Requirement requirement = new Requirement();
-        requirement.setCreatorId(account.getAccount_id());
-        requirement.setRequirement_name(requirement_name);
-        requirement.setRequirement_type(requirement_type);
-        requirement.setRequirement_detail(requirement_detail);
-        requirement.setNeed_manager(need_manager);
-        requirement.setStart_time(start_time);
-        requirement.setEnd_time(end_time);
-        if (file != null) {
-            byte[] data = new byte[file.getInputStream().available()];
-            file.getInputStream().read(data);
-            requirement.setFile(data);
-        }
-
-        requirementRepository.save(requirement);
-        return new ResJsonTemplate("201", "创建需求成功");
+        Account account = getAccount(request);
+        return  requirementService.addRequirement(account,requirement_name,
+                requirement_type,
+                need_manager,
+                start_time,
+                end_time,
+                requirement_detail,
+                file);
 
     }
 
@@ -163,22 +136,8 @@ public class AccountController {
     @RequestMapping(value= "/requirement",method=RequestMethod.GET)
     public ResJsonTemplate getRequirement(HttpServletRequest request)
     {
-
-
-        java.lang.String token = request.getHeader("Authorization");
-        java.lang.String username = jwtTokenUtil.getUsernameFromToken(token);
-        Account account = accountRepository.findByUsername(username);
-        List<Requirement> requirements = requirementRepository.findByCreatorId(account.getAccount_id());
-        ArrayList<simpleRequirement> simpleRequirements = new ArrayList<simpleRequirement>();
-        for (int i = 0; i < requirements.size(); i++) {
-            simpleRequirement s = new simpleRequirement();
-            s.setRequirement_id(requirements.get(i).getId());
-            s.setRequirement_type(requirements.get(i).getRequirement_type());
-            s.setRequirement_name(requirements.get(i).getRequirement_name());
-            s.setRequirement_state(requirements.get(i).getRequirement_state());
-            simpleRequirements.add(s);
-        }
-        return new ResJsonTemplate("200", simpleRequirements);
+        Account account = getAccount(request);
+        return  requirementService.getReuirement(account);
     }
 
     @RequestMapping(value = "/requirement/{id}", method = RequestMethod.DELETE)
@@ -234,6 +193,14 @@ public class AccountController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public Account getUserByUsername(@RequestParam(value = "username") java.lang.String username) {
         return accountRepository.findByUsername(username);
+    }
+
+    public Account getAccount(HttpServletRequest request)
+    {
+        java.lang.String token = request.getHeader("Authorization");
+        java.lang.String username = jwtTokenUtil.getUsernameFromToken(token);
+        Account account = accountRepository.findByUsername(username);
+        return account;
     }
 
 }
@@ -312,41 +279,4 @@ class skill {
     }
 }
 
-class simpleRequirement {
-    private Long requirement_id;
-    private String requirement_name;
-    private String requirement_type;
-    private int requirement_state;
 
-    public Long getRequirement_id() {
-        return requirement_id;
-    }
-
-    public void setRequirement_id(Long requirement_id) {
-        this.requirement_id = requirement_id;
-    }
-
-    public int getRequirement_state() {
-        return requirement_state;
-    }
-
-    public void setRequirement_state(int requirement_state) {
-        this.requirement_state = requirement_state;
-    }
-
-    public String getRequirement_type() {
-        return requirement_type;
-    }
-
-    public void setRequirement_type(String requirement_type) {
-        this.requirement_type = requirement_type;
-    }
-
-    public String getRequirement_name() {
-        return requirement_name;
-    }
-
-    public void setRequirement_name(String requirement_name) {
-        this.requirement_name = requirement_name;
-    }
-}
