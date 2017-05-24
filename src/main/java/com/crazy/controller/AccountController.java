@@ -4,13 +4,11 @@ import com.crazy.entity.Account;
 import com.crazy.entity.Requirement;
 import com.crazy.entity.UserInfoDetail;
 import com.crazy.repository.AccountRepository;
-import com.crazy.repository.DeveloperRepository;
 import com.crazy.repository.RequirementRepository;
 import com.crazy.repository.UserInfoDetailRepository;
 import com.crazy.security.JwtAuthenticationRequest;
 import com.crazy.security.JwtTokenUtil;
 import com.crazy.service.*;
-import com.crazy.util.ConvertJson;
 import com.crazy.util.ResJsonTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -51,11 +49,8 @@ public class AccountController {
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
-    private DeveloperRepository developerRepository;
-    @Autowired
     private RequirementRepository requirementRepository;
-    @Autowired
-    private ConvertJson convertJson;
+
 
     //获取token
     @RequestMapping(value = "/session", method = RequestMethod.POST)
@@ -71,15 +66,13 @@ public class AccountController {
 
 
         UserInfoDetail userInfoDetail = userInfoDetailRepository.findById(account.getInfo_id());
-        data2 d = new data2();
+        AccountInfo d = new AccountInfo();
         d.setToken(token);
         d.setUserInfoDetail(userInfoDetail);
 
         return new ResJsonTemplate("200", d);
 
 
-        // Return the token
-        //     return ResponseEntity.ok(new JwtAuthenticationResponse(token));
     }
 
     @RequestMapping(value = "/user/verification", method = RequestMethod.POST)
@@ -105,9 +98,6 @@ public class AccountController {
                 project_region,
                 project_address,
                 project_text);
-
-
-
     }
 
 
@@ -129,7 +119,6 @@ public class AccountController {
                 end_time,
                 requirement_detail,
                 file);
-
     }
 
 
@@ -205,31 +194,12 @@ public class AccountController {
 
 }
 
-//用于 获取前端的skill信息
 
 
-class data1 {
-    private byte[] certificate;
-    private skill skill;
 
-    public void setCertificate(byte[] c) {
-        certificate = c;
-    }
 
-    public byte[] getCertificate() {
-        return certificate;
-    }
 
-    public void setSkill(skill s) {
-        skill = s;
-    }
-
-    public skill getSkill() {
-        return skill;
-    }
-}
-
-class data2 {
+class AccountInfo {
     private java.lang.String token;
     private UserInfoDetail userInfoDetail;
 
@@ -249,34 +219,3 @@ class data2 {
         return userInfoDetail;
     }
 }
-
-class skill {
-    private java.lang.String skill_name;
-    private java.lang.String skill_detail;
-
-    public java.lang.String getSkill_name() {
-        return skill_name;
-    }
-
-    public void setSkill_name(java.lang.String s) {
-        skill_name = s;
-    }
-
-    public java.lang.String getSkill_detail() {
-        return skill_detail;
-    }
-
-    public void setSkill_detail(java.lang.String s) {
-        skill_detail = s;
-    }
-
-    @Override
-    public java.lang.String toString() {
-        return "skill{" +
-                "skill_name='" + skill_name + '\'' +
-                ", skill_detail='" + skill_detail + '\'' +
-                '}';
-    }
-}
-
-
