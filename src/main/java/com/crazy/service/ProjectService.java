@@ -59,4 +59,7 @@ public interface ProjectService {
 
     //根据页码来获取项目列表 start是页码，size是每页显示的数目
     ResJsonTemplate getProjectListbyPageNumber(int start, int size);
+
+    //获取开发者的项目列表（包括申请中，开发中，已完成的项目）
+    ResJsonTemplate getProjectList(String username);
 }

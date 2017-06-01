@@ -37,6 +37,8 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
     @Autowired
+    private ProjectService projectService;
+    @Autowired
     private RequirementService requirementService;
     @Autowired
     private UserInfoDetailService userInfoDetailService;
@@ -79,7 +81,7 @@ public class AccountController {
     public ResJsonTemplate UserInfoVerifacation(
             HttpServletRequest request, @RequestBody UserInfoDetail userInfoDetail) throws AuthenticationException {
         Account account = getAccount(request);
-        return userInfoDetailService.addUserInfoDetail(account,userInfoDetail);
+        return userInfoDetailService.addUserInfoDetail(account, userInfoDetail);
 
     }
 
@@ -112,7 +114,7 @@ public class AccountController {
             @RequestParam(value = "requirement_detail") String requirement_detail,
             @RequestParam(value = "file", required = false) MultipartFile file) throws AuthenticationException, IOException {
         Account account = getAccount(request);
-        return  requirementService.addRequirement(account,requirement_name,
+        return requirementService.addRequirement(account, requirement_name,
                 requirement_type,
                 need_manager,
                 start_time,
@@ -122,11 +124,10 @@ public class AccountController {
     }
 
 
-    @RequestMapping(value= "/requirement",method=RequestMethod.GET)
-    public ResJsonTemplate getRequirement(HttpServletRequest request)
-    {
+    @RequestMapping(value = "/requirement", method = RequestMethod.GET)
+    public ResJsonTemplate getRequirement(HttpServletRequest request) {
         Account account = getAccount(request);
-        return  requirementService.getReuirement(account);
+        return requirementService.getReuirement(account);
     }
 
     @RequestMapping(value = "/requirement/{id}", method = RequestMethod.DELETE)
@@ -167,6 +168,16 @@ public class AccountController {
         return new ResJsonTemplate("200", requirementDetail);
     }
 
+    @RequestMapping(value = "/project", method = RequestMethod.GET)
+    public ResJsonTemplate getProjectList(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        if (token == null) {
+            return new ResJsonTemplate("401", "权限错误");
+        }
+        String username = jwtTokenUtil.getUsernameFromToken(token);
+        return projectService.getProjectList(username);
+    }
+
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResJsonTemplate register(@RequestBody Account addedUser) throws AuthenticationException {
@@ -184,19 +195,14 @@ public class AccountController {
         return accountRepository.findByUsername(username);
     }
 
-    public Account getAccount(HttpServletRequest request)
-    {
-        java.lang.String token = request.getHeader("Authorization");
-        java.lang.String username = jwtTokenUtil.getUsernameFromToken(token);
+    public Account getAccount(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        String username = jwtTokenUtil.getUsernameFromToken(token);
         Account account = accountRepository.findByUsername(username);
         return account;
     }
 
 }
-
-
-
-
 
 
 class AccountInfo {
