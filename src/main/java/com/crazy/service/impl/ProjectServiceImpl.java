@@ -71,17 +71,11 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ResJsonTemplate addEnrollInfo(DevEnrollInfo devEnrollInfo) {
         try {
-/*
-            return new ResJsonTemplate("200", projectMapper.insertDevProInfo(
-                    devEnrollInfo.getUsername(), devEnrollInfo.getProject_id()));
-                    */
             return new ResJsonTemplate("200", devEnrollInfoRepository.save(devEnrollInfo));
-
-
         } catch (Exception ex) {
             System.out.println(ex);
+            System.out.println("error");
             return new ResJsonTemplate("500", ex);
-
         }
     }
 

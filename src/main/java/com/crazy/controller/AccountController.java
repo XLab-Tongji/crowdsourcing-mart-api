@@ -1,6 +1,7 @@
 package com.crazy.controller;
 
 import com.crazy.entity.Account;
+import com.crazy.entity.DevEnrollInfo;
 import com.crazy.entity.Requirement;
 import com.crazy.entity.UserInfoDetail;
 import com.crazy.repository.AccountRepository;
@@ -166,6 +167,22 @@ public class AccountController {
         RequirementDetail requirementDetail = new RequirementDetail();
         requirementDetail = accountService.GetRequirementDetail(id);
         return new ResJsonTemplate("200", requirementDetail);
+    }
+
+    @RequestMapping(value = "/requirement/{id}/enroll", method = RequestMethod.POST)
+    public ResJsonTemplate EnrollProject(HttpServletRequest request, @PathVariable Long id) {
+        String token = request.getHeader("Authorization");
+        if (token == null) {
+            return new ResJsonTemplate("401", "权限错误");
+        }
+        String username = jwtTokenUtil.getUsernameFromToken(token);
+        DevEnrollInfo devEnrollInfo = new DevEnrollInfo(username, id);
+        return projectService.addEnrollInfo(devEnrollInfo);
+    }
+
+    @RequestMapping(value = "/requirements", method = RequestMethod.GET)
+    public ResJsonTemplate getRequirement() {
+        return requirementService.getRequirement();
     }
 
     @RequestMapping(value = "/project", method = RequestMethod.GET)

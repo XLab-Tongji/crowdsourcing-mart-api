@@ -18,9 +18,10 @@ import java.util.List;
  * Created by jieping on 2017-05-24.
  */
 @Service
-public class RequirementServiceImpl  implements RequirementService{
+public class RequirementServiceImpl implements RequirementService {
     @Autowired
     private RequirementRepository requirementRepository;
+
     @Override
     public ResJsonTemplate addRequirement(Account account, String requirement_name, String requirement_type, int need_manager, Date start_time, Date end_time, String requirement_detail, MultipartFile file) throws IOException {
         Requirement requirement = new Requirement();
@@ -55,7 +56,14 @@ public class RequirementServiceImpl  implements RequirementService{
         }
         return new ResJsonTemplate("200", simpleRequirements);
     }
+
+    @Override
+    public ResJsonTemplate getRequirement() {
+        List<Requirement> requirements = (List) requirementRepository.findAll();
+        return new ResJsonTemplate("200", requirements);
+    }
 }
+
 class simpleRequirement {
     private Long requirement_id;
     private String requirement_name;

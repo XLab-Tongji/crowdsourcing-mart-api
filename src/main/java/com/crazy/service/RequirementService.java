@@ -20,4 +20,6 @@ public interface RequirementService {
                                           String requirement_detail,
                                           MultipartFile file) throws IOException;
     public ResJsonTemplate getReuirement(Account account) ;
+
+    public ResJsonTemplate getRequirement();
 }
