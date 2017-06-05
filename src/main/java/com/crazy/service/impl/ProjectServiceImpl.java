@@ -1,23 +1,21 @@
 package com.crazy.service.impl;
 
-import com.crazy.repository.DevEnrollInfoRepository;
-import com.crazy.repository.DevInfoRepository;
-import com.crazy.repository.ProjectRepository;
 import com.crazy.entity.DevEnrollInfo;
 import com.crazy.entity.DevInfo;
 import com.crazy.entity.Project;
 import com.crazy.mapper.ProjectMapper;
+import com.crazy.repository.DevEnrollInfoRepository;
+import com.crazy.repository.DevInfoRepository;
+import com.crazy.repository.ProjectRepository;
 import com.crazy.service.FileService;
+import com.crazy.service.ProjectInfo;
 import com.crazy.service.ProjectService;
 import com.crazy.util.Paging;
 import com.crazy.util.ResJsonTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 项目相关接口实现
@@ -41,6 +39,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Autowired
     private FileService fileService;
 
+    List<ProjectInfo> projects = new ArrayList<>();
 
     @Override
     public ResJsonTemplate getAllproject() {
@@ -72,17 +71,11 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ResJsonTemplate addEnrollInfo(DevEnrollInfo devEnrollInfo) {
         try {
-/*
-            return new ResJsonTemplate("200", projectMapper.insertDevProInfo(
-                    devEnrollInfo.getUsername(), devEnrollInfo.getProject_id()));
-                    */
             return new ResJsonTemplate("200", devEnrollInfoRepository.save(devEnrollInfo));
-
-
         } catch (Exception ex) {
             System.out.println(ex);
+            System.out.println("error");
             return new ResJsonTemplate("500", ex);
-
         }
     }
 
@@ -114,7 +107,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ResJsonTemplate getEnrollListByDevUsername(String username) {
         try {
-            return new ResJsonTemplate("200", projectRepository.searchProjectInfobyUsername(username));
+            return new ResJsonTemplate("200", projectRepository.searchEnrollProjectByUsername(username));
         } catch (Exception ex) {
             ex.printStackTrace();
             return new ResJsonTemplate("500", "未查询到项目");
@@ -249,5 +242,25 @@ public class ProjectServiceImpl implements ProjectService {
         return new ResJsonTemplate("200", result);
     }
 
+    @Override
+    public ResJsonTemplate getProjectList(String username) {
+        List<Project> enrollProjects = new ArrayList<>();
+        List<Project> developingProjects = new ArrayList<>();
+        enrollProjects = projectRepository.searchEnrollProjectByUsername(username);
+        developingProjects = projectRepository.searchDevelopingProjectbyUsername(username);
+        convertToProjectInfo(enrollProjects);
+        convertToProjectInfo(developingProjects);
+        return new ResJsonTemplate("200", projects);
+    }
 
+    public void convertToProjectInfo(List<Project> projectList) {
+        for (int i = 0; i < projectList.size(); i++) {
+            Long projectId = projectList.get(i).getprojectId();
+            String projectName = projectList.get(i).getProject_name();
+            String projectType = projectList.get(i).getProject_type();
+            int projectState = projectList.get(i).getProject_state();
+            ProjectInfo projectInfo = new ProjectInfo(projectId, projectName, projectType, projectState);
+            projects.add(projectInfo);
+        }
+    }
 }

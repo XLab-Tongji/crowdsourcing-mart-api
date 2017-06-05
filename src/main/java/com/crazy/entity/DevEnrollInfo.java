@@ -8,19 +8,14 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "DevEnrollInfo")
-//多主键标志
-@IdClass(DevEnrollInfoPK.class)
 public class DevEnrollInfo {
 
     @Id
     @GeneratedValue
     private Long id;
-    @Id
-    private String username;
-    @Id
-    @Column(name = "project_id")
-    private Long projectId;
 
+    private String username;
+    private Long projectId;
     private Date enroll_date;
 
     public DevEnrollInfo() {

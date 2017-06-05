@@ -8,7 +8,7 @@ import java.util.Date;
  * Created by SHIKUN on 2016/9/12.
  */
 @Entity
-@Table(name="project")
+@Table(name = "project")
 public class Project {
     @Id
     @GeneratedValue
@@ -38,12 +38,16 @@ public class Project {
     private Date enroll_stop_time;
 
     private Date update_date;
-    public  Project()
-    {}
-    public  Project( double cost,  Integer devlivery_cycle,  Integer warranty_cycle,
-                     String address, String description,  String username,
-                     String project_type,  String project_name)
-    {
+
+    //1为申请中，2为开发中，3为已完成
+    private int project_state;
+
+    public Project() {
+    }
+
+    public Project(double cost, Integer devlivery_cycle, Integer warranty_cycle,
+                   String address, String description, String username,
+                   String project_type, String project_name) {
         this.cost = cost;
         this.delivery_cycle = devlivery_cycle;
         this.warranty_cycle = warranty_cycle;
@@ -53,6 +57,7 @@ public class Project {
         this.project_type = project_type;
         this.project_name = project_name;
     }
+
     public Long getprojectId() {
         return projectId;
     }
@@ -86,7 +91,6 @@ public class Project {
     }
 
 
-
     public String getUsername() {
         return username;
     }
@@ -94,7 +98,6 @@ public class Project {
     public void setUsername(String username) {
         this.username = username;
     }
-
 
 
     public double getCost() {
@@ -160,6 +163,14 @@ public class Project {
 
     public void setProject_type(String project_type) {
         this.project_type = project_type;
+    }
+
+    public int getProject_state() {
+        return project_state;
+    }
+
+    public void setProject_state(int project_state) {
+        this.project_state = project_state;
     }
 
     @Override

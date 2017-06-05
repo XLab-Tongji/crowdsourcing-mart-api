@@ -11,6 +11,6 @@ public interface AccountService {
 
     String login(String username, String password);
 
-    public RequirementDetail GetRequirementDetail(Long requirementId);
+    RequirementDetail GetRequirementDetail(Long requirementId);
 }
 
