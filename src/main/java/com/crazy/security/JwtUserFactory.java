@@ -45,9 +45,9 @@ public class JwtUserFactory {
 //            role_name.add(roles.get(i).getRoleName());
 //        }
         if (role_id == 1)
-            role_name.add("user");
+            role_name.add("ROLE_user");
         else if (role_id == 2)
-            role_name.add("admin");
+            role_name.add("ROLE_admin");
         return role_name.stream()
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());

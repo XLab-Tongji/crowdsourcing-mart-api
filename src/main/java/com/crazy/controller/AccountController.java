@@ -74,7 +74,7 @@ public class AccountController {
 
 
     }
-
+    @PreAuthorize("hasRole('user')")
     @RequestMapping(value = "/user/verification", method = RequestMethod.POST)
     public ResJsonTemplate UserInfoVerifacation(
             HttpServletRequest request, @RequestBody UserInfoDetail userInfoDetail) throws AuthenticationException {
@@ -82,7 +82,7 @@ public class AccountController {
         return userInfoDetailService.addUserInfoDetail(account,userInfoDetail);
 
     }
-
+    @PreAuthorize("hasRole('user')")
     @RequestMapping(value = "/user/projectExperience", method = RequestMethod.POST)
     public ResJsonTemplate developerSkill(
             HttpServletRequest request, @RequestParam(value = "certificate", required = false) MultipartFile file,
@@ -99,8 +99,8 @@ public class AccountController {
                 project_address,
                 project_text);
     }
-
-
+   // @Secured(value = { "user" })
+    @PreAuthorize("hasRole('user')")
     @RequestMapping(value = "/requirement", method = RequestMethod.POST)
     public ResJsonTemplate createRequirement(
             HttpServletRequest request,
@@ -121,7 +121,7 @@ public class AccountController {
                 file);
     }
 
-
+    @PreAuthorize("hasRole('user')")
     @RequestMapping(value= "/requirement",method=RequestMethod.GET)
     public ResJsonTemplate getRequirement(HttpServletRequest request)
     {
