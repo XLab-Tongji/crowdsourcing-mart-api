@@ -16,4 +16,5 @@ public interface ProjectExperienceService {
                                          String project_region,
                                          String project_address,
                                          String project_text) throws IOException;
+    public ResJsonTemplate getExperience(Account account) throws IOException;
 }

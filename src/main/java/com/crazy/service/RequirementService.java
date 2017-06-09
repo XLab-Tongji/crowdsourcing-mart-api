@@ -1,6 +1,7 @@
 package com.crazy.service;
 
 import com.crazy.entity.Account;
+import com.crazy.entity.Requirement;
 import com.crazy.util.ResJsonTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,4 +23,14 @@ public interface RequirementService {
     public ResJsonTemplate getReuirement(Account account) ;
 
     public ResJsonTemplate getRequirement();
+    public ResJsonTemplate updateRequirement(Account account,
+                                             Long reId,
+                                             String requirement_name,
+                                             String requirement_type,
+                                             int need_manager,
+                                             Date start_time,
+                                             Date end_time,
+                                             String requirement_detail,
+                                             MultipartFile file) throws IOException;
+    public Requirement getRequirement(Long id);
 }

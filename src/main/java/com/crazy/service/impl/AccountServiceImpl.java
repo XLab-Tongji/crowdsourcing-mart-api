@@ -10,7 +10,6 @@ import com.crazy.repository.RequirementRepository;
 import com.crazy.repository.UserInfoDetailRepository;
 import com.crazy.security.JwtTokenUtil;
 import com.crazy.service.AccountService;
-import com.crazy.service.RequirementDetail;
 import com.crazy.service.SimpleAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +23,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -95,20 +95,54 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public RequirementDetail GetRequirementDetail(Long requirementId) {
+    public HashMap GetRequirementDetail(String username,Long requirementId,int state) {
+        Requirement requirement = requirementRepository.findOne(requirementId);
+        HashMap<String,Object> result = new HashMap<>();
+        result.put("requirement_name ",requirement.getRequirement_name());
+        result.put("requirement_type",requirement.getRequirement_type());
+        result.put("start_time",requirement.getStart_time());
+        result.put("end_time",requirement.getEnd_time());
+        result.put("requirement_detail",requirement.getRequirement_detail());
+        if(state==0)
+        {
+            return result;
+        }
         List<SimpleAccount> developers = new ArrayList<>();
         List<DevEnrollInfo> devEnrollInfo = new ArrayList<>();
         devEnrollInfo = devEnrollInfoRepository.findByProjectId(requirementId);
-        for (int i = 0; i < devEnrollInfo.size(); i++) {
-            String userName = devEnrollInfo.get(i).getUsername();
-            Account account = accountRepository.findByUsername(userName);
-            SimpleAccount simpleAccount = new SimpleAccount();
-            simpleAccount.setEmail(account.getEmail());
-            simpleAccount.setName(account.getName());
-            simpleAccount.setPhoneNumber(account.getMobile());
-            developers.add(simpleAccount);
+        if(state==1)
+        {
+            for (int i = 0; i < devEnrollInfo.size(); i++)
+            {
+                if(devEnrollInfo.get(i).getUsername().equals(username))
+                {
+                    result.put("is_enroll",true);
+                    return result;
+                }
+            }
+            result.put("is_enroll",false);
+            return result;
         }
-        Requirement requirement = requirementRepository.findOne(requirementId);
+        else
+        {
+
+            for (int i = 0; i < devEnrollInfo.size(); i++) {
+                String userName = devEnrollInfo.get(i).getUsername();
+                Account account = accountRepository.findByUsername(userName);
+                SimpleAccount simpleAccount = new SimpleAccount();
+                simpleAccount.setEmail(account.getEmail());
+                simpleAccount.setName(account.getName());
+                simpleAccount.setPhoneNumber(account.getMobile());
+                developers.add(simpleAccount);
+            }
+
+            result.put("need_manager",requirement.getNeed_manager());
+            result.put("file",requirement.getFile());
+            result.put("developer",developers);
+            return result;
+        }
+
+        /*
         RequirementDetail requirementDetail = new RequirementDetail();
         requirementDetail.setRequirementName(requirement.getRequirement_name());
         requirementDetail.setRequirementType(requirement.getRequirement_type());
@@ -119,6 +153,7 @@ public class AccountServiceImpl implements AccountService {
         requirementDetail.setFile(requirement.getFile());
         requirementDetail.setDevelopers(developers);
         return requirementDetail;
+        */
     }
 
 

@@ -15,7 +15,7 @@ public interface RequirementRepository extends CrudRepository<Requirement, Long>
     List<Requirement> findByCreatorId(Long id);
 
     Requirement findByRequirementName(String name);
-
+    Requirement findById(Long id);
     Requirement save(Requirement requirement);
 
     @Transactional(readOnly = true)

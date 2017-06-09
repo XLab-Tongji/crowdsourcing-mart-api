@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by jieping on 2017-05-24.
@@ -39,5 +40,12 @@ public class ProjectExperienceServiceImpl implements ProjectExperienceService{
 
         ProjectExperience temp = projectExperienceRepository.save(projectExperience);
         return new ResJsonTemplate("201", temp);
+    }
+
+    @Override
+    public ResJsonTemplate getExperience(Account account) {
+       List<ProjectExperience> target = projectExperienceRepository.findByAccountId(account.getAccount_id());
+        return new ResJsonTemplate("200",target);
+
     }
 }

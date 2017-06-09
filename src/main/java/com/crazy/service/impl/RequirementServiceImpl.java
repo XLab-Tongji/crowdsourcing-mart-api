@@ -62,6 +62,40 @@ public class RequirementServiceImpl implements RequirementService {
         List<Requirement> requirements = (List) requirementRepository.findAll();
         return new ResJsonTemplate("200", requirements);
     }
+
+    @Override
+    public ResJsonTemplate updateRequirement(Account account, Long reId, String requirement_name, String requirement_type, int need_manager, Date start_time, Date end_time, String requirement_detail, MultipartFile file) throws IOException {
+        Requirement requirement = requirementRepository.findById(reId);
+        if(requirement==null)
+        {
+            return new ResJsonTemplate("404", "需求不存在");
+        }
+        if(requirement.getCreatorId()!=account.getAccount_id())
+        {
+            return new ResJsonTemplate("400", "该需求非该用户创建，无法更新");
+        }
+        requirement.setRequirement_name(requirement_name);
+        requirement.setRequirement_type(requirement_type);
+        requirement.setRequirement_detail(requirement_detail);
+        requirement.setNeed_manager(need_manager);
+        requirement.setStart_time(start_time);
+        requirement.setEnd_time(end_time);
+        if (file != null) {
+            byte[] data = new byte[file.getInputStream().available()];
+            file.getInputStream().read(data);
+            requirement.setFile(data);
+        }
+
+        requirementRepository.save(requirement);
+        return new ResJsonTemplate("200", "更新成功");
+    }
+
+    @Override
+    public Requirement getRequirement(Long id) {
+        return requirementRepository.findById(id);
+    }
+
+
 }
 
 class simpleRequirement {

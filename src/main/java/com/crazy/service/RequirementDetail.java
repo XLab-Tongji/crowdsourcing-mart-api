@@ -5,29 +5,39 @@ import java.util.Date;
 import java.util.List;
 
 public class RequirementDetail {
-    private String requirementName;
-    private String requirementType;
+    private String requirement_name ;
+    private String requirement_type ;
     private Date start_time;
     private Date end_time;
     private int need_manager;
     private String requirement_detail;
     private byte[] file;
     private List<SimpleAccount> developers = new ArrayList<>();
+    private int enroll_count;
+    private boolean is_enroll;
+
+    public int getEnroll_count() {
+        return enroll_count;
+    }
+
+    public void setEnroll_count(int enroll_count) {
+        this.enroll_count = enroll_count;
+    }
 
     public String getRequirementName() {
-        return requirementName;
+        return requirement_name;
     }
 
     public void setRequirementName(String requirementName) {
-        this.requirementName = requirementName;
+        this.requirement_name = requirementName;
     }
 
     public String getRequirementType() {
-        return requirementType;
+        return requirement_type;
     }
 
     public void setRequirementType(String requirementType) {
-        this.requirementType = requirementType;
+        this.requirement_type = requirementType;
     }
 
     public Date getStart_time() {

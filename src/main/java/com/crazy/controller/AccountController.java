@@ -5,6 +5,7 @@ import com.crazy.entity.DevEnrollInfo;
 import com.crazy.entity.Requirement;
 import com.crazy.entity.UserInfoDetail;
 import com.crazy.repository.AccountRepository;
+import com.crazy.repository.ProjectRepository;
 import com.crazy.repository.RequirementRepository;
 import com.crazy.repository.UserInfoDetailRepository;
 import com.crazy.security.JwtAuthenticationRequest;
@@ -53,6 +54,8 @@ public class AccountController {
     private AccountRepository accountRepository;
     @Autowired
     private RequirementRepository requirementRepository;
+    @Autowired
+    private ProjectRepository projectRepository;
 
 
     //获取token
@@ -77,14 +80,16 @@ public class AccountController {
 
 
     }
+    //新增实名认证
     @PreAuthorize("hasRole('user')")
     @RequestMapping(value = "/user/verification", method = RequestMethod.POST)
     public ResJsonTemplate UserInfoVerifacation(
             HttpServletRequest request, @RequestBody UserInfoDetail userInfoDetail) throws AuthenticationException {
         Account account = getAccount(request);
-        return userInfoDetailService.addUserInfoDetail(account, userInfoDetail);
+        return userInfoDetailService.addUserInfoDetail(account,userInfoDetail);
 
     }
+    //新增项目经历
     @PreAuthorize("hasRole('user')")
     @RequestMapping(value = "/user/projectExperience", method = RequestMethod.POST)
     public ResJsonTemplate developerSkill(
@@ -102,6 +107,15 @@ public class AccountController {
                 project_address,
                 project_text);
     }
+    //获取项目经历
+    @PreAuthorize("hasRole('user')")
+    @RequestMapping(value = "/user/projectExperience", method = RequestMethod.GET)
+    public ResJsonTemplate getDeveloperSkill(HttpServletRequest request)throws AuthenticationException, IOException
+    {
+        Account account = getAccount(request);
+        return projectExperienceService.getExperience(account);
+    }
+    //新增需求
    // @Secured(value = { "user" })
     @PreAuthorize("hasRole('user')")
     @RequestMapping(value = "/requirement", method = RequestMethod.POST)
@@ -115,7 +129,7 @@ public class AccountController {
             @RequestParam(value = "requirement_detail") String requirement_detail,
             @RequestParam(value = "file", required = false) MultipartFile file) throws AuthenticationException, IOException {
         Account account = getAccount(request);
-        return requirementService.addRequirement(account, requirement_name,
+        return  requirementService.addRequirement(account,requirement_name,
                 requirement_type,
                 need_manager,
                 start_time,
@@ -124,79 +138,100 @@ public class AccountController {
                 file);
     }
 
-
-    @RequestMapping(value = "/requirement", method = RequestMethod.GET)
-    public ResJsonTemplate getRequirement(HttpServletRequest request) {
-
+    //获取需求
+    @PreAuthorize("hasRole('user')")
+    @RequestMapping(value= "/requirement",method=RequestMethod.GET)
+    public ResJsonTemplate getRequirement(HttpServletRequest request)
+    {
         Account account = getAccount(request);
-        return requirementService.getReuirement(account);
+        return  requirementService.getReuirement(account);
     }
 
+    //删除需求
+    @PreAuthorize("hasRole('user')")
     @RequestMapping(value = "/requirement/{id}", method = RequestMethod.DELETE)
     public ResJsonTemplate DeteleRequirement(HttpServletRequest request, @PathVariable Long id) {
-        String token = request.getHeader("Authorization");
-        if (token == null) {
-            return new ResJsonTemplate("401", "权限错误");
-        }
         if (!requirementRepository.exists(id)) {
             return new ResJsonTemplate("400", "删除失败");
         }
-        requirementRepository.deleteById(id);
+        Requirement target = requirementRepository.findById(id);
+        requirementRepository.delete(target);
+    //    requirementRepository.deleteById(id);
         return new ResJsonTemplate("200", "删除成功");
     }
 
-    @RequestMapping(value = "/requirement/{id}", method = RequestMethod.PUT)
-    public ResJsonTemplate UpdateRequirement(HttpServletRequest request, @RequestBody Requirement requirement, @PathVariable Long id) {
-        String token = request.getHeader("Authorization");
-        if (token == null) {
-            return new ResJsonTemplate("401", "权限错误");
-        }
-        if (!requirementRepository.exists(id)) {
-            return new ResJsonTemplate("400", "删除失败");
-        }
-        requirement.setId(id);
-        requirementRepository.save(requirement);
-        return new ResJsonTemplate("200", "更新成功");
+    //更新需求
+    @PreAuthorize("hasRole('user')")
+    @RequestMapping(value = "/updateRequirement/{id}", method = RequestMethod.POST)
+    public ResJsonTemplate UpdateRequirement(HttpServletRequest request,
+                                             @RequestParam(value = "requirement_name") String requirement_name,
+                                             @RequestParam(value = "requirement_type") String requirement_type,
+                                             @RequestParam(value = "need_manager") int need_manager,
+                                             @RequestParam(value = "start_time") @DateTimeFormat(pattern = "yyyy-MM-dd") Date start_time,
+                                             @RequestParam(value = "end_time") @DateTimeFormat(pattern = "yyyy-MM-dd") Date end_time,
+                                             @RequestParam(value = "requirement_detail") String requirement_detail,
+                                             @RequestParam(value = "file", required = false) MultipartFile file,
+                                             @PathVariable Long id) throws IOException {
+
+
+        Account account = getAccount(request);
+        return  requirementService.updateRequirement(account,id,requirement_name,
+                requirement_type,
+                need_manager,
+                start_time,
+                end_time,
+                requirement_detail,
+                file);
     }
 
+    //获取详细需求
     @RequestMapping(value = "/requirement/{id}", method = RequestMethod.GET)
     public ResJsonTemplate GetRequirementDetail(HttpServletRequest request, @PathVariable Long id) {
         String token = request.getHeader("Authorization");
+        Account account = getAccount(request);
         if (token == null) {
-            return new ResJsonTemplate("401", "权限错误");
+            new ResJsonTemplate("200", accountService.GetRequirementDetail(account.getUsername(),id,0));
         }
-        RequirementDetail requirementDetail = new RequirementDetail();
-        requirementDetail = accountService.GetRequirementDetail(id);
-        return new ResJsonTemplate("200", requirementDetail);
+
+        if(account.getAccount_id()!=requirementService.getRequirement(id).getCreatorId())
+        {
+            return new ResJsonTemplate("200", accountService.GetRequirementDetail(account.getUsername(),id,1));
+        }
+
+        return new ResJsonTemplate("200", accountService.GetRequirementDetail(account.getUsername(),id,2));
     }
 
+    //加入需求
+    @PreAuthorize("hasRole('user')")
     @RequestMapping(value = "/requirement/{id}/enroll", method = RequestMethod.POST)
     public ResJsonTemplate EnrollProject(HttpServletRequest request, @PathVariable Long id) {
-        String token = request.getHeader("Authorization");
-        if (token == null) {
-            return new ResJsonTemplate("401", "权限错误");
-        }
-        String username = jwtTokenUtil.getUsernameFromToken(token);
-        DevEnrollInfo devEnrollInfo = new DevEnrollInfo(username, id);
-        return projectService.addEnrollInfo(devEnrollInfo);
-    }
 
+        if(requirementService.getRequirement(id)!=null)
+        {
+            String token = request.getHeader("Authorization");
+            String username = jwtTokenUtil.getUsernameFromToken(token);
+            DevEnrollInfo devEnrollInfo = new DevEnrollInfo(username, id);
+            return projectService.addEnrollInfo(devEnrollInfo);
+        }
+        else
+        {
+            return new ResJsonTemplate("404","项目不存在");
+        }
+    }
+    //获取所有需求
     @RequestMapping(value = "/requirements", method = RequestMethod.GET)
     public ResJsonTemplate getRequirement() {
         return requirementService.getRequirement();
     }
 
+    //获取账号参加的项目
     @RequestMapping(value = "/project", method = RequestMethod.GET)
     public ResJsonTemplate getProjectList(HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
-        if (token == null) {
-            return new ResJsonTemplate("401", "权限错误");
-        }
-        String username = jwtTokenUtil.getUsernameFromToken(token);
-        return projectService.getProjectList(username);
+        Account account = getAccount(request);
+        return projectService.getProjectList(account.getUsername());
     }
 
-
+    //注册
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResJsonTemplate register(@RequestBody Account addedUser) throws AuthenticationException {
         if (accountService.register(addedUser) != null) {
@@ -213,9 +248,11 @@ public class AccountController {
         return accountRepository.findByUsername(username);
     }
 
-    public Account getAccount(HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
-        String username = jwtTokenUtil.getUsernameFromToken(token);
+    //获取token信息
+    public Account getAccount(HttpServletRequest request)
+    {
+        java.lang.String token = request.getHeader("Authorization");
+        java.lang.String username = jwtTokenUtil.getUsernameFromToken(token);
         Account account = accountRepository.findByUsername(username);
         return account;
     }

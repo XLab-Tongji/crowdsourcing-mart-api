@@ -14,7 +14,7 @@ public interface DevEnrollInfoRepository extends CrudRepository<DevEnrollInfo, L
     DevEnrollInfo save(DevEnrollInfo devEnrollInfo);
 
     List<DevEnrollInfo> findByProjectId(Long projectId);
-
+    List<DevEnrollInfo> findByUsername(String name);
     List<DevEnrollInfo> findByProjectIdAndUsername(Long projectId, String username);
 
     void delete(DevEnrollInfo devEnrollInfo);

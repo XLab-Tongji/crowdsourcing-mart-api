@@ -18,8 +18,7 @@ public interface ProjectRepository extends CrudRepository<Project, Long>, Paging
 
     List<Project> findByUsername(String username);
 
-    List<Project> findByProjectId(Long project_id);
-
+    Project findByProjectId(Long project_id);
     List<Project> findByProjectIdAndUsername(Long project_id, String username);
 
     long count();

@@ -244,6 +244,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ResJsonTemplate getProjectList(String username) {
+        /*
         List<Project> enrollProjects = new ArrayList<>();
         List<Project> developingProjects = new ArrayList<>();
         enrollProjects = projectRepository.searchEnrollProjectByUsername(username);
@@ -251,6 +252,20 @@ public class ProjectServiceImpl implements ProjectService {
         convertToProjectInfo(enrollProjects);
         convertToProjectInfo(developingProjects);
         return new ResJsonTemplate("200", projects);
+        */
+        List<Project> result = projectRepository.findByUsername(username);
+        List<DevEnrollInfo> devEnrollInfos = devEnrollInfoRepository.findByUsername(username);
+
+        for(int i = 0;i<devEnrollInfos.size();i++)
+        {
+            Project temp = projectRepository.findByProjectId(devEnrollInfos.get(i).getProject_id());
+            if(!result.contains(temp))
+            {
+                result.add(temp);
+
+            }
+        }
+        return new ResJsonTemplate("200",result);
     }
 
     public void convertToProjectInfo(List<Project> projectList) {
