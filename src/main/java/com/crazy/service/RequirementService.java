@@ -1,6 +1,7 @@
 package com.crazy.service;
 
 import com.crazy.entity.Account;
+import com.crazy.entity.DevEnrollInfo;
 import com.crazy.entity.Requirement;
 import com.crazy.util.ResJsonTemplate;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,4 +34,5 @@ public interface RequirementService {
                                              String requirement_detail,
                                              MultipartFile file) throws IOException;
     public Requirement getRequirement(Long id);
+    public ResJsonTemplate addEnrollInfo(DevEnrollInfo devEnrollInfo);
 }

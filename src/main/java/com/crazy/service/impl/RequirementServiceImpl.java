@@ -1,7 +1,9 @@
 package com.crazy.service.impl;
 
 import com.crazy.entity.Account;
+import com.crazy.entity.DevEnrollInfo;
 import com.crazy.entity.Requirement;
+import com.crazy.repository.DevEnrollInfoRepository;
 import com.crazy.repository.RequirementRepository;
 import com.crazy.service.RequirementService;
 import com.crazy.util.ResJsonTemplate;
@@ -21,6 +23,8 @@ import java.util.List;
 public class RequirementServiceImpl implements RequirementService {
     @Autowired
     private RequirementRepository requirementRepository;
+    @Autowired
+    private DevEnrollInfoRepository devEnrollInfoRepository;
 
     @Override
     public ResJsonTemplate addRequirement(Account account, String requirement_name, String requirement_type, int need_manager, Date start_time, Date end_time, String requirement_detail, MultipartFile file) throws IOException {
@@ -93,6 +97,20 @@ public class RequirementServiceImpl implements RequirementService {
     @Override
     public Requirement getRequirement(Long id) {
         return requirementRepository.findById(id);
+    }
+
+    @Override
+    public ResJsonTemplate addEnrollInfo(DevEnrollInfo devEnrollInfo) {
+        List<DevEnrollInfo> devEnrollInfos = devEnrollInfoRepository.findByUsername(devEnrollInfo.getUsername());
+        for(int i = 0; i<devEnrollInfos.size();i++)
+        {
+            if(devEnrollInfos.get(i).getProject_id()==devEnrollInfo.getProject_id())
+            {
+                return new ResJsonTemplate("401","用户已报名该项目");
+            }
+        }
+        devEnrollInfoRepository.save(devEnrollInfo);
+        return new ResJsonTemplate("200","用户报名成功");
     }
 
 

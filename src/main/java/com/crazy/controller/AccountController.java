@@ -205,13 +205,15 @@ public class AccountController {
     @PreAuthorize("hasRole('user')")
     @RequestMapping(value = "/requirement/{id}/enroll", method = RequestMethod.POST)
     public ResJsonTemplate EnrollProject(HttpServletRequest request, @PathVariable Long id) {
-
+        Account account = getAccount(request);
         if(requirementService.getRequirement(id)!=null)
         {
-            String token = request.getHeader("Authorization");
-            String username = jwtTokenUtil.getUsernameFromToken(token);
-            DevEnrollInfo devEnrollInfo = new DevEnrollInfo(username, id);
-            return projectService.addEnrollInfo(devEnrollInfo);
+            if(requirementService.getRequirement(id).getCreatorId()==account.getAccount_id())
+            {
+                 return new ResJsonTemplate("400","该项目为自己创建，不能报名");
+            }
+            DevEnrollInfo devEnrollInfo = new DevEnrollInfo(account.getUsername(), id);
+            return requirementService.addEnrollInfo(devEnrollInfo);
         }
         else
         {
