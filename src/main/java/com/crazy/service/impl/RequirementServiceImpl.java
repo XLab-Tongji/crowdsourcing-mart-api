@@ -113,6 +113,21 @@ public class RequirementServiceImpl implements RequirementService {
         return new ResJsonTemplate("200","用户报名成功");
     }
 
+    @Override
+    public ResJsonTemplate getMyRequirement(Account account) {
+        List<Requirement> result = requirementRepository.findByCreatorId(account.getAccount_id());
+        List<DevEnrollInfo> enrolls = devEnrollInfoRepository.findByUsername(account.getUsername());
+        for(int i = 0;i<enrolls.size();i++)
+        {
+            Requirement temp = requirementRepository.findById(enrolls.get(i).getProject_id());
+            if(!result.contains(temp))
+            {
+                result.add(temp);
+            }
+        }
+        return new ResJsonTemplate("200",result);
+    }
+
 
 }
 

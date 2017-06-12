@@ -35,4 +35,5 @@ public interface RequirementService {
                                              MultipartFile file) throws IOException;
     public Requirement getRequirement(Long id);
     public ResJsonTemplate addEnrollInfo(DevEnrollInfo devEnrollInfo);
+    public ResJsonTemplate getMyRequirement(Account account);
 }

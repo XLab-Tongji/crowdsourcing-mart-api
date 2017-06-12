@@ -253,6 +253,7 @@ public class ProjectServiceImpl implements ProjectService {
         convertToProjectInfo(developingProjects);
         return new ResJsonTemplate("200", projects);
         */
+
         List<Project> result = projectRepository.findByUsername(username);
         List<DevEnrollInfo> devEnrollInfos = devEnrollInfoRepository.findByUsername(username);
 

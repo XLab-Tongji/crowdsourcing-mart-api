@@ -221,16 +221,19 @@ public class AccountController {
         }
     }
     //获取所有需求
+    @PreAuthorize("hasRole('user')")
     @RequestMapping(value = "/requirements", method = RequestMethod.GET)
     public ResJsonTemplate getRequirement() {
         return requirementService.getRequirement();
     }
 
     //获取账号参加的项目
+    @PreAuthorize("hasRole('user')")
     @RequestMapping(value = "/project", method = RequestMethod.GET)
     public ResJsonTemplate getProjectList(HttpServletRequest request) {
         Account account = getAccount(request);
-        return projectService.getProjectList(account.getUsername());
+        return requirementService.getMyRequirement(account);
+       // return projectService.getProjectList(account.getUsername());
     }
 
     //注册
