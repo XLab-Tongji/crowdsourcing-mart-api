@@ -221,7 +221,6 @@ public class AccountController {
         }
     }
     //获取所有需求
-    @PreAuthorize("hasRole('user')")
     @RequestMapping(value = "/requirements", method = RequestMethod.GET)
     public ResJsonTemplate getRequirement() {
         return requirementService.getRequirement();
