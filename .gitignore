@@ -1,17 +1,27 @@
-.gradle/
-.idea/
-build/
-gradle/
-out/
+.gradle
+/build/
+/out/
+!gradle/wrapper/gradle-wrapper.jar
 
-*.bat
-classes/
-libs/
-
+### STS ###
+.apt_generated
 .classpath
+.factorypath
 .project
-.settings/
+.settings
+.springBeans
 
-.DS_Store
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
 
-webapp/
+### NetBeans ###
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+.idea
